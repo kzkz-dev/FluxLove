@@ -14,8 +14,6 @@
             --primary: #ff0050;
             --accent: #00f3ff;
             --text: #ffffff;
-            --success: #4cd964;
-            --danger: #ff3b30;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
@@ -38,25 +36,17 @@
             position: relative;
             display: flex; flex-direction: column;
             box-shadow: 0 0 50px rgba(0,0,0,0.5);
-            overflow: hidden;
         }
-
-        /* Flash Effect for Selfie Mode */
-        #flash-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: white; opacity: 0; pointer-events: none; z-index: 2000;
-        }
-        .flash-anim { animation: flash 0.5s ease-out; }
 
         /* --- SCREENS --- */
         .screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: none; flex-direction: column; align-items: center; justify-content: center;
-            padding: 25px; opacity: 0; transition: opacity 0.3s ease;
+            padding: 20px; opacity: 0; transition: opacity 0.3s ease;
         }
         .screen.active { display: flex; opacity: 1; }
 
-        /* --- DASHBOARD --- */
+        /* --- 1. DASHBOARD --- */
         .brand { font-size: 2.5rem; font-weight: 900; letter-spacing: -1px; }
         .brand span { color: var(--primary); }
         .sub { font-size: 0.8rem; color: #666; margin-bottom: 20px; }
@@ -64,6 +54,7 @@
         .grid-menu {
             display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; overflow-y: auto; padding-bottom: 50px;
         }
+        
         .menu-item {
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
             border-radius: 16px; padding: 15px; text-align: center;
@@ -73,78 +64,93 @@
         .menu-icon { font-size: 1.5rem; margin-bottom: 8px; color: var(--accent); }
         .menu-title { font-size: 0.85rem; font-weight: 600; }
         .badge { position: absolute; top: 5px; right: 5px; background: var(--primary); font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; }
-        .badge.new { background: var(--accent); color: black; }
 
-        /* --- COMMON PROPOSAL UI --- */
+        /* --- 2. CREATE SCREEN --- */
+        .header-bar { width: 100%; display: flex; align-items: center; margin-bottom: 30px; }
+        .back-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        
+        input {
+            width: 100%; padding: 16px; background: var(--surface);
+            border: 1px solid #333; border-radius: 12px;
+            color: white; font-size: 1.1rem; margin-bottom: 15px;
+            text-align: center; outline: none;
+        }
+        input:focus { border-color: var(--primary); }
+
+        .btn-main {
+            width: 100%; padding: 16px; background: var(--primary);
+            border: none; border-radius: 50px; color: white;
+            font-size: 1.1rem; font-weight: 700; cursor: pointer;
+            margin-top: 10px; box-shadow: 0 5px 20px rgba(255,0,80,0.3);
+        }
+
+        .result-box {
+            margin-top: 20px; padding: 15px; background: rgba(0,243,255,0.1);
+            border: 1px solid var(--accent); border-radius: 12px;
+            font-size: 0.85rem; display: none; width: 100%; word-break: break-all;
+        }
+
+        /* --- 3. PROPOSAL SCREEN --- */
         .gif-frame {
             width: 250px; height: 250px; border-radius: 20px; overflow: hidden;
             margin-bottom: 30px; border: 2px solid rgba(255,255,255,0.1);
             background: #000;
         }
         .gif-frame img { width: 100%; height: 100%; object-fit: cover; }
+
         .q-text { font-size: 2rem; font-weight: 800; margin-bottom: 50px; line-height: 1.3; text-shadow: 0 0 20px rgba(255,0,80,0.5); }
+
         .btn-zone { position: relative; width: 100%; height: 80px; display: flex; justify-content: center; gap: 20px; }
         .btn-opt { width: 130px; height: 55px; border-radius: 50px; font-size: 1.2rem; font-weight: 700; border: none; cursor: pointer; transition: 0.2s; }
         .yes { background: var(--primary); color: white; z-index: 50; box-shadow: 0 0 20px var(--primary); }
         .no { background: white; color: black; position: absolute; z-index: 100; border: 2px solid var(--primary); }
 
-        /* --- NEW MODE: CALL SCREEN --- */
-        #screen-call { background: #000; justify-content: flex-start; padding-top: 60px; }
-        .caller-info { text-align: center; margin-bottom: auto; }
-        .caller-img { width: 120px; height: 120px; border-radius: 50%; background: #333; margin: 0 auto 20px; border: 3px solid rgba(255,255,255,0.1); overflow: hidden; }
-        .caller-img img { width: 100%; height: 100%; object-fit: cover; }
-        .caller-name { font-size: 2rem; font-weight: 700; margin-bottom: 10px; }
-        .caller-status { color: var(--accent); animation: pulse 1.5s infinite; }
+        /* --- 4. NEW MODES --- */
+        /* Chat Mode */
+        #chat-ui { width: 100%; height: 300px; background: #111; border-radius: 15px; display: flex; flex-direction: column; border: 1px solid #333; margin-bottom: 20px; }
+        .chat-msgs { flex: 1; padding: 15px; overflow-y: auto; text-align: left; }
+        .msg { padding: 8px 12px; border-radius: 10px; margin-bottom: 10px; max-width: 80%; font-size: 0.9rem; }
+        .msg.bot { background: #333; color: white; align-self: flex-start; }
+        .msg.user { background: var(--primary); color: white; margin-left: auto; }
+        .chat-input-area { padding: 10px; border-top: 1px solid #333; display: flex; }
+        #fakeInput { flex: 1; background: #222; border: none; color: white; padding: 10px; border-radius: 50px; }
         
-        .call-actions {
-            width: 100%; display: flex; justify-content: space-around; padding-bottom: 60px; position: relative; height: 150px; align-items: center;
-        }
-        .call-btn {
-            width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; color: white; cursor: pointer;
-        }
-        .btn-decline { background: var(--danger); position: absolute; left: 40px; z-index: 100; }
-        .btn-accept { background: var(--success); position: absolute; right: 40px; z-index: 50; box-shadow: 0 0 30px var(--success); animation: pulse 1s infinite; }
+        /* Calc Mode */
+        .calc-circle { width: 150px; height: 150px; border: 5px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 900; margin-bottom: 30px; box-shadow: 0 0 30px var(--primary); animation: pulse 1s infinite; }
 
-        /* --- CREATE & SUCCESS --- */
-        input { width: 100%; padding: 16px; background: var(--surface); border: 1px solid #333; border-radius: 12px; color: white; font-size: 1.1rem; margin-bottom: 15px; text-align: center; outline: none; }
-        .btn-main { width: 100%; padding: 16px; background: var(--primary); border: none; border-radius: 50px; color: white; font-size: 1.1rem; font-weight: 700; cursor: pointer; margin-top: 10px; }
-        .result-box { margin-top: 20px; padding: 15px; background: rgba(0,243,255,0.1); border: 1px solid var(--accent); border-radius: 12px; font-size: 0.85rem; display: none; width: 100%; word-break: break-all; }
+        /* --- SUCCESS --- */
+        .success-box img { width: 100%; border-radius: 15px; }
 
-        @keyframes flash { 0% { opacity: 1; } 100% { opacity: 0; } }
-        @keyframes pulse { 0% {transform:scale(1); opacity: 0.8;} 50% {transform:scale(1.1); opacity: 1;} 100% {transform:scale(1); opacity: 0.8;} }
+        @keyframes pulse { 0% {transform:scale(1);} 50% {transform:scale(1.05);} 100% {transform:scale(1);} }
         @keyframes fall { to { transform: translateY(110vh); } }
 
     </style>
 </head>
 <body>
 
-    <audio id="shutterSound" src="https://www.soundjay.com/mechanical/camera-shutter-click-08.mp3"></audio>
-    
     <div id="app">
-        <div id="flash-overlay"></div>
 
         <div id="screen-home" class="screen active">
             <div class="brand">Flux<span>Love</span></div>
-            <div class="sub">Choose Prank Style (v5.0)</div>
+            <div class="sub">Choose Your Prank Style</div>
 
             <div class="grid-menu">
-                <div class="menu-item" onclick="setup('call')">
-                    <div class="badge new">NEW</div>
-                    <div class="menu-icon"><i class="fas fa-phone-volume"></i></div>
-                    <div class="menu-title">Fake Call</div>
-                </div>
-                <div class="menu-item" onclick="setup('selfie')">
-                    <div class="badge new">NEW</div>
-                    <div class="menu-icon"><i class="fas fa-camera"></i></div>
-                    <div class="menu-title">Secret Selfie</div>
-                </div>
                 <div class="menu-item" onclick="setup('runaway')">
                     <div class="menu-icon"><i class="fas fa-person-running"></i></div>
                     <div class="menu-title">Runaway</div>
                 </div>
+                <div class="menu-item" onclick="setup('chat')">
+                    <div class="badge">NEW</div>
+                    <div class="menu-icon"><i class="fas fa-comments"></i></div>
+                    <div class="menu-title">Chat Prank</div>
+                </div>
+                <div class="menu-item" onclick="setup('calc')">
+                    <div class="badge">HOT</div>
+                    <div class="menu-icon"><i class="fas fa-heart"></i></div>
+                    <div class="menu-title">Love Calc</div>
+                </div>
                 <div class="menu-item" onclick="setup('grow')">
-                    <div class="menu-icon"><i class="fas fa-expand"></i></div>
+                    <div class="menu-icon"><i class="fas fa-maximize"></i></div>
                     <div class="menu-title">Growing Yes</div>
                 </div>
                 <div class="menu-item" onclick="setup('sad')">
@@ -159,20 +165,22 @@
         </div>
 
         <div id="screen-create" class="screen">
-            <h2 style="margin-bottom: 30px;">Setup Link 🔗</h2>
-            <button style="position:absolute; top:20px; left:20px; background:none; border:none; color:white; font-size:1.5rem;" onclick="nav('home')"><i class="fas fa-arrow-left"></i></button>
-            
+            <div class="header-bar">
+                <button class="back-btn" onclick="nav('home')"><i class="fas fa-arrow-left"></i></button>
+                <div style="margin-left:15px; font-weight:700;">Setup Link</div>
+            </div>
+
             <input type="text" id="sName" placeholder="Your Name">
             <input type="text" id="rName" placeholder="Crush's Name">
             <input type="hidden" id="mode">
 
-            <button class="btn-main" onclick="genLink()">Generate Link</button>
+            <button class="btn-main" onclick="genLink()">Generate Link 🔗</button>
             <div id="result" class="result-box"></div>
         </div>
 
         <div id="screen-proposal" class="screen">
             <div class="gif-frame">
-                <img id="mainImg" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2swa3Z6ZmVwbXk4c2g1eW15ZWZ5ZWZ5ZWZ5ZWZ5ZWZ5ZWZ5ZWZ5eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MDJ9IbxxvDUQM/giphy.gif" alt="Cute">
+                <img id="mainImg" src="https://media.giphy.com/media/cLS1cfxvGOPVpf9g3y/giphy.gif" alt="Cute">
             </div>
             <div class="q-text" id="qText">Do you love me?</div>
 
@@ -182,44 +190,51 @@
             </div>
         </div>
 
-        <div id="screen-call" class="screen">
-            <div class="caller-info">
-                <div class="caller-img">
-                    <img src="https://i.imgur.com/8Q6g4zX.png" alt="Partner">
+        <div id="screen-chat" class="screen">
+            <h2 style="margin-bottom: 20px;">Chat with <span id="chatPartner" style="color:var(--primary)">Flux</span></h2>
+            <div id="chat-ui">
+                <div class="chat-msgs" id="chatHistory">
+                    <div class="msg bot">Hi! I have a question... 🥺</div>
                 </div>
-                <div class="caller-name" id="callerName">Future Partner ❤️</div>
-                <div class="caller-status">Flux AI Incoming Video Call...</div>
+                <div class="chat-input-area">
+                    <input id="fakeInput" placeholder="Type answer..." oninput="handleTyping()">
+                    <button style="background:none; border:none; color:var(--primary); font-size:1.5rem;"><i class="fas fa-paper-plane"></i></button>
+                </div>
             </div>
+        </div>
 
-            <div class="call-actions">
-                <div class="call-btn btn-decline" id="declineBtn"><i class="fas fa-phone-slash"></i></div>
-                <div class="call-btn btn-accept" onclick="sayYes()"><i class="fas fa-phone"></i></div>
-            </div>
+        <div id="screen-calc" class="screen">
+            <h2>Love Match ❤️</h2>
+            <p style="margin-bottom:30px;">Analyzing compatibility...</p>
+            <div class="calc-circle">100%</div>
+            <div style="margin-bottom: 30px;">Match Found!</div>
+            <button class="btn-main" onclick="sayYes()">Accept Match</button>
         </div>
 
         <div id="screen-success" class="screen">
             <div class="gif-frame">
-                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHJ0aHJ0aHJ0aHJ0aHJ0aHJ0aHJ0aHJ0aHJ0aHJ0aHJ0aHJ0aHJ0eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/FwZla8b47P0Q/giphy.gif" alt="Kiss">
+                <img src="https://media.giphy.com/media/l4pTfx2qLszoacZRS/giphy.gif" alt="Kiss">
             </div>
-            <h1 style="color:var(--primary)">Yayyy! Accepted! 😘</h1>
+            <h1 style="color:var(--primary)">Yayyy! I knew it! 😘</h1>
             <p>Screenshot & Send!</p>
-            <button class="btn-main" onclick="location.href=location.pathname" style="margin-top:30px; width:auto; padding:10px 30px;">New</button>
+            <button class="btn-main" onclick="location.href=location.pathname" style="margin-top:30px; width:auto; padding:10px 30px;">Create New</button>
         </div>
 
     </div>
 
     <script>
-        // --- ASSETS (HIGH QUALITY) ---
+        // --- ASSETS (STABLE GIPHY) ---
         const assets = {
-            ask: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2swa3Z6ZmVwbXk4c2g1eW15ZWZ5ZWZ5ZWZ5ZWZ5ZWZ5ZWZ5ZWZ5eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MDJ9IbxxvDUQM/giphy.gif",
-            sad: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3J5Y3J5Y3J5Y3J5Y3J5Y3J5Y3J5Y3J5Y3J5Y3J5Y3J5Y3J5Y3J5eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/OPU6KKqrVbwzsC19p9/giphy.gif",
-            busted: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExc2hvY2tzaG9ja3Nob2Nrc2hvY2tzaG9ja3Nob2Nrc2hvY2tzaG9ja3Nob2NrJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3o7527pa7qs9kBC38Z/giphy.gif" // Shocked GIF for Selfie Prank
+            ask: "https://media.giphy.com/media/cLS1cfxvGOPVpf9g3y/giphy.gif",
+            sad: "https://media.giphy.com/media/OPU6KKqrVbwzsC19p9/giphy.gif",
+            kiss: "https://media.giphy.com/media/l4pTfx2qLszoacZRS/giphy.gif"
         };
 
+        const forcedText = "Yes! I love you so much! Will you marry me? ❤️";
+        let typeIdx = 0;
         let clickCount = 0;
-        const shutterAudio = document.getElementById('shutterSound');
 
-        // --- NAV ---
+        // --- NAVIGATION ---
         function nav(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('screen-' + id).classList.add('active');
@@ -233,11 +248,12 @@
             const m = p.get('m');
 
             if(s && r) {
-                // START PRANK based on mode
-                if (m === 'call') {
-                    document.getElementById('callerName').innerText = `${s} ❤️`;
-                    initCallMode();
-                    nav('call');
+                // START PRANK
+                if (m === 'chat') {
+                    document.getElementById('chatPartner').innerText = s;
+                    nav('chat');
+                } else if (m === 'calc') {
+                    nav('calc');
                 } else {
                     document.getElementById('qText').innerHTML = `Hey <b>${r}</b>,<br>Do you love me?`;
                     initMode(m || 'runaway');
@@ -248,11 +264,12 @@
             }
         };
 
-        // --- SETUP ---
+        // --- CREATOR ---
         function setup(mode) {
             document.getElementById('mode').value = mode;
             nav('create');
         }
+
         function genLink() {
             const s = document.getElementById('sName').value.trim();
             const r = document.getElementById('rName').value.trim();
@@ -260,15 +277,23 @@
             if(!s || !r) return alert("Fill names!");
             const link = `${location.href.split('?')[0]}?s=${encodeURIComponent(s)}&r=${encodeURIComponent(r)}&m=${m}`;
             navigator.clipboard.writeText(link);
-            document.getElementById('result').style.display = 'block';
-            document.getElementById('result').innerHTML = `<b>Link Ready! ✅</b><br>Mode: ${m.toUpperCase()}`;
+            const res = document.getElementById('result');
+            res.style.display = 'block';
+            res.innerHTML = `<b>Link Ready! ✅</b><br>Mode: ${m.toUpperCase()}`;
         }
 
         // --- MODES LOGIC ---
         function initMode(mode) {
-            const btn = resetNoBtn();
-            
-            if(mode === 'runaway') attachRunaway(btn);
+            const noBtn = document.getElementById('noBtn');
+            const newBtn = noBtn.cloneNode(true);
+            noBtn.parentNode.replaceChild(newBtn, noBtn);
+            const btn = document.getElementById('noBtn');
+
+            if(mode === 'runaway') {
+                btn.onclick = moveBtn;
+                btn.ontouchstart = (e) => { e.preventDefault(); moveBtn(); };
+                btn.onmouseover = moveBtn;
+            } 
             else if (mode === 'grow') {
                 btn.onclick = () => {
                     clickCount++;
@@ -280,85 +305,51 @@
             }
             else if (mode === 'sad') {
                 btn.onclick = () => {
-                    document.getElementById('qText').innerText = "Wait... really? 💔😭";
+                    document.getElementById('qText').innerText = "Please don't break my heart... 💔";
                     document.getElementById('mainImg').src = assets.sad;
-                    attachRunaway(btn); // Runs away after making sad
+                    moveBtn();
                 };
             }
             else if (mode === 'crash') {
                 btn.onclick = () => {
-                    document.body.innerHTML = '<div style="color:red; font-family:monospace; padding:20px; background:black; height:100vh;">FATAL ERROR: HEART_NOT_FOUND!<br>SYSTEM HALTED.<br>Rebooting...</div>';
+                    document.body.innerHTML = '<div style="color:red; font-family:monospace; padding:20px;">SYSTEM CRASHED!<br>LOVE NOT FOUND!<br>Rebooting...</div>';
                     setTimeout(() => location.reload(), 3000);
                 };
             }
-            else if (mode === 'selfie') {
-                // NEW: SECRET SELFIE PRANK
-                btn.onclick = () => {
-                    // 1. Flash Effect
-                    const flash = document.getElementById('flash-overlay');
-                    flash.classList.add('flash-anim');
-                    setTimeout(() => flash.classList.remove('flash-anim'), 500);
-                    
-                    // 2. Play Sound
-                    shutterAudio.play();
-                    
-                    // 3. Show Busted Message
-                    document.getElementById('qText').innerHTML = "⚠️ SECURITY ALERT! ⚠️<br>Photo taken! Sending proof to sender...";
-                    document.getElementById('mainImg').src = assets.busted;
-                    btn.style.display = 'none'; // Hide No button
-                };
+        }
+
+        function moveBtn() {
+            const btn = document.getElementById('noBtn');
+            btn.style.position = 'fixed';
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            btn.style.left = Math.max(10, x) + 'px';
+            btn.style.top = Math.max(10, y) + 'px';
+        }
+
+        // --- CHAT PRANK LOGIC ---
+        function handleTyping() {
+            const input = document.getElementById('fakeInput');
+            // User types anything, we replace it with forced text
+            const val = input.value;
+            if (val.length > typeIdx) {
+                // User added a char
+                input.value = forcedText.substring(0, typeIdx + 1);
+                typeIdx++;
+            }
+            // Auto send if full text typed
+            if (typeIdx >= forcedText.length) {
+                setTimeout(() => sayYes(), 1000);
             }
         }
 
-        // --- CALL MODE LOGIC ---
-        function initCallMode() {
-            const declineBtn = document.getElementById('declineBtn');
-            
-            // Make the decline button runaway
-            ['mouseover', 'touchstart', 'click'].forEach(evt => {
-                declineBtn.addEventListener(evt, (e) => {
-                    e.preventDefault();
-                    declineBtn.style.position = 'absolute';
-                    const x = Math.random() * (window.innerWidth - 100);
-                    const y = Math.random() * (window.innerHeight - 200) + 100; // Keep within action area
-                    declineBtn.style.left = `${x}px`;
-                    declineBtn.style.top = `${y}px`;
-                });
-            });
-        }
-
-        // --- UTILS ---
-        function resetNoBtn() {
-            const noBtn = document.getElementById('noBtn');
-            const newBtn = noBtn.cloneNode(true);
-            noBtn.parentNode.replaceChild(newBtn, noBtn);
-            newBtn.style.position = 'absolute'; // Reset position
-            return newBtn;
-        }
-
-        function attachRunaway(btn) {
-            ['mouseover', 'touchstart', 'click'].forEach(evt => {
-                btn.addEventListener(evt, (e) => {
-                    e.preventDefault();
-                    btn.style.position = 'fixed';
-                    const x = Math.random() * (window.innerWidth - btn.offsetWidth - 20);
-                    const y = Math.random() * (window.innerHeight - btn.offsetHeight - 20);
-                    btn.style.left = Math.max(10, x) + 'px';
-                    btn.style.top = Math.max(10, y) + 'px';
-                });
-            });
-        }
-
+        // --- YES LOGIC ---
         function sayYes() {
             nav('success');
-            fireConfetti();
-        }
-
-        function fireConfetti() {
             for(let i=0; i<50; i++) {
                 setTimeout(() => {
                     const e = document.createElement('div');
-                    e.innerHTML = ['❤️','💖','📞'][Math.floor(Math.random()*3)];
+                    e.innerHTML = '❤️';
                     e.style.position = 'fixed';
                     e.style.left = Math.random()*100+'vw';
                     e.style.top = '-10px';
@@ -369,7 +360,7 @@
                 }, i*30);
             }
         }
-        
+
         const css = document.createElement('style');
         css.innerHTML = `@keyframes fall { to { transform: translateY(110vh); } }`;
         document.head.appendChild(css);
