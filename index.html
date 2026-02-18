@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FluxLove - AI Proposal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a12;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --primary: #ff0055;
+            --accent: #00f3ff;
+            --text: #ffffff;
+        }
+
+        body {
+            background: var(--bg);
+            background-image: radial-gradient(circle at 50% 50%, rgba(255, 0, 85, 0.15) 0%, transparent 50%);
+            font-family: 'Outfit', sans-serif;
+            color: var(--text);
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            touch-action: none; /* Mobile optimization */
+        }
+
+        /* BRANDING */
+        .brand {
+            position: absolute;
+            top: 20px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            z-index: 100;
+        }
+        .brand span { color: var(--accent); }
+        .brand i { color: var(--primary); font-style: normal; }
+
+        /* CONTAINER */
+        .container {
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            z-index: 10;
+        }
+
+        /* SCREEN 1: CREATOR */
+        #create-screen {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            display: none; /* JS decides visibility */
+        }
+
+        h2 { margin-bottom: 5px; font-weight: 600; }
+        p { color: #888; font-size: 0.9rem; margin-bottom: 20px; }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            outline: none;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        input:focus { border-color: var(--primary); }
+
+        .btn-main {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), #ff4d6d);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 5px 20px rgba(255, 0, 85, 0.4);
+        }
+        .btn-main:active { transform: scale(0.95); }
+
+        /* SCREEN 2: PROPOSAL */
+        #proposal-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .gif-frame {
+            width: 220px;
+            height: 220px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 30px rgba(255, 0, 85, 0.2);
+        }
+        .gif-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+        .question {
+            font-size: 1.8rem;
+            line-height: 1.4;
+            margin-bottom: 40px;
+            text-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
+        }
+
+        .buttons-area {
+            position: relative;
+            width: 300px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn-action {
+            padding: 12px 40px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .yes-btn {
+            background: var(--primary);
+            color: white;
+            z-index: 20;
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        .no-btn {
+            background: white;
+            color: var(--primary);
+            position: absolute; /* Essential for running */
+        }
+
+        /* SUCCESS SCREEN */
+        #success-screen { display: none; text-align: center; }
+        .success-title { font-size: 2.5rem; color: var(--primary); margin-top: 20px; }
+        
+        /* FOOTER */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.7rem;
+            opacity: 0.5;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="brand"><span>⚡</span> Flux<i>Love</i></div>
+
+    <div id="create-screen" class="container">
+        <h2>Generate Magic Link</h2>
+        <p>Create a special AI proposal link.</p>
+        
+        <input type="text" id="senderName" placeholder="Your Name">
+        <input type="text" id="crushName" placeholder="Partner's Name">
+        
+        <button class="btn-main" onclick="generateLink()">Create Link 🔗</button>
+        <div id="linkResult" style="margin-top:15px; font-size:0.9rem; color:#00f3ff; display:none;">Link Copied to Clipboard! ✅</div>
+    </div>
+
+    <div id="proposal-screen" class="container">
+        <div class="gif-frame">
+            <img src="https://media.tenor.com/zGm5acSjHCIAAAAj/cat-ask.gif" alt="Cute Cat">
+        </div>
+        <div class="question" id="dynamicQuestion">Hey, do you love me? 🥺</div>
+        
+        <div class="buttons-area">
+            <button class="btn-action yes-btn" onclick="sayYes()">YES ❤️</button>
+            <button class="btn-action no-btn" id="noBtn">NO 💔</button>
+        </div>
+    </div>
+
+    <div id="success-screen" class="container">
+        <div class="gif-frame">
+            <img src="https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif" alt="Love Bear">
+        </div>
+        <div class="success-title">Yayyy! I knew it! 😘</div>
+        <p>Screenshot this and send it to <span id="partnerName">me</span>!</p>
+    </div>
+
+    <div class="footer">Powered by Flux AI</div>
+
+    <script>
+        // --- LOGIC START ---
+        
+        // 1. URL থেকে নাম বের করা
+        const urlParams = new URLSearchParams(window.location.search);
+        const sender = urlParams.get('s'); // s = sender
+        const receiver = urlParams.get('r'); // r = receiver
+
+        const createScreen = document.getElementById('create-screen');
+        const proposalScreen = document.getElementById('proposal-screen');
+        const question = document.getElementById('dynamicQuestion');
+
+        // যদি লিংকে নাম থাকে, তাহলে প্রপোজাল পেজ দেখাও
+        if (sender && receiver) {
+            createScreen.style.display = 'none';
+            proposalScreen.style.display = 'flex';
+            question.innerHTML = `Hey <b>${receiver}</b>,<br>Will you be my Valentine? 🌹<br><span style="font-size:0.6em; opacity:0.7">- ${sender}</span>`;
+            document.getElementById('partnerName').innerText = sender;
+        } else {
+            // নাম না থাকলে লিংক বানানোর পেজ দেখাও
+            createScreen.style.display = 'block';
+        }
+
+        // 2. লিংক জেনারেটর ফাংশন
+        function generateLink() {
+            const sName = document.getElementById('senderName').value.trim();
+            const rName = document.getElementById('crushName').value.trim();
+            
+            if (!sName || !rName) return alert("Please fill both names!");
+
+            // বর্তমান URL এর সাথে নাম যোগ করা
+            const baseUrl = window.location.href.split('?')[0];
+            const finalLink = `${baseUrl}?s=${encodeURIComponent(sName)}&r=${encodeURIComponent(rName)}`;
+            
+            // কপি করা
+            navigator.clipboard.writeText(finalLink);
+            
+            const res = document.getElementById('linkResult');
+            res.style.display = 'block';
+            res.innerText = "Link Copied! Send it to " + rName + " now! 🚀";
+        }
+
+        // 3. NO BUTTON RUNAWAY LOGIC (মোবাইলে ১০০% কাজ করবে)
+        const noBtn = document.getElementById('noBtn');
+
+        // টাচ বা মাউস নিলেই বাটন পালাবে
+        noBtn.addEventListener('mouseover', runAway);
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); runAway(); });
+        noBtn.addEventListener('click', (e) => { e.preventDefault(); runAway(); });
+
+        function runAway() {
+            // যদি পজিশন ফিক্সড না থাকে, ফিক্সড করে দাও
+            if (noBtn.style.position !== 'fixed') {
+                noBtn.style.position = 'fixed'; 
+            }
+
+            // বাউন্ডারি হিসাব (যাতে স্ক্রিনের বাইরে না যায়)
+            const btnW = noBtn.offsetWidth;
+            const btnH = noBtn.offsetHeight;
+            const maxW = window.innerWidth - btnW - 20;
+            const maxH = window.innerHeight - btnH - 20;
+
+            // র‍্যান্ডম পজিশন
+            const randX = Math.max(10, Math.random() * maxW);
+            const randY = Math.max(10, Math.random() * maxH);
+
+            noBtn.style.left = randX + 'px';
+            noBtn.style.top = randY + 'px';
+        }
+
+        // 4. YES BUTTON LOGIC
+        function sayYes() {
+            proposalScreen.style.display = 'none';
+            document.getElementById('success-screen').style.display = 'block';
+            startConfetti();
+        }
+
+        // 5. কনফেটি ইফেক্ট (বুম!)
+        function startConfetti() {
+            for(let i=0; i<80; i++) {
+                setTimeout(createParticle, i * 20);
+            }
+        }
+
+        function createParticle() {
+            const p = document.createElement('div');
+            p.innerText = ['❤️', '⚡', '💖', '🌸'][Math.floor(Math.random()*4)];
+            p.style.position = 'fixed';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.top = '-20px';
+            p.style.fontSize = Math.random() * 20 + 10 + 'px';
+            p.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+            document.body.appendChild(p);
+            
+            // অ্যানিমেশন শেষ হলে ডিলিট
+            setTimeout(() => p.remove(), 5000);
+        }
+
+        // CSS for falling animation inserted dynamically
+        const style = document.createElement('style');
+        style.innerHTML = `@keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }`;
+        document.head.appendChild(style);
+
+    </script>
+</body>
+</html>
