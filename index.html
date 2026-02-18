@@ -13,7 +13,6 @@
             --primary: #ff0055;
             --accent: #00f3ff;
             --text: #ffffff;
-            --text-gray: #a1a1aa;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -24,113 +23,122 @@
             color: var(--text);
             margin: 0;
             height: 100vh;
-            overflow: hidden; /* No Scroll */
+            overflow: hidden; /* No Scroll creates App feel */
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* --- APP CONTAINER (MOBILE FRAME) --- */
+        /* --- APP FRAME --- */
         #app {
             width: 100%;
             height: 100%;
-            max-width: 480px; /* Tablet/Desktop e mobile view maintain korbe */
+            max-width: 480px; 
             position: relative;
             background: radial-gradient(circle at top, #1a1a2e 0%, var(--bg-dark) 60%);
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* --- SCREENS (PAGES) --- */
+        /* --- SCREENS --- */
         .screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            display: none; /* JS will toggle this */
+            display: none; /* JS toggles this */
             flex-direction: column;
             align-items: center;
             padding: 30px;
             text-align: center;
             animation: fadeIn 0.4s ease;
+            justify-content: center;
         }
         .screen.active { display: flex; }
 
-        /* --- 1. HOME SCREEN --- */
-        #screen-home { justify-content: center; }
-        
-        .logo-area { margin-bottom: 50px; animation: float 3s infinite ease-in-out; }
-        .logo-icon { font-size: 4rem; color: var(--primary); text-shadow: 0 0 30px rgba(255, 0, 85, 0.5); }
-        .app-name { font-size: 2.2rem; font-weight: 800; margin-top: 10px; letter-spacing: -1px; }
+        /* --- HOME SCREEN UI --- */
+        .logo-area { margin-bottom: 40px; }
+        .logo-icon { font-size: 5rem; color: var(--primary); filter: drop-shadow(0 0 20px rgba(255,0,85,0.5)); }
+        .app-name { font-size: 2.5rem; font-weight: 800; margin-top: 10px; }
         .app-name span { color: var(--accent); }
-        .tagline { color: var(--text-gray); font-size: 1rem; margin-top: 5px; }
+        .tagline { color: #888; font-size: 1rem; margin-top: 5px; }
 
-        /* --- 2. CREATE SCREEN --- */
-        #screen-create { justify-content: center; }
-        .input-group { width: 100%; margin-bottom: 20px; text-align: left; }
-        .label { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 8px; display: block; margin-left: 5px; }
-        
-        input {
-            width: 100%; padding: 18px;
-            background: var(--card-bg);
-            border: 1px solid #333;
-            border-radius: 16px;
+        .btn-start {
+            margin-top: 50px;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 0, 85, 0.3);
+            width: 80%;
+        }
+
+        /* --- CREATE SCREEN UI --- */
+        .input-box {
+            width: 100%;
+            padding: 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
             color: white;
             font-size: 1.1rem;
+            margin-bottom: 15px;
+            text-align: center;
             outline: none;
-            transition: 0.3s;
         }
-        input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(255, 0, 85, 0.2); }
+        .input-box:focus { border-color: var(--primary); }
 
-        .result-box {
+        .result-area {
+            margin-top: 20px;
+            padding: 15px;
             background: rgba(0, 243, 255, 0.1);
             border: 1px solid var(--accent);
-            padding: 15px; border-radius: 12px;
-            margin-top: 20px; display: none;
-            width: 100%; font-size: 0.9rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            display: none;
+            width: 100%;
+            word-break: break-all;
         }
 
-        /* --- 3. PROPOSAL SCREEN --- */
-        #screen-proposal { justify-content: center; }
-        
+        /* --- PROPOSAL SCREEN UI --- */
         .gif-container {
-            width: 240px; height: 240px;
-            border-radius: 24px; overflow: hidden;
+            width: 250px; height: 250px;
+            border-radius: 20px; overflow: hidden;
             margin-bottom: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            border: 2px solid rgba(255,255,255,0.05);
+            background: #fff;
         }
         .gif-container img { width: 100%; height: 100%; object-fit: cover; }
 
-        .question { font-size: 2rem; font-weight: 800; line-height: 1.3; margin-bottom: 60px; }
+        .question { font-size: 2rem; font-weight: 800; margin-bottom: 50px; line-height: 1.3; }
 
-        /* --- BUTTONS --- */
-        .btn {
-            width: 100%; padding: 18px;
-            border-radius: 50px; border: none;
-            font-size: 1.1rem; font-weight: 700;
-            cursor: pointer; transition: 0.2s;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), #ff4d6d);
-            color: white;
-            box-shadow: 0 10px 30px rgba(255, 0, 85, 0.3);
-        }
-        .btn-primary:active { transform: scale(0.97); }
-
-        .action-buttons {
+        .buttons-container {
             position: relative;
-            width: 100%; height: 60px;
-            display: flex; justify-content: center; gap: 20px;
+            width: 100%;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
         }
-        .btn-action { width: 140px; padding: 15px; border-radius: 50px; font-weight: 700; font-size: 1.1rem; border: none; cursor: pointer; }
-        .btn-yes { background: var(--primary); color: white; z-index: 10; box-shadow: 0 0 20px var(--primary); }
-        .btn-no { background: white; color: black; position: absolute; } /* Absolute for running */
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .yes { background: var(--primary); color: white; box-shadow: 0 5px 20px rgba(255,0,85,0.4); z-index: 10; }
+        .no { background: white; color: black; position: absolute; } 
+        /* No button is absolute to allow movement, but initially centered via JS/CSS logic */
 
         /* --- UTILS --- */
-        .hidden { display: none !important; }
-        .back-btn { position: absolute; top: 20px; left: 20px; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; z-index: 50; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .back-btn { position: absolute; top: 30px; left: 30px; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
     </style>
 </head>
@@ -138,171 +146,126 @@
 
     <div id="app">
         
-        <div id="screen-home" class="screen">
-            <div class="logo-area">
-                <i class="fas fa-heart-pulse logo-icon"></i>
-            </div>
+        <div id="screen-home" class="screen active">
+            <div class="logo-area"><i class="fas fa-heart-pulse logo-icon"></i></div>
             <div class="app-name">Flux<span>Love</span></div>
-            <div class="tagline">The AI Proposal App</div>
-            
-            <div style="margin-top: 60px; width: 100%;">
-                <button class="btn btn-primary" onclick="showScreen('create')">
-                    Create Proposal <i class="fas fa-arrow-right"></i>
-                </button>
-            </div>
-            <div style="margin-top: 20px; opacity: 0.5; font-size: 0.8rem;">v34.0.0 (App Edition)</div>
+            <div class="tagline">The Best Proposal App</div>
+            <button class="btn-start" onclick="showScreen('create')">Get Started</button>
         </div>
 
         <div id="screen-create" class="screen">
-            <button class="back-btn" onclick="showScreen('home')"><i class="fas fa-chevron-left"></i></button>
+            <button class="back-btn" onclick="showScreen('home')"><i class="fas fa-arrow-left"></i></button>
             
-            <h2 style="margin-bottom: 40px;">Make it Special ✨</h2>
-
-            <div class="input-group">
-                <span class="label">Your Name</span>
-                <input type="text" id="senderName" placeholder="Ex: Kawchur">
-            </div>
-
-            <div class="input-group">
-                <span class="label">Partner's Name</span>
-                <input type="text" id="crushName" placeholder="Ex: Sadia">
-            </div>
-
-            <button class="btn btn-primary" onclick="generateLink()">
-                <i class="fas fa-link"></i> Generate App Link
-            </button>
-
-            <div id="linkResult" class="result-box"></div>
+            <h2 style="margin-bottom: 30px;">Create Magic Link ✨</h2>
+            
+            <input type="text" id="sName" class="input-box" placeholder="Your Name">
+            <input type="text" id="rName" class="input-box" placeholder="Partner's Name">
+            
+            <button class="btn-start" onclick="generateLink()" style="margin-top: 20px;">Copy Link 🔗</button>
+            
+            <div id="result" class="result-area"></div>
         </div>
 
         <div id="screen-proposal" class="screen">
             <div class="gif-container">
-                <img src="https://media.tenor.com/zGm5acSjHCIAAAAj/cat-ask.gif" alt="Cute Cat">
+                <img src="https://media1.tenor.com/m/2yDAZyl-eXQAAAAC/cute-sad.gif" alt="Cute">
             </div>
             
-            <div class="question" id="finalQuestion">Do you love me?</div>
-
-            <div class="action-buttons">
-                <button class="btn-action btn-yes" onclick="sayYes()">YES ❤️</button>
-                <button class="btn-action btn-no" id="noBtn">NO 💔</button>
+            <div class="question" id="finalQuestion">Do you love me? 🥺</div>
+            
+            <div class="buttons-container">
+                <button class="btn yes" onclick="sayYes()">YES ❤️</button>
+                <button class="btn no" id="noBtn">NO 💔</button>
             </div>
         </div>
 
         <div id="screen-success" class="screen">
             <div class="gif-container">
-                <img src="https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif" alt="Kiss">
+                <img src="https://media1.tenor.com/m/aKFaZbrZFYkAAAAC/bear-kiss-bear-kisses.gif" alt="Kiss">
             </div>
             <h1 style="color: var(--primary);">Yayyy! I knew it! 😘</h1>
-            <p style="opacity: 0.7;">Take a screenshot and send it to me!</p>
-            
-            <button class="btn btn-primary" onclick="location.href=window.location.pathname" style="margin-top: 30px;">
-                Create Your Own
-            </button>
+            <p>Take a screenshot & send it to me!</p>
         </div>
 
     </div>
 
     <script>
-        // --- APP NAVIGATION LOGIC ---
-        
-        function showScreen(screenName) {
-            // Hide all screens
+        // --- NAVIGATION LOGIC ---
+        function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            // Show target screen
-            document.getElementById('screen-' + screenName).classList.add('active');
+            document.getElementById('screen-' + id).classList.add('active');
         }
 
-        // --- INIT LOGIC (Check URL) ---
+        // --- INIT CHECK ---
         window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const sender = urlParams.get('s');
-            const receiver = urlParams.get('r');
+            const params = new URLSearchParams(window.location.search);
+            const s = params.get('s');
+            const r = params.get('r');
 
-            if (sender && receiver) {
-                // If link has names -> DIRECTLY GO TO PROPOSAL (Skip Home)
-                document.getElementById('finalQuestion').innerHTML = `Hey <b>${receiver}</b>,<br>Do you love me? 🥺`;
+            if (s && r) {
+                // If link has names -> Go to Proposal directly
+                document.getElementById('finalQuestion').innerHTML = `Hey <b>${r}</b>,<br>Do you love me? 🥺`;
                 showScreen('proposal');
-            } else {
-                // If normal open -> SHOW HOME SCREEN
-                showScreen('home');
             }
         };
 
-        // --- 1. LINK GENERATOR ---
+        // --- 1. GENERATE LINK ---
         function generateLink() {
-            const sName = document.getElementById('senderName').value.trim();
-            const rName = document.getElementById('crushName').value.trim();
-
-            if (!sName || !rName) return alert("Please fill both names!");
-
-            const baseUrl = window.location.href.split('?')[0];
-            const finalLink = `${baseUrl}?s=${encodeURIComponent(sName)}&r=${encodeURIComponent(rName)}`;
-
-            navigator.clipboard.writeText(finalLink);
+            const s = document.getElementById('sName').value.trim();
+            const r = document.getElementById('rName').value.trim();
             
-            const resBox = document.getElementById('linkResult');
-            resBox.style.display = 'block';
-            resBox.innerHTML = `
-                <div style="font-weight:bold; color:white; margin-bottom:5px;">Link Copied! ✅</div>
-                <div style="font-size:0.8rem; word-break: break-all; opacity:0.8;">${finalLink}</div>
-                <div style="margin-top:10px; font-size:0.8rem; color:var(--accent);">Send this link to ${rName}!</div>
-            `;
+            if (!s || !r) return alert("Please enter both names!");
+            
+            const link = `${window.location.href.split('?')[0]}?s=${encodeURIComponent(s)}&r=${encodeURIComponent(r)}`;
+            navigator.clipboard.writeText(link);
+            
+            const res = document.getElementById('result');
+            res.style.display = 'block';
+            res.innerHTML = `<b>Link Copied!</b><br>Send this to ${r} now!`;
         }
 
-        // --- 2. NO BUTTON LOGIC (Fixed & Improved) ---
+        // --- 2. NO BUTTON RUNAWAY ---
         const noBtn = document.getElementById('noBtn');
-        const appContainer = document.getElementById('app');
+        
+        // Touch/Hover Events
+        noBtn.addEventListener('mouseover', moveBtn);
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveBtn(); });
+        noBtn.addEventListener('click', (e) => { e.preventDefault(); moveBtn(); });
 
-        // Events
-        noBtn.addEventListener('mouseover', runAway); // PC
-        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); runAway(); }); // Mobile
-        noBtn.addEventListener('click', (e) => { e.preventDefault(); runAway(); }); // Backup
-
-        function runAway() {
-            // Force Fixed Position relative to viewport/app container
-            noBtn.style.position = 'fixed';
+        function moveBtn() {
+            noBtn.style.position = 'fixed'; // Switch to fixed for free movement
             
-            // Get safe boundaries (Window size - Button size - Padding)
-            const btnWidth = noBtn.offsetWidth;
-            const btnHeight = noBtn.offsetHeight;
-            const maxX = window.innerWidth - btnWidth - 20;
-            const maxY = window.innerHeight - btnHeight - 20;
-
-            // Generate Random Position
-            const randomX = Math.max(20, Math.random() * maxX);
-            const randomY = Math.max(20, Math.random() * maxY);
-
-            // Apply
-            noBtn.style.left = randomX + 'px';
-            noBtn.style.top = randomY + 'px';
+            const w = window.innerWidth - noBtn.offsetWidth - 20;
+            const h = window.innerHeight - noBtn.offsetHeight - 20;
+            
+            const x = Math.random() * w;
+            const y = Math.random() * h;
+            
+            noBtn.style.left = `${Math.max(10, x)}px`;
+            noBtn.style.top = `${Math.max(10, y)}px`;
         }
 
         // --- 3. YES LOGIC ---
         function sayYes() {
             showScreen('success');
-            startConfetti();
-        }
-
-        // --- 4. CONFETTI ---
-        function startConfetti() {
+            // Confetti effect
             for(let i=0; i<50; i++) {
                 setTimeout(() => {
                     const p = document.createElement('div');
-                    p.innerText = ['❤️','💖','🥰'][Math.floor(Math.random()*3)];
+                    p.innerHTML = '❤️';
                     p.style.position = 'fixed';
-                    p.style.left = Math.random() * 100 + 'vw';
-                    p.style.top = '-10px';
-                    p.style.fontSize = (Math.random() * 20 + 10) + 'px';
-                    p.style.animation = `fall ${Math.random() * 2 + 2}s linear forwards`;
+                    p.style.left = Math.random()*100+'vw';
+                    p.style.top = '-20px';
+                    p.style.fontSize = Math.random()*30+10+'px';
+                    p.style.animation = `fall 3s linear`;
                     document.body.appendChild(p);
-                    setTimeout(() => p.remove(), 4000);
-                }, i * 50);
+                }, i*50);
             }
         }
         
-        // Inject Animation Style
+        // Inject animation style
         const style = document.createElement('style');
-        style.innerHTML = `@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }`;
+        style.innerHTML = `@keyframes fall { to { transform: translateY(110vh); } }`;
         document.head.appendChild(style);
 
     </script>
