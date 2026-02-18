@@ -3,136 +3,374 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FluxLove</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>FluxLove App</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        :root { --pink-bg: #ffe6e9; --flux-dark: #09090b; --primary: #ff4d6d; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { margin: 0; font-family: 'Outfit', sans-serif; background: var(--pink-bg); overflow: hidden; height: 100vh; display: flex; justify-content: center; align-items: center; }
-        
-        /* --- Screens --- */
-        .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
-        .screen.active { display: flex; }
+        :root {
+            --bg: #09090b;
+            --surface: #18181b;
+            --primary: #ff0050;
+            --accent: #00f3ff;
+            --text: #ffffff;
+        }
 
-        /* --- Branding --- */
-        .brand { position: absolute; top: 30px; font-weight: 900; font-size: 1.5rem; color: #333; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+
+        body {
+            background: var(--bg);
+            font-family: 'Outfit', sans-serif;
+            color: var(--text);
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* --- APP SHELL --- */
+        #app {
+            width: 100%; height: 100%; max-width: 480px;
+            background: radial-gradient(circle at top, #2a0b14 0%, var(--bg) 70%);
+            position: relative;
+            display: flex; flex-direction: column;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+
+        /* --- SCREENS --- */
+        .screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .screen.active { display: flex; opacity: 1; }
+
+        /* --- 1. DASHBOARD --- */
+        .brand { font-size: 2.5rem; font-weight: 900; letter-spacing: -1px; margin-bottom: 5px; }
         .brand span { color: var(--primary); }
+        .sub { font-size: 0.8rem; color: #666; margin-bottom: 20px; }
 
-        /* --- Home/Creator --- */
-        .card { background: white; padding: 30px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%; max-width: 380px; }
-        input { width: 100%; padding: 15px; border: 2px solid #ffccd5; border-radius: 50px; font-size: 1rem; margin-bottom: 15px; text-align: center; outline: none; }
-        .btn-main { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 50px; font-weight: 700; font-size: 1.1rem; cursor: pointer; }
-
-        /* --- Proposal UI --- */
-        .sticker-frame { width: 220px; height: 220px; margin-bottom: 20px; border-radius: 20px; overflow: hidden; }
-        .sticker-frame img { width: 100%; height: 100%; object-fit: contain; }
-        .question { font-size: 1.8rem; font-weight: 800; color: #ff4d6d; margin-bottom: 40px; }
+        .grid-menu {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; overflow-y: auto; padding-bottom: 50px;
+        }
         
-        .btn-group { position: relative; width: 100%; height: 60px; display: flex; justify-content: center; gap: 20px; }
-        .btn-p { width: 130px; height: 50px; border-radius: 50px; border: none; font-weight: 800; font-size: 1.1rem; cursor: pointer; }
-        .yes { background: var(--primary); color: white; box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4); z-index: 10; }
-        .no { background: white; color: var(--primary); border: 2px solid var(--primary); position: absolute; }
+        .menu-item {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px; padding: 15px; text-align: center;
+            cursor: pointer; transition: 0.2s; position: relative; overflow: hidden;
+        }
+        .menu-item:active { background: rgba(255,0,80,0.1); border-color: var(--primary); transform: scale(0.95); }
+        .menu-icon { font-size: 1.5rem; margin-bottom: 8px; color: var(--accent); }
+        .menu-title { font-size: 0.85rem; font-weight: 600; }
+        .badge { position: absolute; top: 5px; right: 5px; background: var(--primary); font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; }
 
-        /* --- Confetti --- */
-        .heart-particle { position: fixed; pointer-events: none; animation: fall linear forwards; z-index: 1000; }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        /* --- 2. CREATE SCREEN --- */
+        .header-bar { width: 100%; display: flex; align-items: center; margin-bottom: 30px; }
+        .back-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        
+        input {
+            width: 100%; padding: 16px; background: var(--surface);
+            border: 1px solid #333; border-radius: 12px;
+            color: white; font-size: 1.1rem; margin-bottom: 15px;
+            text-align: center; outline: none;
+        }
+        input:focus { border-color: var(--primary); }
+
+        .btn-main {
+            width: 100%; padding: 16px; background: var(--primary);
+            border: none; border-radius: 50px; color: white;
+            font-size: 1.1rem; font-weight: 700; cursor: pointer;
+            margin-top: 10px; box-shadow: 0 5px 20px rgba(255,0,80,0.3);
+        }
+
+        .result-box {
+            margin-top: 20px; padding: 15px; background: rgba(0,243,255,0.1);
+            border: 1px solid var(--accent); border-radius: 12px;
+            font-size: 0.85rem; display: none; width: 100%; word-break: break-all;
+        }
+
+        /* --- 3. PROPOSAL SCREEN --- */
+        .gif-frame {
+            width: 250px; height: 250px; border-radius: 20px; overflow: hidden;
+            margin-bottom: 30px; border: 2px solid rgba(255,255,255,0.1);
+            background: #000;
+        }
+        /* STABLE PEACH GOMA GIFS */
+        .gif-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+        .q-text { font-size: 2rem; font-weight: 800; margin-bottom: 50px; line-height: 1.3; text-shadow: 0 0 20px rgba(255,0,80,0.5); }
+
+        .btn-zone { position: relative; width: 100%; height: 80px; display: flex; justify-content: center; gap: 20px; }
+        .btn-opt { width: 130px; height: 55px; border-radius: 50px; font-size: 1.2rem; font-weight: 700; border: none; cursor: pointer; transition: 0.2s; }
+        .yes { background: var(--primary); color: white; z-index: 50; box-shadow: 0 0 20px var(--primary); }
+        .no { background: white; color: black; position: absolute; z-index: 100; border: 2px solid var(--primary); }
+
+        /* --- 4. NEW MODES --- */
+        /* Chat Mode */
+        #chat-ui { width: 100%; height: 300px; background: #111; border-radius: 15px; display: flex; flex-direction: column; border: 1px solid #333; margin-bottom: 20px; }
+        .chat-msgs { flex: 1; padding: 15px; overflow-y: auto; text-align: left; }
+        .msg { padding: 8px 12px; border-radius: 10px; margin-bottom: 10px; max-width: 80%; font-size: 0.9rem; }
+        .msg.bot { background: #333; color: white; align-self: flex-start; }
+        .msg.user { background: var(--primary); color: white; margin-left: auto; }
+        .chat-input-area { padding: 10px; border-top: 1px solid #333; display: flex; }
+        #fakeInput { flex: 1; background: #222; border: none; color: white; padding: 10px; border-radius: 50px; }
+        
+        /* Calc Mode */
+        .calc-circle { width: 150px; height: 150px; border: 5px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 900; margin-bottom: 30px; box-shadow: 0 0 30px var(--primary); animation: pulse 1s infinite; }
+
+        /* --- SUCCESS --- */
+        .success-box img { width: 100%; border-radius: 15px; }
+
+        @keyframes pulse { 0% {transform:scale(1);} 50% {transform:scale(1.05);} 100% {transform:scale(1);} }
+        @keyframes fall { to { transform: translateY(110vh); } }
+
     </style>
 </head>
 <body>
 
-    <div id="app" style="width: 100%; height: 100%;">
-        
-        <div id="screen-home" class="screen" style="background: var(--flux-dark); color: white;">
-            <div class="brand" style="color: white;">Flux<span>Love</span></div>
-            <div class="card" style="background: #18181b; border: 1px solid #333;">
-                <h2 style="margin-top:0;">Create Proposal</h2>
-                <input type="text" id="sName" placeholder="Your Name" style="background:#000; color:white; border-color:#333;">
-                <input type="text" id="rName" placeholder="Partner's Name" style="background:#000; color:white; border-color:#333;">
-                <button class="btn-main" onclick="genLink()">Generate Magic Link 🔗</button>
-                <div id="linkResult" style="margin-top:15px; color: #00f3ff; font-size: 0.8rem; display: none; word-break: break-all;"></div>
+    <div id="app">
+
+        <div id="screen-home" class="screen active">
+            <div class="brand">Flux<span>Love</span></div>
+            <div class="sub">Choose Your Prank Style</div>
+
+            <div class="grid-menu">
+                <div class="menu-item" onclick="setup('runaway')">
+                    <div class="menu-icon"><i class="fas fa-person-running"></i></div>
+                    <div class="menu-title">Runaway</div>
+                </div>
+                <div class="menu-item" onclick="setup('chat')">
+                    <div class="badge">NEW</div>
+                    <div class="menu-icon"><i class="fas fa-comments"></i></div>
+                    <div class="menu-title">Chat Prank</div>
+                </div>
+                <div class="menu-item" onclick="setup('calc')">
+                    <div class="badge">HOT</div>
+                    <div class="menu-icon"><i class="fas fa-heart"></i></div>
+                    <div class="menu-title">Love Calc</div>
+                </div>
+                <div class="menu-item" onclick="setup('grow')">
+                    <div class="menu-icon"><i class="fas fa-maximize"></i></div>
+                    <div class="menu-title">Growing Yes</div>
+                </div>
+                <div class="menu-item" onclick="setup('sad')">
+                    <div class="menu-icon"><i class="fas fa-face-sad-tear"></i></div>
+                    <div class="menu-title">Emotional</div>
+                </div>
+                <div class="menu-item" onclick="setup('crash')">
+                    <div class="menu-icon"><i class="fas fa-bug"></i></div>
+                    <div class="menu-title">System Crash</div>
+                </div>
             </div>
+        </div>
+
+        <div id="screen-create" class="screen">
+            <div class="header-bar">
+                <button class="back-btn" onclick="nav('home')"><i class="fas fa-arrow-left"></i></button>
+                <div style="margin-left:15px; font-weight:700;">Setup Link</div>
+            </div>
+
+            <input type="text" id="sName" placeholder="Your Name">
+            <input type="text" id="rName" placeholder="Crush's Name">
+            <input type="hidden" id="mode">
+
+            <button class="btn-main" onclick="genLink()">Generate Link 🔗</button>
+            <div id="result" class="result-box"></div>
         </div>
 
         <div id="screen-proposal" class="screen">
-            <div class="brand">Flux<span>Love</span></div>
-            <div class="sticker-frame">
-                <img src="https://media.tenor.com/zGm5acSjHCIAAAAj/cat-ask.gif" alt="Asking">
+            <div class="gif-frame">
+                <img id="mainImg" src="https://media.tenor.com/2yDAZyl-eXQAAAAC/cute-sad.gif" alt="Cute">
             </div>
-            <div class="question" id="qText">Hey Sadia, Do you love me? 🥺</div>
-            <div class="btn-group">
-                <button class="btn-p yes" onclick="sayYes()">Yes ❤️</button>
-                <button class="btn-p no" id="noBtn">No 💔</button>
+            <div class="q-text" id="qText">Do you love me?</div>
+
+            <div class="btn-zone">
+                <button class="btn-opt yes" id="yesBtn" onclick="sayYes()">YES ❤️</button>
+                <button class="btn-opt no" id="noBtn">NO 💔</button>
             </div>
         </div>
 
-        <div id="screen-success" class="screen">
-            <div class="sticker-frame">
-                <img src="https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif" alt="Success">
+        <div id="screen-chat" class="screen">
+            <h2 style="margin-bottom: 20px;">Chat with <span id="chatPartner" style="color:var(--primary)">Flux</span></h2>
+            <div id="chat-ui">
+                <div class="chat-msgs" id="chatHistory">
+                    <div class="msg bot">Hi! I have a question... 🥺</div>
+                </div>
+                <div class="chat-input-area">
+                    <input id="fakeInput" placeholder="Type answer..." oninput="handleTyping()">
+                    <button style="background:none; border:none; color:var(--primary); font-size:1.5rem;"><i class="fas fa-paper-plane"></i></button>
+                </div>
             </div>
-            <div class="question">Yayyy! I knew it! 😘</div>
-            <p style="color: #666;">Take a screenshot and send it to me! 📸</p>
-            <button class="btn-main" style="width: auto; padding: 10px 30px; margin-top: 20px;" onclick="location.href=location.pathname">Create New</button>
+        </div>
+
+        <div id="screen-calc" class="screen">
+            <h2>Love Match ❤️</h2>
+            <p style="margin-bottom:30px;">Analyzing compatibility...</p>
+            <div class="calc-circle">100%</div>
+            <div style="margin-bottom: 30px;">Match Found!</div>
+            <button class="btn-main" onclick="sayYes()">Accept Match</button>
+        </div>
+
+        <div id="screen-success" class="screen">
+            <div class="gif-frame">
+                <img src="https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif" alt="Kiss">
+            </div>
+            <h1 style="color:var(--primary)">Yayyy! I knew it! 😘</h1>
+            <p>Screenshot & Send!</p>
+            <button class="btn-main" onclick="location.href=location.pathname" style="margin-top:30px; width:auto; padding:10px 30px;">Create New</button>
         </div>
 
     </div>
 
     <script>
-        function showScreen(id) {
+        // --- ASSETS (PEACH GOMA STICKERS) ---
+        // Using stable Tenor/Github links
+        const assets = {
+            ask: "https://media.tenor.com/2yDAZyl-eXQAAAAC/cute-sad.gif",
+            sad: "https://media.tenor.com/8FkS0N7fQ2gAAAAC/sad-cry.gif",
+            kiss: "https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif"
+        };
+
+        const forcedText = "Yes! I love you so much! Will you marry me? ❤️";
+        let typeIdx = 0;
+        let clickCount = 0;
+
+        // --- NAVIGATION ---
+        function nav(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('screen-' + id).classList.add('active');
         }
 
+        // --- INIT ---
         window.onload = () => {
             const p = new URLSearchParams(window.location.search);
-            if(p.get('s') && p.get('r')) {
-                document.getElementById('qText').innerHTML = `Hey <b>${p.get('r')}</b>,<br>Do you love me? 🥺`;
-                showScreen('proposal');
+            const s = p.get('s');
+            const r = p.get('r');
+            const m = p.get('m');
+
+            if(s && r) {
+                // START PRANK
+                if (m === 'chat') {
+                    document.getElementById('chatPartner').innerText = s;
+                    nav('chat');
+                } else if (m === 'calc') {
+                    nav('calc');
+                } else {
+                    document.getElementById('qText').innerHTML = `Hey <b>${r}</b>,<br>Do you love me?`;
+                    initMode(m || 'runaway');
+                    nav('proposal');
+                }
             } else {
-                showScreen('home');
+                nav('home');
             }
         };
+
+        // --- CREATOR ---
+        function setup(mode) {
+            document.getElementById('mode').value = mode;
+            nav('create');
+        }
 
         function genLink() {
             const s = document.getElementById('sName').value.trim();
             const r = document.getElementById('rName').value.trim();
-            if(!s || !r) return alert("Please fill names!");
-            const link = `${location.href.split('?')[0]}?s=${encodeURIComponent(s)}&r=${encodeURIComponent(r)}`;
+            const m = document.getElementById('mode').value;
+            if(!s || !r) return alert("Fill names!");
+            const link = `${location.href.split('?')[0]}?s=${encodeURIComponent(s)}&r=${encodeURIComponent(r)}&m=${m}`;
             navigator.clipboard.writeText(link);
-            const res = document.getElementById('linkResult');
+            const res = document.getElementById('result');
             res.style.display = 'block';
-            res.innerHTML = `Link Copied! ✅<br>${link}`;
+            res.innerHTML = `<b>Link Ready! ✅</b><br>Mode: ${m.toUpperCase()}`;
         }
 
-        const noBtn = document.getElementById('noBtn');
-        const move = () => {
-            noBtn.style.position = 'fixed';
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 20);
-            noBtn.style.left = Math.max(10, x) + 'px';
-            noBtn.style.top = Math.max(10, y) + 'px';
-        };
+        // --- MODES LOGIC ---
+        function initMode(mode) {
+            const noBtn = document.getElementById('noBtn');
+            const newBtn = noBtn.cloneNode(true);
+            noBtn.parentNode.replaceChild(newBtn, noBtn);
+            const btn = document.getElementById('noBtn');
+            
+            // Reset Image
+            document.getElementById('mainImg').src = assets.ask;
 
-        noBtn.addEventListener('mouseover', move);
-        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); move(); });
-
-        function sayYes() {
-            showScreen('success');
-            // Emoji Shower as per screenshot
-            const emojis = ['❤️', '😘', '🥰', '💖', '✨'];
-            for(let i=0; i<60; i++) {
-                setTimeout(() => {
-                    const e = document.createElement('div');
-                    e.className = 'heart-particle';
-                    e.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-                    e.style.left = Math.random() * 100 + 'vw';
-                    e.style.top = '-20px';
-                    e.style.fontSize = Math.random() * 25 + 15 + 'px';
-                    e.style.animationDuration = Math.random() * 2 + 2 + 's';
-                    document.body.appendChild(e);
-                    setTimeout(() => e.remove(), 4000);
-                }, i * 40);
+            if(mode === 'runaway') {
+                btn.onclick = moveBtn;
+                btn.ontouchstart = (e) => { e.preventDefault(); moveBtn(); };
+                btn.onmouseover = moveBtn;
+            } 
+            else if (mode === 'grow') {
+                btn.onclick = () => {
+                    clickCount++;
+                    const yes = document.getElementById('yesBtn');
+                    yes.style.transform = `scale(${1 + clickCount * 0.5})`;
+                    yes.style.zIndex = '999';
+                    if(clickCount > 5) btn.style.display = 'none';
+                };
+            }
+            else if (mode === 'sad') {
+                btn.onclick = () => {
+                    document.getElementById('qText').innerText = "Please don't break my heart... 💔";
+                    document.getElementById('mainImg').src = assets.sad;
+                    moveBtn();
+                };
+            }
+            else if (mode === 'crash') {
+                btn.onclick = () => {
+                    document.body.innerHTML = '<div style="color:red; font-family:monospace; padding:20px;">SYSTEM CRASHED!<br>LOVE NOT FOUND!<br>Rebooting...</div>';
+                    setTimeout(() => location.reload(), 3000);
+                };
             }
         }
+
+        function moveBtn() {
+            const btn = document.getElementById('noBtn');
+            btn.style.position = 'fixed';
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            btn.style.left = Math.max(10, x) + 'px';
+            btn.style.top = Math.max(10, y) + 'px';
+        }
+
+        // --- CHAT PRANK LOGIC ---
+        function handleTyping() {
+            const input = document.getElementById('fakeInput');
+            // User types anything, we replace it with forced text
+            const val = input.value;
+            if (val.length > typeIdx) {
+                // User added a char
+                input.value = forcedText.substring(0, typeIdx + 1);
+                typeIdx++;
+            }
+            // Auto send if full text typed
+            if (typeIdx >= forcedText.length) {
+                setTimeout(() => sayYes(), 1000);
+            }
+        }
+
+        // --- YES LOGIC ---
+        function sayYes() {
+            nav('success');
+            for(let i=0; i<50; i++) {
+                setTimeout(() => {
+                    const e = document.createElement('div');
+                    e.innerHTML = '❤️';
+                    e.style.position = 'fixed';
+                    e.style.left = Math.random()*100+'vw';
+                    e.style.top = '-10px';
+                    e.style.fontSize = Math.random()*30+10+'px';
+                    e.style.animation = 'fall 3s linear';
+                    document.body.appendChild(e);
+                    setTimeout(()=>e.remove(), 3000);
+                }, i*30);
+            }
+        }
+
+        const css = document.createElement('style');
+        css.innerHTML = `@keyframes fall { to { transform: translateY(110vh); } }`;
+        document.head.appendChild(css);
+
     </script>
 </body>
 </html>
