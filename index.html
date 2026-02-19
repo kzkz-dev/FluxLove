@@ -4,16 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>FluxLove App</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --bg: #09090b;
-            --surface: #18181b;
+            --bg: #050505;
+            --surface: rgba(255, 255, 255, 0.05);
             --primary: #ff0050;
             --accent: #00f3ff;
             --text: #ffffff;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
@@ -32,177 +34,221 @@
         /* --- APP SHELL --- */
         #app {
             width: 100%; height: 100%; max-width: 480px;
-            background: radial-gradient(circle at top, #2a0b14 0%, var(--bg) 70%);
+            background: radial-gradient(circle at top, #1a050a 0%, var(--bg) 80%);
             position: relative;
             display: flex; flex-direction: column;
             box-shadow: 0 0 50px rgba(0,0,0,0.5);
             overflow: hidden;
         }
 
+        /* --- LOADING SCREEN --- */
+        #loader {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); z-index: 3000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+        .loader-icon { font-size: 3rem; color: var(--primary); animation: pulse 1.5s infinite; }
+        .loader-text { margin-top: 15px; font-size: 0.9rem; color: #666; letter-spacing: 2px; }
+
         /* --- SIDEBAR --- */
         #sidebar {
-            position: absolute; top: 0; left: 0; width: 75%; height: 100%;
-            background: rgba(10, 10, 10, 0.98); backdrop-filter: blur(15px);
-            z-index: 2000; transform: translateX(-100%); transition: 0.3s;
-            border-right: 1px solid rgba(255,255,255,0.1);
-            padding: 30px; display: flex; flex-direction: column;
+            position: absolute; top: 0; left: 0; width: 80%; height: 100%;
+            background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(20px);
+            z-index: 2000; transform: translateX(-100%); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-right: 1px solid var(--border);
+            padding: 40px 30px; display: flex; flex-direction: column;
         }
         #sidebar.open { transform: translateX(0); }
         .overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); z-index: 1500; display: none;
+            background: rgba(0,0,0,0.7); z-index: 1500; display: none; opacity: 0; transition: opacity 0.3s;
         }
-        .overlay.active { display: block; }
+        .overlay.active { display: block; opacity: 1; }
 
-        .side-brand { font-size: 2rem; font-weight: 800; margin-bottom: 40px; }
+        .side-brand { font-size: 2.2rem; font-weight: 800; margin-bottom: 50px; letter-spacing: -1px; }
         .side-brand span { color: var(--primary); }
-        .side-link { margin-bottom: 20px; font-size: 1.1rem; color: #ddd; display: flex; gap: 10px; cursor: pointer; }
-        .side-footer { margin-top: auto; font-size: 0.8rem; color: #666; line-height: 1.6; }
+        .side-link { 
+            margin-bottom: 25px; font-size: 1.1rem; color: #ccc; 
+            display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.2s; 
+        }
+        .side-link:hover { color: var(--primary); transform: translateX(5px); }
+        .side-link i { color: var(--accent); width: 25px; }
+        .side-footer { margin-top: auto; font-size: 0.8rem; color: #555; line-height: 1.8; border-top: 1px solid var(--border); padding-top: 20px; }
+        .side-footer b { color: var(--primary); }
 
         /* --- SCREENS --- */
         .screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: none; flex-direction: column; align-items: center; justify-content: center;
-            padding: 20px; opacity: 0; transition: opacity 0.3s ease;
+            padding: 25px; opacity: 0; transform: scale(0.95); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .screen.active { display: flex; opacity: 1; }
+        .screen.active { display: flex; opacity: 1; transform: scale(1); }
 
         /* --- 1. DASHBOARD --- */
-        .brand { font-size: 2.5rem; font-weight: 900; letter-spacing: -1px; margin-bottom: 5px; }
-        .brand span { color: var(--primary); }
-        .sub { font-size: 0.8rem; color: #888; margin-bottom: 20px; }
+        .top-bar { position: absolute; top: 25px; left: 25px; z-index: 100; }
+        .menu-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; transition: 0.2s; }
+        .menu-btn:active { transform: scale(0.9); }
+
+        .brand-logo { margin-bottom: 15px; width: 80px; height: 80px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(255,0,80,0.3)); }
+        .brand-title { font-size: 2.8rem; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 5px; }
+        .brand-title span { color: var(--primary); }
+        .brand-sub { color: #888; font-size: 0.9rem; margin-bottom: 40px; }
 
         .grid-menu {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; overflow-y: auto; padding-bottom: 50px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; overflow-y: auto; padding-bottom: 20px;
         }
         
-        .menu-item {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px; padding: 15px; text-align: center;
-            cursor: pointer; transition: 0.2s; position: relative;
+        .menu-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 20px; padding: 25px 15px; text-align: center;
+            cursor: pointer; transition: 0.3s; position: relative; overflow: hidden;
         }
-        .menu-item:active { background: rgba(255,0,80,0.1); border-color: var(--primary); transform: scale(0.95); }
-        .menu-icon { font-size: 1.5rem; margin-bottom: 8px; color: var(--accent); }
-        .menu-title { font-size: 0.85rem; font-weight: 600; }
+        .menu-card:hover { border-color: var(--primary); background: rgba(255,0,80,0.05); }
+        .menu-card:active { transform: scale(0.95); }
+        .card-icon { font-size: 1.8rem; margin-bottom: 12px; color: var(--accent); }
+        .card-title { font-size: 0.95rem; font-weight: 600; }
 
         /* --- 2. CREATE SCREEN --- */
-        .nav-head { width: 100%; display: flex; align-items: center; margin-bottom: 30px; }
-        .back-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        .nav-head { width: 100%; display: flex; align-items: center; margin-bottom: 40px; }
+        .back-btn { background: none; border: none; color: white; font-size: 1.4rem; cursor: pointer; padding: 10px; }
+        .page-title { font-weight: 700; font-size: 1.2rem; margin-left: 10px; }
         
-        .input-group { width: 100%; margin-bottom: 15px; text-align: left; }
-        .label { display: block; font-size: 0.8rem; color: #888; margin-bottom: 5px; margin-left: 5px; }
+        .input-group { width: 100%; margin-bottom: 20px; position: relative; }
+        .input-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #666; }
+        
         input {
-            width: 100%; padding: 16px; background: var(--surface);
-            border: 1px solid #333; border-radius: 12px; color: white;
-            font-size: 1.1rem; text-align: center; outline: none;
+            width: 100%; padding: 18px 18px 18px 45px; background: var(--surface);
+            border: 1px solid var(--border); border-radius: 16px; color: white;
+            font-size: 1rem; outline: none; transition: 0.3s;
         }
-        input:focus { border-color: var(--primary); }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(255,0,80,0.15); }
+        input::placeholder { color: #555; }
 
         .btn-main {
-            width: 100%; padding: 16px; background: var(--primary);
+            width: 100%; padding: 18px; background: linear-gradient(135deg, var(--primary), #ff4d6d);
             border: none; border-radius: 50px; color: white;
             font-size: 1.1rem; font-weight: 700; cursor: pointer;
-            margin-top: 10px; box-shadow: 0 5px 20px rgba(255,0,80,0.3);
+            margin-top: 20px; box-shadow: 0 10px 30px rgba(255,0,80,0.3);
+            transition: 0.3s;
         }
+        .btn-main:active { transform: scale(0.98); }
 
         .result-box {
-            margin-top: 20px; padding: 15px; background: rgba(0,243,255,0.1);
-            border: 1px solid var(--accent); border-radius: 12px;
-            font-size: 0.85rem; display: none; width: 100%; word-break: break-all;
+            margin-top: 25px; padding: 20px; background: rgba(0,243,255,0.05);
+            border: 1px dashed var(--accent); border-radius: 16px;
+            font-size: 0.9rem; display: none; width: 100%; word-break: break-all; text-align: center;
         }
 
         /* --- 3. PROPOSAL SCREEN --- */
-        .gif-frame {
-            width: 250px; height: 250px; border-radius: 20px; overflow: hidden;
-            margin-bottom: 30px; border: 2px solid rgba(255,255,255,0.1);
-            background: #000;
+        .gif-container {
+            width: 280px; height: 280px; border-radius: 30px; overflow: hidden;
+            margin-bottom: 40px; border: 1px solid var(--border);
+            background: #000; box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            position: relative;
         }
-        .gif-frame img { width: 100%; height: 100%; object-fit: cover; }
+        .gif-container::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5); pointer-events: none;
+        }
+        .gif-container img { width: 100%; height: 100%; object-fit: cover; }
 
-        .q-text { font-size: 2rem; font-weight: 800; margin-bottom: 50px; line-height: 1.3; text-shadow: 0 0 20px rgba(255,0,80,0.5); }
+        .q-text { font-size: 2.2rem; font-weight: 800; margin-bottom: 60px; line-height: 1.2; text-shadow: 0 0 30px rgba(255,0,80,0.4); text-align: center; }
 
         .btn-zone { position: relative; width: 100%; height: 80px; display: flex; justify-content: center; gap: 20px; }
-        .btn-opt { width: 130px; height: 55px; border-radius: 50px; font-size: 1.2rem; font-weight: 700; border: none; cursor: pointer; }
-        .yes { background: var(--primary); color: white; z-index: 50; box-shadow: 0 0 20px var(--primary); }
-        .no { background: white; color: black; position: absolute; z-index: 100; border: 2px solid var(--primary); }
+        .btn-opt { width: 140px; height: 60px; border-radius: 50px; font-size: 1.2rem; font-weight: 700; border: none; cursor: pointer; transition: 0.2s; }
+        .yes { background: var(--primary); color: white; z-index: 50; box-shadow: 0 0 25px var(--primary); }
+        .no { background: white; color: black; position: absolute; z-index: 100; border: 3px solid var(--primary); }
 
         /* --- 4. EXPIRED SCREEN --- */
-        .expired-box { text-align: center; color: #666; }
-        .expired-icon { font-size: 3rem; margin-bottom: 20px; color: #333; }
+        .expired-box { text-align: center; color: #888; background: var(--surface); padding: 40px; border-radius: 30px; border: 1px solid var(--border); }
+        .expired-icon { font-size: 4rem; margin-bottom: 20px; color: #333; }
 
         /* --- SPECIAL MODES --- */
-        /* Chat */
-        #chat-ui { width: 100%; height: 300px; background: #111; border-radius: 15px; display: flex; flex-direction: column; border: 1px solid #333; margin-bottom: 20px; }
-        .chat-msgs { flex: 1; padding: 15px; overflow-y: auto; text-align: left; }
-        .msg { padding: 8px 12px; border-radius: 10px; margin-bottom: 10px; max-width: 80%; font-size: 0.9rem; }
-        .msg.bot { background: #333; color: white; align-self: flex-start; }
-        .msg.user { background: var(--primary); color: white; margin-left: auto; }
-        .chat-input { padding: 10px; border-top: 1px solid #333; display: flex; }
-        #fakeInput { flex: 1; background: #222; border: none; color: white; padding: 10px; border-radius: 50px; }
+        /* Chat UI */
+        #chat-ui { width: 100%; height: 350px; background: rgba(0,0,0,0.3); border-radius: 20px; display: flex; flex-direction: column; border: 1px solid var(--border); margin-bottom: 20px; overflow: hidden; }
+        .chat-header { padding: 15px; background: rgba(255,255,255,0.05); font-weight: 600; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); }
+        .chat-msgs { flex: 1; padding: 20px; overflow-y: auto; text-align: left; }
+        .msg { padding: 10px 15px; border-radius: 12px; margin-bottom: 12px; max-width: 80%; font-size: 0.95rem; line-height: 1.4; }
+        .msg.bot { background: #333; color: white; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .msg.user { background: var(--primary); color: white; margin-left: auto; border-bottom-right-radius: 2px; }
+        .chat-input { padding: 10px; border-top: 1px solid var(--border); display: flex; background: rgba(0,0,0,0.2); }
+        #fakeInput { width: 100%; background: transparent; border: none; color: white; padding: 10px; outline: none; }
         
-        /* Calc */
-        .calc-circle { width: 150px; height: 150px; border: 5px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 900; margin-bottom: 30px; box-shadow: 0 0 30px var(--primary); animation: pulse 1s infinite; }
+        /* Hacker Mode */
+        #screen-crash { background: #000; font-family: 'Courier New', monospace; color: #0f0; padding: 20px; align-items: flex-start; z-index: 999; }
+        .terminal { font-size: 0.9rem; line-height: 1.4; opacity: 0.8; }
+        .alert-box { 
+            background: rgba(255,0,0,0.2); color: #ff3333; padding: 20px; width: 100%; 
+            border: 1px solid #ff0000; margin-top: 40px; text-align: center; 
+            font-weight: bold; animation: flash 0.5s infinite; letter-spacing: 1px;
+        }
+        .fix-btn { background: #0f0; color: black; border: none; padding: 15px; width: 100%; margin-top: 30px; font-weight: 800; cursor: pointer; display: none; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Crash */
-        #screen-crash { background: black; font-family: 'Courier New', monospace; color: #0f0; text-align: left; padding: 20px; align-items: flex-start; z-index: 999; }
-        .terminal { font-size: 0.9rem; }
-        .alert-box { background: red; color: white; padding: 15px; width: 100%; border: 2px solid white; display: none; margin-top: 30px; text-align: center; font-weight: bold; animation: flash 0.5s infinite; }
-        .fix-btn { background: #0f0; color: black; border: none; padding: 15px; width: 100%; margin-top: 30px; font-weight: bold; cursor: pointer; display: none; }
-
-        @keyframes pulse { 0% {transform:scale(1);} 50% {transform:scale(1.05);} 100% {transform:scale(1);} }
-        @keyframes flash { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
-        @keyframes fall { to { transform: translateY(110vh); } }
+        @keyframes pulse { 0% {transform:scale(1);} 50% {transform:scale(1.1);} 100% {transform:scale(1);} }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes flash { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
     </style>
 </head>
 <body>
+
+    <div id="loader">
+        <i class="fas fa-heart loader-icon"></i>
+        <div class="loader-text">FLUXLOVE</div>
+    </div>
 
     <div id="app">
 
         <div class="overlay" onclick="toggleMenu()"></div>
         <div id="sidebar">
             <div class="side-brand">Flux<span>Love</span></div>
-            <div class="side-link" onclick="toggleMenu(); nav('home')"><i class="fas fa-home"></i> Home</div>
-            <div class="side-link"><i class="fas fa-heart"></i> About Flux</div>
-            <div class="dev-info">
+            <div class="side-link" onclick="toggleMenu(); nav('home')"><i class="fas fa-th-large"></i> Dashboard</div>
+            <div class="side-link" onclick="window.open('https://github.com/kzkz-dev', '_blank')"><i class="fab fa-github"></i> Developer</div>
+            <div class="side-link"><i class="fas fa-shield-alt"></i> Privacy & Terms</div>
+            <div class="side-link"><i class="fas fa-star"></i> Rate Us</div>
+            
+            <div class="side-footer">
                 Powered by <b>Flux AI</b><br>
                 Dev: <b>KAWCHUR</b><br>
-                &copy; 2026 FluxLove
+                &copy; 2026 FluxLove Inc.
             </div>
         </div>
 
         <div id="screen-home" class="screen active">
-            <div style="position: absolute; top: 20px; left: 20px;">
-                <button class="menu-btn" onclick="toggleMenu()" style="background:none; border:none; color:white; font-size:1.5rem;"><i class="fas fa-bars"></i></button>
+            <div class="top-bar">
+                <button class="menu-btn" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
             </div>
 
-            <div class="brand">Flux<span>Love</span></div>
-            <div class="sub">Select Prank Style</div>
+            <img src="https://media.tenor.com/2yDAZyl-eXQAAAAC/cute-sad.gif" class="brand-logo" alt="Logo">
+            <div class="brand-title">Flux<span>Love</span></div>
+            <div class="brand-sub">Professional Proposal System</div>
 
             <div class="grid-menu">
-                <div class="menu-item" onclick="setup('runaway')">
-                    <div class="menu-icon"><i class="fas fa-person-running"></i></div>
-                    <div class="menu-title">Runaway</div>
+                <div class="menu-card" onclick="setup('runaway')">
+                    <div class="card-icon"><i class="fas fa-person-running"></i></div>
+                    <div class="card-title">Runaway Button</div>
                 </div>
-                <div class="menu-item" onclick="setup('chat')">
-                    <div class="menu-icon"><i class="fas fa-comments"></i></div>
-                    <div class="menu-title">Chat Prank</div>
+                <div class="menu-card" onclick="setup('chat')">
+                    <div class="card-icon"><i class="fas fa-comments"></i></div>
+                    <div class="card-title">Chat Prank</div>
                 </div>
-                <div class="menu-item" onclick="setup('calc')">
-                    <div class="menu-icon"><i class="fas fa-calculator"></i></div>
-                    <div class="menu-title">Love Calc</div>
+                <div class="menu-card" onclick="setup('calc')">
+                    <div class="card-icon"><i class="fas fa-heart-pulse"></i></div>
+                    <div class="card-title">Love Calc</div>
                 </div>
-                <div class="menu-item" onclick="setup('grow')">
-                    <div class="menu-icon"><i class="fas fa-maximize"></i></div>
-                    <div class="menu-title">Growing Yes</div>
+                <div class="menu-card" onclick="setup('grow')">
+                    <div class="card-icon"><i class="fas fa-expand-alt"></i></div>
+                    <div class="card-title">Growing Yes</div>
                 </div>
-                <div class="menu-item" onclick="setup('sad')">
-                    <div class="menu-icon"><i class="fas fa-face-sad-tear"></i></div>
-                    <div class="menu-title">Emotional</div>
+                <div class="menu-card" onclick="setup('sad')">
+                    <div class="card-icon"><i class="fas fa-face-sad-tear"></i></div>
+                    <div class="card-title">Emotional Mode</div>
                 </div>
-                <div class="menu-item" onclick="setup('crash')">
-                    <div class="menu-icon"><i class="fas fa-bug"></i></div>
-                    <div class="menu-title">System Crash</div>
+                <div class="menu-card" onclick="setup('crash')">
+                    <div class="card-icon"><i class="fas fa-bug"></i></div>
+                    <div class="card-title">System Crash</div>
                 </div>
             </div>
         </div>
@@ -210,30 +256,30 @@
         <div id="screen-create" class="screen">
             <div class="nav-head">
                 <button class="back-btn" onclick="nav('home')"><i class="fas fa-arrow-left"></i></button>
-                <span style="font-weight:700; font-size:1.2rem; margin-left:15px;">Setup Proposal</span>
+                <div class="page-title">Create New Link</div>
             </div>
 
             <div class="input-group">
-                <span class="label">Your Name</span>
-                <input type="text" id="sName" placeholder="Name">
+                <i class="fas fa-user input-icon"></i>
+                <input type="text" id="sName" placeholder="Your Name">
             </div>
             <div class="input-group">
-                <span class="label">Crush's Name</span>
-                <input type="text" id="rName" placeholder="Name">
+                <i class="fas fa-heart input-icon"></i>
+                <input type="text" id="rName" placeholder="Crush's Name">
             </div>
             <div class="input-group">
-                <span class="label">Your WhatsApp (For Tracking)</span>
-                <input type="number" id="waNum" placeholder="Phone (with Country Code)">
+                <i class="fab fa-whatsapp input-icon"></i>
+                <input type="number" id="waNum" placeholder="WhatsApp (Optional)">
             </div>
 
             <input type="hidden" id="mode">
 
-            <button class="btn-main" onclick="genLink()">Generate Link 🔗</button>
+            <button class="btn-main" onclick="genLink()">Generate Link <i class="fas fa-link"></i></button>
             <div id="result" class="result-box"></div>
         </div>
 
         <div id="screen-proposal" class="screen">
-            <div class="gif-frame">
+            <div class="gif-container">
                 <img id="mainImg" src="https://media.tenor.com/2yDAZyl-eXQAAAAC/cute-sad.gif" alt="Cute">
             </div>
             <div class="q-text" id="qText">Do you love me?</div>
@@ -245,49 +291,58 @@
         </div>
 
         <div id="screen-chat" class="screen">
-            <h2 style="margin-bottom:20px;">Chat with <span id="chatPartner" style="color:var(--primary)">Flux</span></h2>
+            <div style="width:100%; margin-bottom:20px; font-size:1.5rem; font-weight:700;">
+                Chat with <span id="chatPartner" style="color:var(--primary)">Flux</span>
+            </div>
             <div id="chat-ui">
+                <div class="chat-header">
+                    <div style="width:10px; height:10px; background:#0f0; border-radius:50%;"></div> Online
+                </div>
                 <div class="chat-msgs" id="chatHistory">
-                    <div class="msg bot">Hi! I have a question... 🥺</div>
+                    <div class="msg bot">Hi! I have a question for you... 🥺</div>
                 </div>
                 <div class="chat-input">
-                    <input id="fakeInput" placeholder="Type answer..." oninput="handleTyping()">
-                    <button style="background:none; border:none; color:var(--primary); font-size:1.5rem;"><i class="fas fa-paper-plane"></i></button>
+                    <input id="fakeInput" placeholder="Type your answer..." oninput="handleTyping()">
+                    <i class="fas fa-paper-plane" style="color:var(--primary); padding:10px; font-size:1.2rem;"></i>
                 </div>
             </div>
         </div>
 
         <div id="screen-calc" class="screen">
-            <h2>Love Match ❤️</h2>
-            <p style="margin-bottom:30px;">Analyzing compatibility...</p>
-            <div class="calc-circle">100%</div>
-            <div style="margin-bottom: 30px;">Perfect Match!</div>
-            <button class="btn-main" onclick="sayYes()">Accept Fate</button>
+            <div style="font-size:1.5rem; font-weight:700; margin-bottom:30px;">Compatibility Check</div>
+            <div style="width:180px; height:180px; border:5px solid var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:3rem; font-weight:900; margin-bottom:30px; box-shadow:0 0 40px rgba(255,0,80,0.3); animation:pulse 1.5s infinite;">
+                100%
+            </div>
+            <div style="margin-bottom: 40px; font-size:1.2rem; color:var(--accent);">Perfect Match Found! ❤️</div>
+            <button class="btn-main" onclick="sayYes()">Accept Destiny</button>
         </div>
 
         <div id="screen-crash" class="screen">
             <div class="terminal" id="termText"></div>
-            <div class="alert-box" id="errBox">CRITICAL ERROR!</div>
-            <button class="fix-btn" id="fixBtn" onclick="sayYes()">FIX SYSTEM (ACCEPT)</button>
+            <div class="alert-box" id="errBox">⚠️ CRITICAL SYSTEM FAILURE ⚠️</div>
+            <button class="fix-btn" id="fixBtn" onclick="sayYes()">REPAIR & ACCEPT LOVE</button>
         </div>
 
         <div id="screen-success" class="screen">
-            <div class="gif-frame">
+            <div class="gif-container" style="border-color: var(--primary);">
                 <img src="https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif" alt="Kiss">
             </div>
-            <h1 style="color:var(--primary)">Yayyy! I knew it! 😘</h1>
-            <p>Check WhatsApp for confirmation!</p>
+            <h1 style="color:var(--primary); font-size:2.5rem; margin-bottom:10px;">She Said YES! 🎉</h1>
+            <p style="opacity:0.7;">Confirmation sent via WhatsApp!</p>
             
-            <button id="waBtn" class="btn-main" style="display:none; background:#25D366; margin-top:20px;" onclick="sendWa()">
-                <i class="fab fa-whatsapp"></i> Notify Partner
+            <button id="waBtn" class="btn-main" style="display:none; background:#25D366; margin-top:30px;" onclick="sendWa()">
+                <i class="fab fa-whatsapp"></i> Open WhatsApp
+            </button>
+            <button class="btn-main" style="background:transparent; border:1px solid #333; margin-top:15px;" onclick="location.href=location.pathname">
+                Create Another Link
             </button>
         </div>
 
         <div id="screen-expired" class="screen">
-            <div class="expired-box" style="text-align:center; color:#666;">
-                <i class="fas fa-lock" style="font-size:3rem; margin-bottom:20px;"></i>
-                <h2>Link Inactive</h2>
-                <p>Already responded.</p>
+            <div class="expired-box">
+                <i class="fas fa-lock expired-icon"></i>
+                <h2 style="margin-bottom:10px;">Link Expired</h2>
+                <p style="font-size:0.9rem;">This proposal has already been accepted.</p>
             </div>
         </div>
 
@@ -308,6 +363,14 @@
         let clickCount = 0;
         let waNumber = "";
         let linkID = "";
+
+        // --- LOADER ---
+        setTimeout(() => {
+            document.getElementById('loader').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+            }, 500);
+        }, 1500);
 
         // --- NAVIGATION ---
         function toggleMenu() {
@@ -330,11 +393,9 @@
             const w = p.get('w');
 
             if (id && s && r) {
-                // RECIPIENT MODE
                 linkID = id;
                 waNumber = w;
 
-                // CHECK EXPIRY
                 if (localStorage.getItem('flux_' + id) === 'done') {
                     nav('expired');
                     return;
@@ -351,7 +412,6 @@
                     nav('proposal');
                 }
             } else {
-                // CREATOR MODE
                 nav('home');
             }
         };
@@ -368,7 +428,7 @@
             const w = document.getElementById('waNum').value.trim();
             const m = document.getElementById('mode').value;
             
-            if(!s || !r) return alert("Fill all names!");
+            if(!s || !r) return alert("Please enter both names!");
             
             const id = Date.now().toString(36);
             const link = `${window.location.href.split('?')[0]}?id=${id}&s=${encodeURIComponent(s)}&r=${encodeURIComponent(r)}&m=${m}&w=${w}`;
@@ -376,7 +436,7 @@
             navigator.clipboard.writeText(link);
             const res = document.getElementById('result');
             res.style.display = 'block';
-            res.innerHTML = `<b>Link Copied! ✅</b><br>Mode: ${m.toUpperCase()}`;
+            res.innerHTML = `<i class="fas fa-check-circle" style="color:#0f0;"></i> Link Copied!<br><div style="margin-top:5px; font-size:0.8rem; opacity:0.7;">Style: ${m.toUpperCase()}</div>`;
         }
 
         // --- MODES LOGIC ---
@@ -421,13 +481,13 @@
         function moveBtn() {
             const btn = document.getElementById('noBtn');
             btn.style.position = 'fixed';
-            const x = Math.random() * (window.innerWidth - 100);
-            const y = Math.random() * (window.innerHeight - 50);
+            const x = Math.random() * (window.innerWidth - 140);
+            const y = Math.random() * (window.innerHeight - 60);
             btn.style.left = Math.max(10, x) + 'px';
             btn.style.top = Math.max(10, y) + 'px';
         }
 
-        // --- CHAT LOGIC ---
+        // --- CHAT ---
         function handleTyping() {
             const input = document.getElementById('fakeInput');
             const val = input.value;
@@ -435,13 +495,13 @@
                 input.value = forcedText.substring(0, typeIdx + 1);
                 typeIdx++;
             }
-            if (typeIdx >= forcedText.length) setTimeout(() => sayYes(), 1000);
+            if (typeIdx >= forcedText.length) setTimeout(() => sayYes(), 800);
         }
 
-        // --- CRASH LOGIC ---
+        // --- CRASH ---
         function startCrash() {
             const term = document.getElementById('termText');
-            let lines = ["INITIALIZING REJECTION...", "ERROR 404: LOVE NOT FOUND", "DELETING HEART.EXE...", "CRITICAL ERROR!"];
+            let lines = ["INITIALIZING REJECTION PROTOCOL...", "ERROR 404: LOVE NOT FOUND...", "DELETING HEART.EXE...", "SYSTEM CORRUPTION DETECTED..."];
             let i = 0;
             let interval = setInterval(() => {
                 if(i < lines.length) { term.innerHTML += `> ${lines[i]}<br>`; i++; }
@@ -450,34 +510,32 @@
                     document.getElementById('errBox').style.display = 'block';
                     document.getElementById('fixBtn').style.display = 'block';
                 }
-            }, 600);
+            }, 800);
         }
 
-        // --- SUCCESS & TRACKING ---
+        // --- SUCCESS ---
         function sayYes() {
             nav('success');
-            
-            // Mark as Expired
             if(linkID) localStorage.setItem('flux_' + linkID, 'done');
 
-            // Tracking Button
             if(waNumber) {
-                const btn = document.getElementById('waBtn');
-                btn.style.display = 'block';
+                document.getElementById('waBtn').style.display = 'block';
+                // Auto redirect attempt
+                setTimeout(() => sendWa(), 2500);
             }
 
-            for(let i=0; i<50; i++) {
+            for(let i=0; i<60; i++) {
                 setTimeout(() => {
                     const e = document.createElement('div');
-                    e.innerHTML = '❤️';
+                    e.innerHTML = ['❤️','💖','🥰'][Math.floor(Math.random()*3)];
                     e.style.position = 'fixed';
                     e.style.left = Math.random()*100+'vw';
                     e.style.top = '-10px';
-                    e.style.fontSize = Math.random()*30+15+'px';
+                    e.style.fontSize = Math.random()*25+15+'px';
                     e.style.animation = 'fall 3s linear';
                     document.body.appendChild(e);
                     setTimeout(()=>e.remove(), 3000);
-                }, i*30);
+                }, i*40);
             }
         }
 
@@ -486,7 +544,7 @@
         }
 
         const css = document.createElement('style');
-        css.innerHTML = `@keyframes fall { to { transform: translateY(110vh); } }`;
+        css.innerHTML = `@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }`;
         document.head.appendChild(css);
 
     </script>
