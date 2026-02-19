@@ -32,14 +32,15 @@
             justify-content: center;
         }
 
+        /* --- APP SHELL --- */
         #app {
             width: 100%; height: 100%; max-width: 480px;
             background: radial-gradient(circle at top, #1a050a 0%, var(--bg) 80%);
             position: relative;
             display: flex; flex-direction: column;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
             overflow: hidden;
-            transition: 0.3s;
+            animation: slowPulse 6s infinite alternate;
         }
 
         /* --- SIDEBAR --- */
@@ -58,10 +59,10 @@
         .overlay.active { display: block; opacity: 1; }
 
         .side-brand { font-size: 2.2rem; font-weight: 800; margin-bottom: 40px; letter-spacing: -1px; }
-        .side-brand span { color: var(--primary); }
+        .side-brand span { color: var(--primary); text-shadow: 0 0 15px rgba(255,0,80,0.5); }
         .side-link { margin-bottom: 25px; font-size: 1.1rem; color: #ccc; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.2s; }
         .side-link:hover { color: var(--primary); transform: translateX(5px); }
-        .side-link i { color: var(--accent); width: 25px; }
+        .side-link i { color: var(--accent); width: 25px; text-shadow: 0 0 10px rgba(0,243,255,0.4); }
         
         .about-box { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border); }
         .dev-info { font-size: 0.85rem; color: #888; line-height: 1.8; }
@@ -79,88 +80,96 @@
         /* --- 1. DASHBOARD --- */
         .top-bar { position: absolute; top: 25px; left: 25px; z-index: 100; }
         .menu-btn { background: none; border: none; color: white; font-size: 1.6rem; cursor: pointer; transition: 0.2s; }
+        .menu-btn:hover { text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
         .brand-logo { margin-bottom: 10px; width: 80px; height: 80px; object-fit: contain; }
-        .brand-title { font-size: 3rem; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 20px; }
+        .brand-title { font-size: 3.2rem; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 20px; text-shadow: 0 0 20px rgba(255,0,80,0.3); }
         .brand-title span { color: var(--primary); }
 
         .grid-menu {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; overflow-y: auto; padding-bottom: 40px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; overflow-y: auto; padding-bottom: 40px;
         }
         
         .menu-card {
             background: var(--surface); border: 1px solid var(--border);
-            border-radius: 18px; padding: 20px 10px; text-align: center;
-            cursor: pointer; transition: 0.3s;
+            border-radius: 20px; padding: 25px 10px; text-align: center;
+            cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-        .menu-card:active { transform: scale(0.95); background: rgba(255,0,80,0.1); border-color: var(--primary); }
-        .card-icon { font-size: 1.8rem; margin-bottom: 10px; color: var(--accent); }
-        .card-title { font-size: 0.85rem; font-weight: 600; color: #eee; }
+        .menu-card:active { transform: scale(0.95); }
+        .menu-card:hover { border-color: var(--primary); background: rgba(255,0,80,0.08); box-shadow: 0 0 20px rgba(255,0,80,0.2); }
+        .card-icon { font-size: 2rem; margin-bottom: 12px; color: var(--accent); text-shadow: 0 0 15px rgba(0,243,255,0.4); }
+        .card-title { font-size: 0.9rem; font-weight: 700; color: #eee; }
 
         /* --- 2. CREATE SCREEN --- */
         .nav-head { width: 100%; display: flex; align-items: center; margin-bottom: 40px; }
-        .back-btn { background: none; border: none; color: white; font-size: 1.4rem; cursor: pointer; padding: 10px; }
-        .page-title { font-weight: 700; font-size: 1.2rem; margin-left: 10px; }
+        .back-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; padding: 10px; }
+        .page-title { font-weight: 800; font-size: 1.3rem; margin-left: 10px; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
         
         .input-group { width: 100%; margin-bottom: 20px; position: relative; }
-        .input-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #666; }
+        .input-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #888; font-size: 1.2rem; transition: 0.3s; }
         input {
-            width: 100%; padding: 18px 18px 18px 45px; background: var(--surface);
-            border: 1px solid var(--border); border-radius: 16px; color: white;
-            font-size: 1rem; outline: none; transition: 0.3s;
+            width: 100%; padding: 20px 20px 20px 50px; background: var(--surface);
+            border: 1px solid var(--border); border-radius: 18px; color: white;
+            font-size: 1.1rem; outline: none; transition: 0.3s; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
-        input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(255,0,80,0.15); }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 20px rgba(255,0,80,0.2), inset 0 0 10px rgba(0,0,0,0.5); }
+        input:focus + .input-icon { color: var(--primary); text-shadow: 0 0 10px rgba(255,0,80,0.5); }
 
         .btn-main {
-            width: 100%; padding: 18px; background: linear-gradient(135deg, var(--primary), #ff4d6d);
+            width: 100%; padding: 20px; background: linear-gradient(135deg, var(--primary), #ff4d6d);
             border: none; border-radius: 50px; color: white;
-            font-size: 1.1rem; font-weight: 700; cursor: pointer; margin-top: 15px; box-shadow: 0 10px 30px rgba(255,0,80,0.3);
+            font-size: 1.2rem; font-weight: 800; cursor: pointer; margin-top: 15px; 
+            box-shadow: 0 10px 30px rgba(255,0,80,0.4); transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
         }
-        .result-box { margin-top: 20px; padding: 15px; background: rgba(0,243,255,0.05); border: 1px dashed var(--accent); border-radius: 16px; font-size: 0.9rem; display: none; width: 100%; word-break: break-all; text-align: center; }
+        .btn-main:active { transform: scale(0.97); }
+        
+        .result-box { margin-top: 25px; padding: 20px; background: rgba(0,243,255,0.08); border: 1px dashed var(--accent); border-radius: 18px; font-size: 0.95rem; display: none; width: 100%; word-break: break-all; text-align: center; box-shadow: 0 0 20px rgba(0,243,255,0.1); }
 
         /* --- 3. PROPOSAL SCREEN --- */
         .gif-container {
             width: 260px; height: 260px; border-radius: 30px; overflow: hidden;
-            margin-bottom: 40px; border: 1px solid var(--border);
-            background: #000; box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            margin-bottom: 40px; border: 2px solid rgba(255,255,255,0.05);
+            background: #000; box-shadow: 0 20px 60px rgba(0,0,0,0.6);
         }
         .gif-container img { width: 100%; height: 100%; object-fit: cover; }
-        .q-text { font-size: 2.2rem; font-weight: 800; margin-bottom: 60px; line-height: 1.2; text-shadow: 0 0 30px rgba(255,0,80,0.4); text-align: center; z-index: 10; }
+        .q-text { font-size: 2.4rem; font-weight: 900; margin-bottom: 60px; line-height: 1.2; text-shadow: 0 0 30px rgba(255,0,80,0.6); text-align: center; z-index: 10; }
 
         .btn-zone { position: relative; width: 100%; height: 80px; display: flex; justify-content: center; gap: 20px; perspective: 1000px; }
-        .btn-opt { width: 140px; height: 60px; border-radius: 50px; font-size: 1.2rem; font-weight: 700; border: none; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
+        .btn-opt { width: 140px; height: 65px; border-radius: 50px; font-size: 1.3rem; font-weight: 800; border: none; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
         
-        .yes { background: var(--primary); color: white; z-index: 50; box-shadow: 0 0 25px var(--primary); }
+        .yes { background: linear-gradient(135deg, var(--primary), #ff4d6d); color: white; z-index: 50; box-shadow: 0 0 30px rgba(255,0,80,0.5); }
         .no { background: white; color: black; position: absolute; z-index: 100; border: 3px solid var(--primary); transform-style: preserve-3d; }
 
         /* --- CUSTOM SCREENS --- */
-        #chat-ui { width: 100%; height: 350px; background: rgba(0,0,0,0.3); border-radius: 20px; display: flex; flex-direction: column; border: 1px solid var(--border); margin-bottom: 20px; overflow: hidden; }
+        #chat-ui { width: 100%; height: 350px; background: rgba(0,0,0,0.4); border-radius: 20px; display: flex; flex-direction: column; border: 1px solid var(--border); margin-bottom: 20px; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
         .chat-header { padding: 15px; background: rgba(255,255,255,0.05); font-weight: 600; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); }
         .chat-msgs { flex: 1; padding: 20px; overflow-y: auto; text-align: left; }
-        .msg { padding: 10px 15px; border-radius: 12px; margin-bottom: 12px; max-width: 80%; font-size: 0.95rem; line-height: 1.4; }
-        .msg.bot { background: #333; color: white; align-self: flex-start; border-bottom-left-radius: 2px; }
-        .msg.user { background: var(--primary); color: white; margin-left: auto; border-bottom-right-radius: 2px; }
-        .chat-input { padding: 10px; border-top: 1px solid var(--border); display: flex; background: rgba(0,0,0,0.2); }
-        #fakeInput { width: 100%; background: transparent; border: none; color: white; padding: 10px; outline: none; }
+        .msg { padding: 12px 18px; border-radius: 15px; margin-bottom: 12px; max-width: 80%; font-size: 0.95rem; line-height: 1.4; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .msg.bot { background: rgba(255,255,255,0.1); color: white; align-self: flex-start; border-bottom-left-radius: 4px; }
+        .msg.user { background: var(--primary); color: white; margin-left: auto; border-bottom-right-radius: 4px; }
+        .chat-input { padding: 15px; border-top: 1px solid var(--border); display: flex; background: rgba(0,0,0,0.3); }
+        #fakeInput { width: 100%; background: transparent; border: none; color: white; padding: 5px 10px; outline: none; font-size: 1rem; }
         
-        .calc-circle { width: 160px; height: 160px; border: 5px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; font-weight: 900; margin-bottom: 30px; box-shadow: 0 0 40px rgba(255,0,80,0.3); animation: pulseHeart 1.5s infinite; }
+        .calc-circle { width: 180px; height: 180px; border: 6px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; font-weight: 900; margin-bottom: 30px; box-shadow: 0 0 50px rgba(255,0,80,0.4), inset 0 0 30px rgba(255,0,80,0.2); animation: pulseHeart 1.5s infinite; text-shadow: 0 0 20px var(--primary); }
         
-        #screen-crash { background: #000; font-family: 'Courier New', monospace; color: #0f0; padding: 20px; align-items: flex-start; z-index: 999; }
-        .terminal { font-size: 0.9rem; line-height: 1.4; opacity: 0.8; }
-        .alert-box { background: rgba(255,0,0,0.2); color: #ff3333; padding: 20px; width: 100%; border: 1px solid #ff0000; margin-top: 40px; text-align: center; font-weight: bold; animation: flashRed 0.5s infinite; display: none; }
-        .fix-btn { background: #0f0; color: black; border: none; padding: 15px; width: 100%; margin-top: 30px; font-weight: 800; cursor: pointer; display: none; }
+        #screen-crash { background: #000; font-family: 'Courier New', monospace; color: #0f0; padding: 30px; align-items: flex-start; z-index: 999; }
+        .terminal { font-size: 1rem; line-height: 1.5; opacity: 0.9; text-shadow: 0 0 5px #0f0; }
+        .alert-box { background: rgba(255,0,0,0.15); color: #ff3333; padding: 20px; width: 100%; border: 1px solid #ff0000; margin-top: 40px; text-align: center; font-weight: 900; animation: flashRed 0.5s infinite; display: none; box-shadow: 0 0 30px rgba(255,0,0,0.4); font-size: 1.2rem; }
 
         /* --- ANIMATION CLASSES --- */
         .pulse-btn { animation: pulseHeart 1s infinite; position: absolute; }
-        .tiny-fly { width: 50px !important; height: 50px !important; font-size: 0.8rem !important; border-radius: 50% !important; position: absolute; transition: all 0.15s ease-out; box-shadow: 0 0 10px rgba(255,255,255,0.5); z-index: 200; }
+        .tiny-fly { width: 55px !important; height: 55px !important; font-size: 0.85rem !important; border-radius: 50% !important; position: absolute; transition: all 0.15s ease-out; box-shadow: 0 0 15px rgba(255,255,255,0.5); z-index: 200; }
         .quake-active { animation: extremeQuake 0.2s infinite; }
-        .red-flash { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(255,0,0,0.3); pointer-events: none; z-index: 1000; animation: flashRed 0.3s infinite; display: none; }
+        .red-flash { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(255,0,0,0.3); pointer-events: none; z-index: 1000; animation: flashRed 0.3s infinite; display: none; box-shadow: inset 0 0 100px rgba(255,0,0,0.8); }
 
-        .expired-box { text-align: center; color: #888; background: var(--surface); padding: 40px; border-radius: 30px; border: 1px solid var(--border); }
+        /* --- EXPIRED / SUCCESS --- */
+        .expired-box { text-align: center; color: #aaa; background: rgba(0,0,0,0.4); padding: 50px 30px; border-radius: 30px; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
         .hidden { display: none !important; }
 
+        /* KEYFRAMES */
+        @keyframes slowPulse { 0% { background: radial-gradient(circle at top, #1a050a 0%, var(--bg) 80%); } 50% { background: radial-gradient(circle at top, #2a0a15 0%, var(--bg) 80%); } 100% { background: radial-gradient(circle at top, #1a050a 0%, var(--bg) 80%); } }
         @keyframes pulseHeart { 0% {transform: scale(1);} 50% {transform: scale(1.1);} 100% {transform: scale(1);} }
-        @keyframes fall3D { 0% { transform: translateY(-100px) rotateX(0deg) rotateY(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateY(110vh) rotateX(360deg) rotateY(180deg); opacity: 0; } }
+        @keyframes fall3D { 0% { transform: translateY(-100px) rotateX(0deg) rotateY(0deg) scale(0.8); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateY(110vh) rotateX(360deg) rotateY(180deg) scale(1.2); opacity: 0; } }
         @keyframes extremeQuake { 0% { transform: translate(5px, 5px) rotate(0deg); } 20% { transform: translate(-5px, -5px) rotate(-2deg); } 40% { transform: translate(-5px, 5px) rotate(2deg); } 60% { transform: translate(5px, -5px) rotate(0deg); } 80% { transform: translate(5px, 0px) rotate(-2deg); } 100% { transform: translate(-5px, 5px) rotate(2deg); } }
         @keyframes flashRed { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 
@@ -251,21 +260,21 @@
             </div>
 
             <div class="input-group">
-                <i class="fas fa-user input-icon"></i>
                 <input type="text" id="sName" placeholder="Your Name">
+                <i class="fas fa-user input-icon"></i>
             </div>
             <div class="input-group">
-                <i class="fas fa-heart input-icon"></i>
                 <input type="text" id="rName" placeholder="Crush's Name">
+                <i class="fas fa-heart input-icon"></i>
             </div>
             <div class="input-group">
+                <input type="number" id="waNum" placeholder="WhatsApp Number (Tracking)">
                 <i class="fab fa-whatsapp input-icon"></i>
-                <input type="number" id="waNum" placeholder="WhatsApp (Optional)">
             </div>
 
             <input type="hidden" id="mode">
 
-            <button class="btn-main" onclick="genLink()">Generate Link <i class="fas fa-link"></i></button>
+            <button class="btn-main" onclick="genLink()">GENERATE MAGIC LINK <i class="fas fa-magic" style="margin-left:5px;"></i></button>
             <div id="result" class="result-box"></div>
         </div>
 
@@ -282,57 +291,56 @@
         </div>
 
         <div id="screen-chat" class="screen">
-            <div style="width:100%; margin-bottom:20px; font-size:1.5rem; font-weight:700;">
+            <div style="width:100%; margin-bottom:20px; font-size:1.6rem; font-weight:800; text-shadow: 0 0 15px rgba(255,0,80,0.5);">
                 Chat with <span id="chatPartner" style="color:var(--primary)">Flux</span>
             </div>
             <div id="chat-ui">
                 <div class="chat-header">
-                    <div style="width:10px; height:10px; background:#0f0; border-radius:50%;"></div> Online
+                    <div style="width:12px; height:12px; background:#0f0; border-radius:50%; box-shadow: 0 0 10px #0f0;"></div> Online
                 </div>
                 <div class="chat-msgs" id="chatHistory">
                     <div class="msg bot">Hi! I have a question for you... 🥺</div>
                 </div>
                 <div class="chat-input">
                     <input id="fakeInput" placeholder="Type your answer..." oninput="handleTyping()">
-                    <i class="fas fa-paper-plane" style="color:var(--primary); padding:10px; font-size:1.2rem;"></i>
+                    <i class="fas fa-paper-plane" style="color:var(--primary); padding:10px; font-size:1.3rem;"></i>
                 </div>
             </div>
         </div>
 
         <div id="screen-calc" class="screen">
-            <div style="font-size:1.5rem; font-weight:700; margin-bottom:30px;">Love Match ❤️</div>
+            <div style="font-size:1.8rem; font-weight:800; margin-bottom:30px; text-shadow: 0 0 15px rgba(255,0,80,0.5);">Love Match ❤️</div>
             <div class="calc-circle">100%</div>
-            <div style="margin-bottom: 40px; font-size:1.2rem; color:var(--accent);">Perfect Match!</div>
-            <button class="btn-main" onclick="sayYes()">Accept Match</button>
+            <div style="margin-bottom: 40px; font-size:1.3rem; color:var(--accent); font-weight:700; text-shadow: 0 0 15px rgba(0,243,255,0.5);">Perfect Match!</div>
+            <button class="btn-main" style="width:80%;" onclick="sayYes()">Accept Fate</button>
         </div>
 
         <div id="screen-crash" class="screen">
             <div class="terminal" id="termText"></div>
-            <div class="alert-box" id="errBox">⚠️ CRITICAL ERROR ⚠️</div>
-            <button class="fix-btn" id="fixBtn" onclick="sayYes()">FIX SYSTEM (ACCEPT)</button>
+            <div class="alert-box" id="errBox">⚠️ CRITICAL SYSTEM FAILURE ⚠️</div>
+            <button class="btn-main" id="fixBtn" style="display:none; background:#0f0; color:black; text-shadow:none; box-shadow:0 0 20px #0f0;" onclick="sayYes()">REPAIR SYSTEM</button>
         </div>
 
         <div id="screen-success" class="screen">
-            <div class="gif-container" style="border-color: var(--primary);">
+            <div class="gif-container" style="border-color: var(--primary); box-shadow: 0 0 50px rgba(255,0,80,0.5);">
                 <img src="https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif" alt="Kiss Goma">
             </div>
-            <h1 style="color:var(--primary); font-size:2.5rem; margin-bottom:10px;">Yayyy! 🎉</h1>
-            <p style="opacity:0.7;" id="trackMsg">Screenshot & Send to me!</p>
+            <h1 style="color:var(--primary); font-size:3rem; margin-bottom:10px; text-shadow: 0 0 20px rgba(255,0,80,0.6);">Yayyy! 🎉</h1>
             
-            <button id="waBtn" class="btn-main" style="display:none; background:#25D366; margin-top:20px;" onclick="sendWa()">
-                <i class="fab fa-whatsapp"></i> Confirm via WhatsApp
-            </button>
+            <p style="opacity:0.9; font-size:1.1rem; color: #fff; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255,255,255,0.5);">
+                Sending lots of love... ❤️
+            </p>
             
-            <button id="createNewBtn" class="btn-main" style="background:transparent; border:1px solid #333; margin-top:15px;" onclick="location.href=location.pathname">
-                Create New
+            <button id="createNewBtn" class="btn-main" style="background:transparent; border:1px solid #333; margin-top:15px; box-shadow:none;" onclick="location.href=location.pathname">
+                Create New Proposal
             </button>
         </div>
 
         <div id="screen-expired" class="screen">
             <div class="expired-box">
-                <i class="fas fa-lock" style="font-size:4rem; color:#333; margin-bottom:20px;"></i>
-                <h2 style="margin-bottom:10px; color:#fff;">Link Expired</h2>
-                <p style="font-size:0.9rem;">This proposal has already been answered.</p>
+                <i class="fas fa-heart-crack" style="font-size:4rem; color:var(--primary); margin-bottom:20px; filter:drop-shadow(0 0 15px rgba(255,0,80,0.5));"></i>
+                <h2 style="margin-bottom:10px; color:#fff; font-size: 2rem;">Link Inactive</h2>
+                <p style="font-size:1rem; color:#aaa;">This proposal has already been answered.</p>
             </div>
         </div>
 
@@ -355,7 +363,7 @@
         let linkID = "";
         let isRainActive = false;
 
-        // --- NAVIGATION ---
+        // --- NAVIGATION & UI ---
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('open');
             document.querySelector('.overlay').classList.toggle('active');
@@ -366,7 +374,7 @@
             document.getElementById('screen-' + id).classList.add('active');
         }
 
-        // --- THE MAGIC FIX: PERFECT BOUNDARY LOGIC ---
+        // --- BOUNDARY LOGIC (100% Safe inside Screen) ---
         function getSafePos(btnWidth, btnHeight) {
             const padding = 20; 
             const maxX = window.innerWidth - btnWidth - padding;
@@ -389,7 +397,7 @@
                 linkID = id;
                 waNumber = w;
                 
-                // Expiry Check (If user previously accepted)
+                // Expiry Check 
                 if (localStorage.getItem('flux_' + id) === 'done') {
                     nav('expired');
                     return;
@@ -413,7 +421,7 @@
             }
         };
 
-        // --- CREATOR ---
+        // --- CREATOR LOGIC ---
         function setup(mode) {
             document.getElementById('mode').value = mode;
             nav('create');
@@ -433,7 +441,7 @@
             navigator.clipboard.writeText(link);
             const res = document.getElementById('result');
             res.style.display = 'block';
-            res.innerHTML = `<i class="fas fa-check-circle" style="color:#0f0;"></i> Link Copied!<br><div style="margin-top:5px; font-size:0.8rem; opacity:0.7;">Mode: ${m.toUpperCase()}</div>`;
+            res.innerHTML = `<i class="fas fa-check-circle" style="color:#0f0; text-shadow:0 0 10px #0f0;"></i> <b>Link Copied to Clipboard!</b><br><div style="margin-top:8px; font-size:0.8rem; opacity:0.8;">Mode: <span style="color:var(--accent);">${m.toUpperCase()}</span></div>`;
         }
 
         // --- ALL MODES LOGIC ---
@@ -442,17 +450,16 @@
             const yesBtn = document.getElementById('yesBtn');
             document.getElementById('mainImg').src = assets.ask;
 
-            // BUG FIX: Escaping 3D Perspective Container
+            // BUG FIX: Keep button inside main container to avoid 3D perspective hiding
             const escapeContainer = () => {
                 if (noBtn.parentNode.id !== 'app') {
                     document.getElementById('app').appendChild(noBtn);
-                    noBtn.style.position = 'absolute'; // Fixed inside #app acts like viewport
+                    noBtn.style.position = 'absolute'; 
                     noBtn.style.zIndex = '9999';
                     noBtn.style.margin = '0';
                 }
             };
 
-            // 1. Runaway
             if(mode === 'runaway') {
                 const run = (e) => {
                     if(e) e.preventDefault();
@@ -464,32 +471,25 @@
                 noBtn.onmouseover = run;
                 noBtn.ontouchstart = run;
             } 
-            
-            // 2. Growing Yes
             else if (mode === 'grow') {
                 noBtn.onclick = () => {
                     clickCount++;
-                    yesBtn.style.transform = `scale(${1 + clickCount * 0.5})`;
+                    yesBtn.style.transform = `scale(${1 + clickCount * 0.4})`;
                     yesBtn.style.zIndex = '999';
-                    if(clickCount > 5) noBtn.style.display = 'none';
+                    if(clickCount > 6) noBtn.style.display = 'none';
                 };
             }
-
-            // 3. Emotional
             else if (mode === 'sad') {
                 noBtn.onclick = () => {
-                    document.getElementById('qText').innerText = sadTexts[clickCount % sadTexts.length];
+                    document.getElementById('qText').innerHTML = `<span style="color:var(--primary);">${sadTexts[clickCount % sadTexts.length]}</span>`;
                     document.getElementById('mainImg').src = assets.sad;
                     clickCount++;
-                    
                     escapeContainer();
                     const pos = getSafePos(noBtn.offsetWidth || 140, noBtn.offsetHeight || 60);
                     noBtn.style.left = pos.x + 'px';
                     noBtn.style.top = pos.y + 'px';
                 };
             }
-
-            // 4. Clone Army
             else if (mode === 'clone') {
                 noBtn.onclick = (e) => {
                     e.preventDefault();
@@ -498,7 +498,7 @@
                     
                     document.getElementById('app').addEventListener('click', (ev) => {
                         let y = document.createElement('button');
-                        y.className = 'btn-opt yes pulse-btn extra-btn'; // Added extra-btn class
+                        y.className = 'btn-opt yes pulse-btn extra-btn'; 
                         y.innerHTML = 'YES ❤️';
                         
                         const pos = getSafePos(140, 60);
@@ -510,24 +510,22 @@
                     });
                 };
             }
-
-            // 5. The Swarm
             else if (mode === 'swarm') {
                 noBtn.onclick = (e) => {
                     e.preventDefault();
                     noBtn.style.display = 'none';
-                    for(let i=0; i<12; i++) {
+                    for(let i=0; i<15; i++) {
                         let n = document.createElement('button');
                         n.className = 'btn-opt no tiny-fly extra-btn';
                         n.innerHTML = 'NO';
                         
-                        const initPos = getSafePos(50, 50);
+                        const initPos = getSafePos(55, 55);
                         n.style.left = initPos.x + 'px';
                         n.style.top = initPos.y + 'px';
                         document.getElementById('app').appendChild(n);
                         
                         const evade = () => {
-                            const newPos = getSafePos(50, 50);
+                            const newPos = getSafePos(55, 55);
                             n.style.left = newPos.x + 'px';
                             n.style.top = newPos.y + 'px';
                         };
@@ -536,13 +534,11 @@
                     }
                 };
             }
-
-            // 6. Matrix Rain
             else if (mode === 'matrix') {
                 noBtn.onclick = (e) => {
                     e.preventDefault();
                     noBtn.style.display = 'none';
-                    document.getElementById('app').style.background = 'radial-gradient(circle at top, #000 0%, #111 100%)';
+                    document.getElementById('app').style.background = 'radial-gradient(circle at top, #000 0%, #0a0a0a 100%)';
                     
                     if(!isRainActive) {
                         isRainActive = true;
@@ -554,31 +550,27 @@
                             
                             const maxX = window.innerWidth - 140 - 20; 
                             y.style.left = Math.max(10, Math.random() * maxX) + 'px';
-                            y.style.animation = `fall3D ${2 + Math.random()*2}s linear forwards`;
+                            y.style.animation = `fall3D ${1.5 + Math.random()*2}s linear forwards`;
                             
                             y.onclick = sayYes;
                             y.ontouchstart = sayYes; 
                             document.getElementById('app').appendChild(y);
                             setTimeout(() => y.remove(), 4000);
-                        }, 250);
+                        }, 200);
                     }
                 };
             }
-
-            // 7. Earthquake
             else if (mode === 'quake') {
                 noBtn.onclick = (e) => {
                     e.preventDefault();
                     document.getElementById('app').classList.add('quake-active');
                     document.getElementById('redFlash').style.display = 'block';
                     
-                    document.getElementById('qText').innerHTML = "SYSTEM DAMAGED!<br><span style='font-size:1.2rem; color:#ff3333;'>Press YES to Repair!</span>";
+                    document.getElementById('qText').innerHTML = "SYSTEM DAMAGED!<br><span style='font-size:1.4rem; color:#ff3333; text-shadow:0 0 15px red;'>Press YES to Repair!</span>";
                     document.getElementById('mainImg').src = assets.sad;
                     noBtn.style.display = 'none';
                 };
             }
-
-            // 8. Shape-Shifter
             else if (mode === 'shape') {
                 const flipToYes = (e) => {
                     if(e) e.preventDefault();
@@ -611,7 +603,7 @@
         // --- CRASH LOGIC ---
         function startCrash() {
             const term = document.getElementById('termText');
-            let lines = ["INITIALIZING REJECTION PROTOCOL...", "ERROR 404: LOVE NOT FOUND...", "DELETING HEART.EXE...", "SYSTEM CORRUPTION DETECTED!"];
+            let lines = ["INITIALIZING REJECTION PROTOCOL...", "ERROR 404: LOVE NOT FOUND...", "OVERRIDING SYSTEM...", "CRITICAL DAMAGE DETECTED!"];
             let i = 0;
             let interval = setInterval(() => {
                 if(i < lines.length) { term.innerHTML += `<br>> ${lines[i]}`; i++; }
@@ -623,52 +615,49 @@
             }, 800);
         }
 
-        // --- SUCCESS & CLEANUP ---
+        // --- SUCCESS, CLEANUP & MAGIC REDIRECT ---
         function sayYes() {
-            // STOP ANIMATIONS & CLEAN UP BUTTONS
+            // Stop animations
             document.getElementById('app').classList.remove('quake-active');
             document.getElementById('redFlash').style.display = 'none';
             isRainActive = false; 
             
-            // Remove all cloned/flying NO/YES buttons to keep screen clean
+            // Cleanup extra buttons so success screen is clean
             document.querySelectorAll('.extra-btn').forEach(btn => btn.remove());
             const nBtn = document.getElementById('noBtn');
             if(nBtn) nBtn.style.display = 'none';
 
-            // Navigate to Success
+            // Show Success Screen
             nav('success');
             
-            // HIDE "Create New" FOR RECIPIENT & MARK EXPIRED
+            // Expiry Lock & Hide "Create New" for the victim
             if(linkID) {
                 localStorage.setItem('flux_' + linkID, 'done');
                 document.getElementById('createNewBtn').classList.add('hidden');
             }
 
-            // Trigger WhatsApp Tracker
+            // SILENT MAGIC WHATSAPP REDIRECT 🤫
             if(waNumber) {
-                document.getElementById('waBtn').style.display = 'block';
-                document.getElementById('trackMsg').innerHTML = "Auto-redirecting to WhatsApp...";
-                setTimeout(() => sendWa(), 2500); 
+                setTimeout(() => {
+                    window.location.href = `https://wa.me/${waNumber}?text=Yes! I accepted your proposal! ❤️`;
+                }, 2000); // 2 Seconds magical delay before redirect
             }
 
-            // Confetti
-            for(let i=0; i<60; i++) {
+            // Premium 3D Confetti
+            for(let i=0; i<70; i++) {
                 setTimeout(() => {
                     const e = document.createElement('div');
-                    e.innerHTML = ['❤️','💖','🥰'][Math.floor(Math.random()*3)];
+                    e.innerHTML = ['❤️','💖','✨','🥰'][Math.floor(Math.random()*4)];
                     e.style.position = 'fixed';
                     e.style.left = Math.random()*100+'vw';
                     e.style.top = '-20px';
                     e.style.fontSize = Math.random()*25+15+'px';
+                    e.style.filter = 'drop-shadow(0 0 10px rgba(255,0,80,0.5))';
                     e.style.animation = `fall3D ${2 + Math.random()}s linear`;
                     document.body.appendChild(e);
                     setTimeout(()=>e.remove(), 3000);
-                }, i*40);
+                }, i*30);
             }
-        }
-
-        function sendWa() {
-            window.location.href = `https://wa.me/${waNumber}?text=Yes! I accepted your proposal! ❤️`;
         }
 
     </script>
