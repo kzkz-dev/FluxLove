@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FluxLove App</title>
+    <title>FluxLove</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -26,7 +26,8 @@
             color: var(--text);
             margin: 0;
             height: 100vh;
-            overflow: hidden;
+            width: 100vw;
+            overflow: hidden; /* Prevents scrollbars completely */
             display: flex;
             justify-content: center;
         }
@@ -134,7 +135,6 @@
         .no { background: white; color: black; position: absolute; z-index: 100; border: 3px solid var(--primary); transform-style: preserve-3d; }
 
         /* --- CUSTOM SCREENS (CHAT, CALC, CRASH) --- */
-        /* Chat UI */
         #chat-ui { width: 100%; height: 350px; background: rgba(0,0,0,0.3); border-radius: 20px; display: flex; flex-direction: column; border: 1px solid var(--border); margin-bottom: 20px; overflow: hidden; }
         .chat-header { padding: 15px; background: rgba(255,255,255,0.05); font-weight: 600; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); }
         .chat-msgs { flex: 1; padding: 20px; overflow-y: auto; text-align: left; }
@@ -144,10 +144,8 @@
         .chat-input { padding: 10px; border-top: 1px solid var(--border); display: flex; background: rgba(0,0,0,0.2); }
         #fakeInput { width: 100%; background: transparent; border: none; color: white; padding: 10px; outline: none; }
         
-        /* Calc UI */
         .calc-circle { width: 160px; height: 160px; border: 5px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; font-weight: 900; margin-bottom: 30px; box-shadow: 0 0 40px rgba(255,0,80,0.3); animation: pulseHeart 1.5s infinite; }
         
-        /* Hacker UI */
         #screen-crash { background: #000; font-family: 'Courier New', monospace; color: #0f0; padding: 20px; align-items: flex-start; z-index: 999; }
         .terminal { font-size: 0.9rem; line-height: 1.4; opacity: 0.8; }
         .alert-box { background: rgba(255,0,0,0.2); color: #ff3333; padding: 20px; width: 100%; border: 1px solid #ff0000; margin-top: 40px; text-align: center; font-weight: bold; animation: flashRed 0.5s infinite; display: none; }
@@ -155,21 +153,18 @@
 
         /* --- ANIMATION CLASSES --- */
         .pulse-btn { animation: pulseHeart 1s infinite; position: absolute; }
-        .tiny-fly { width: 50px !important; height: 50px !important; font-size: 0.8rem !important; border-radius: 50% !important; position: absolute; transition: all 0.2s ease-out; box-shadow: 0 0 10px rgba(255,255,255,0.5); z-index: 200; }
+        .tiny-fly { width: 50px !important; height: 50px !important; font-size: 0.8rem !important; border-radius: 50% !important; position: absolute; transition: all 0.15s ease-out; box-shadow: 0 0 10px rgba(255,255,255,0.5); z-index: 200; }
         .quake-active { animation: extremeQuake 0.2s infinite; }
         .red-flash { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(255,0,0,0.3); pointer-events: none; z-index: 1000; animation: flashRed 0.3s infinite; display: none; }
 
         /* --- EXPIRED / SUCCESS --- */
         .expired-box { text-align: center; color: #888; background: var(--surface); padding: 40px; border-radius: 30px; border: 1px solid var(--border); }
+        .hidden { display: none !important; }
 
         /* KEYFRAMES */
         @keyframes pulseHeart { 0% {transform: scale(1);} 50% {transform: scale(1.1);} 100% {transform: scale(1);} }
         @keyframes fall3D { 0% { transform: translateY(-100px) rotateX(0deg) rotateY(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateY(110vh) rotateX(360deg) rotateY(180deg); opacity: 0; } }
-        @keyframes extremeQuake { 
-            0% { transform: translate(5px, 5px) rotate(0deg); } 20% { transform: translate(-5px, -5px) rotate(-2deg); }
-            40% { transform: translate(-5px, 5px) rotate(2deg); } 60% { transform: translate(5px, -5px) rotate(0deg); }
-            80% { transform: translate(5px, 0px) rotate(-2deg); } 100% { transform: translate(-5px, 5px) rotate(2deg); }
-        }
+        @keyframes extremeQuake { 0% { transform: translate(5px, 5px) rotate(0deg); } 20% { transform: translate(-5px, -5px) rotate(-2deg); } 40% { transform: translate(-5px, 5px) rotate(2deg); } 60% { transform: translate(5px, -5px) rotate(0deg); } 80% { transform: translate(5px, 0px) rotate(-2deg); } 100% { transform: translate(-5px, 5px) rotate(2deg); } }
         @keyframes flashRed { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 
     </style>
@@ -328,9 +323,10 @@
             <p style="opacity:0.7;" id="trackMsg">Screenshot & Send to me!</p>
             
             <button id="waBtn" class="btn-main" style="display:none; background:#25D366; margin-top:20px;" onclick="sendWa()">
-                <i class="fab fa-whatsapp"></i> Notify via WhatsApp
+                <i class="fab fa-whatsapp"></i> Confirm via WhatsApp
             </button>
-            <button class="btn-main" style="background:transparent; border:1px solid #333; margin-top:15px;" onclick="location.href=location.pathname">
+            
+            <button id="createNewBtn" class="btn-main" style="background:transparent; border:1px solid #333; margin-top:15px;" onclick="location.href=location.pathname">
                 Create New
             </button>
         </div>
@@ -339,7 +335,7 @@
             <div class="expired-box">
                 <i class="fas fa-lock" style="font-size:4rem; color:#333; margin-bottom:20px;"></i>
                 <h2 style="margin-bottom:10px; color:#fff;">Link Expired</h2>
-                <p style="font-size:0.9rem;">This proposal is already completed.</p>
+                <p style="font-size:0.9rem;">This proposal has already been answered.</p>
             </div>
         </div>
 
@@ -373,6 +369,16 @@
             document.getElementById('screen-' + id).classList.add('active');
         }
 
+        // --- BOUNDARY LOGIC (To prevent out-of-screen bugs) ---
+        function getSafePos(btnWidth, btnHeight) {
+            const padding = 20; 
+            const maxX = window.innerWidth - btnWidth - padding;
+            const maxY = window.innerHeight - btnHeight - padding;
+            const x = Math.max(padding, Math.random() * maxX);
+            const y = Math.max(padding, Math.random() * maxY);
+            return { x, y };
+        }
+
         // --- INIT ---
         window.onload = () => {
             const p = new URLSearchParams(window.location.search);
@@ -386,7 +392,7 @@
                 linkID = id;
                 waNumber = w;
                 
-                // Expiry Check
+                // Expiry Check Logic (Bulletproof)
                 if (localStorage.getItem('flux_' + id) === 'done') {
                     nav('expired');
                     return;
@@ -444,8 +450,9 @@
                 const run = (e) => {
                     if(e) e.preventDefault();
                     noBtn.style.position = 'fixed';
-                    noBtn.style.left = Math.random() * (window.innerWidth - 140) + 'px';
-                    noBtn.style.top = Math.random() * (window.innerHeight - 60) + 'px';
+                    const pos = getSafePos(noBtn.offsetWidth || 140, noBtn.offsetHeight || 60);
+                    noBtn.style.left = pos.x + 'px';
+                    noBtn.style.top = pos.y + 'px';
                 };
                 noBtn.onmouseover = run;
                 noBtn.ontouchstart = run;
@@ -468,10 +475,10 @@
                     document.getElementById('mainImg').src = assets.sad;
                     clickCount++;
                     
-                    // Also move slightly
                     noBtn.style.position = 'fixed';
-                    noBtn.style.left = Math.random() * (window.innerWidth - 140) + 'px';
-                    noBtn.style.top = Math.random() * (window.innerHeight - 60) + 'px';
+                    const pos = getSafePos(noBtn.offsetWidth || 140, noBtn.offsetHeight || 60);
+                    noBtn.style.left = pos.x + 'px';
+                    noBtn.style.top = pos.y + 'px';
                 };
             }
 
@@ -486,8 +493,12 @@
                         let y = document.createElement('button');
                         y.className = 'btn-opt yes pulse-btn';
                         y.innerHTML = 'YES ❤️';
-                        y.style.left = (ev.clientX - 70) + 'px';
-                        y.style.top = (ev.clientY - 30) + 'px';
+                        
+                        // Keep cloned button inside screen safely
+                        const pos = getSafePos(140, 60);
+                        y.style.left = pos.x + 'px';
+                        y.style.top = pos.y + 'px';
+                        
                         y.onclick = sayYes;
                         document.getElementById('app').appendChild(y);
                     });
@@ -503,13 +514,16 @@
                         let n = document.createElement('button');
                         n.className = 'btn-opt no tiny-fly';
                         n.innerHTML = 'NO';
-                        n.style.left = Math.random() * (window.innerWidth - 50) + 'px';
-                        n.style.top = Math.random() * (window.innerHeight - 50) + 'px';
+                        
+                        const initPos = getSafePos(50, 50);
+                        n.style.left = initPos.x + 'px';
+                        n.style.top = initPos.y + 'px';
                         document.getElementById('app').appendChild(n);
                         
                         const evade = () => {
-                            n.style.left = Math.random() * (window.innerWidth - 60) + 'px';
-                            n.style.top = Math.random() * (window.innerHeight - 60) + 'px';
+                            const newPos = getSafePos(50, 50);
+                            n.style.left = newPos.x + 'px';
+                            n.style.top = newPos.y + 'px';
                         };
                         n.onmouseover = evade;
                         n.ontouchstart = (ev) => { ev.preventDefault(); evade(); };
@@ -531,8 +545,12 @@
                             y.className = 'btn-opt yes';
                             y.innerHTML = 'YES ❤️';
                             y.style.position = 'fixed';
-                            y.style.left = Math.random() * window.innerWidth + 'px';
+                            
+                            // Prevent horizontal overflow
+                            const maxX = window.innerWidth - 140 - 20; 
+                            y.style.left = Math.max(10, Math.random() * maxX) + 'px';
                             y.style.animation = `fall3D ${2 + Math.random()*2}s linear forwards`;
+                            
                             y.onclick = sayYes;
                             y.ontouchstart = sayYes; 
                             document.getElementById('app').appendChild(y);
@@ -607,7 +625,11 @@
             document.getElementById('redFlash').style.display = 'none';
             isRainActive = false; 
             
-            if(linkID) localStorage.setItem('flux_' + linkID, 'done');
+            // LOGIC FIX: If user is recipient, mark expired & hide "Create New" button
+            if(linkID) {
+                localStorage.setItem('flux_' + linkID, 'done');
+                document.getElementById('createNewBtn').classList.add('hidden'); // Hide the button
+            }
 
             if(waNumber) {
                 document.getElementById('waBtn').style.display = 'block';
@@ -615,6 +637,7 @@
                 setTimeout(() => sendWa(), 2500); 
             }
 
+            // Confetti
             for(let i=0; i<60; i++) {
                 setTimeout(() => {
                     const e = document.createElement('div');
