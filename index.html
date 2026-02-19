@@ -37,60 +37,83 @@
             position: relative;
             display: flex; flex-direction: column;
             box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            overflow: hidden;
         }
+
+        /* --- SIDEBAR --- */
+        #sidebar {
+            position: absolute; top: 0; left: 0; width: 70%; height: 100%;
+            background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px);
+            z-index: 2000; transform: translateX(-100%); transition: 0.3s ease;
+            border-right: 1px solid rgba(255,255,255,0.1);
+            padding: 30px; display: flex; flex-direction: column;
+        }
+        #sidebar.open { transform: translateX(0); }
+        .overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 1500; display: none;
+        }
+        .overlay.active { display: block; }
+
+        .side-brand { font-size: 2rem; font-weight: 800; color: var(--text); margin-bottom: 40px; }
+        .side-brand span { color: var(--primary); }
+        .side-item { color: #aaa; margin-bottom: 20px; font-size: 1rem; display: flex; align-items: center; gap: 10px; }
+        .side-item i { width: 25px; color: var(--accent); }
+        
+        .side-footer { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+        .dev-info { font-size: 0.8rem; color: #666; line-height: 1.6; }
+        .dev-info b { color: var(--primary); }
+
+        /* --- HEADER --- */
+        .app-header {
+            padding: 20px; display: flex; align-items: center; justify-content: space-between;
+            z-index: 100;
+        }
+        .menu-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
 
         /* --- SCREENS --- */
         .screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: none; flex-direction: column; align-items: center; justify-content: center;
-            padding: 25px; opacity: 0; transition: opacity 0.3s ease;
+            padding: 20px; opacity: 0; transition: opacity 0.3s ease;
         }
         .screen.active { display: flex; opacity: 1; }
 
         /* --- 1. DASHBOARD --- */
-        .brand { font-size: 2.5rem; font-weight: 900; letter-spacing: -1px; margin-bottom: 5px; }
+        .brand { font-size: 3rem; font-weight: 900; letter-spacing: -1px; margin-bottom: 5px; }
         .brand span { color: var(--primary); }
-        
+        .sub { font-size: 0.9rem; color: #888; margin-bottom: 30px; }
+
         .grid-menu {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; margin-top: 30px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%;
         }
         
         .menu-item {
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px; padding: 20px 15px; text-align: center;
-            cursor: pointer; transition: 0.2s; position: relative; overflow: hidden;
+            border-radius: 20px; padding: 25px 15px; text-align: center;
+            cursor: pointer; transition: 0.2s;
         }
         .menu-item:active { background: rgba(255,0,80,0.1); border-color: var(--primary); transform: scale(0.95); }
-        .menu-icon { font-size: 1.8rem; margin-bottom: 10px; color: var(--accent); }
-        .menu-title { font-size: 0.9rem; font-weight: 600; }
-
-        /* --- ABOUT SECTION --- */
-        .about-section {
-            margin-top: auto; width: 100%; padding: 20px;
-            text-align: center; border-top: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.3);
-        }
-        .about-text { font-size: 0.8rem; color: #888; margin-bottom: 5px; }
-        .dev-name { font-size: 0.9rem; font-weight: 700; color: var(--primary); letter-spacing: 1px; }
-        .copy-text { font-size: 0.7rem; color: #555; margin-top: 5px; }
+        .menu-icon { font-size: 2rem; margin-bottom: 10px; color: var(--accent); }
+        .menu-title { font-size: 1rem; font-weight: 600; }
 
         /* --- 2. CREATE SCREEN --- */
-        .header-bar { width: 100%; display: flex; align-items: center; margin-bottom: 30px; }
-        .back-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        .input-group { width: 100%; margin-bottom: 15px; text-align: left; }
+        .label { font-size: 0.8rem; color: #888; margin-left: 10px; margin-bottom: 5px; display: block; }
         
         input {
             width: 100%; padding: 16px; background: var(--surface);
             border: 1px solid #333; border-radius: 12px;
-            color: white; font-size: 1.1rem; margin-bottom: 15px;
+            color: white; font-size: 1.1rem;
             text-align: center; outline: none;
         }
         input:focus { border-color: var(--primary); }
 
         .btn-main {
-            width: 100%; padding: 16px; background: var(--primary);
+            width: 100%; padding: 18px; background: var(--primary);
             border: none; border-radius: 50px; color: white;
             font-size: 1.1rem; font-weight: 700; cursor: pointer;
-            margin-top: 10px; box-shadow: 0 5px 20px rgba(255,0,80,0.3);
+            margin-top: 20px; box-shadow: 0 10px 30px rgba(255,0,80,0.3);
         }
 
         .result-box {
@@ -101,21 +124,23 @@
 
         /* --- 3. PROPOSAL SCREEN --- */
         .gif-frame {
-            width: 250px; height: 250px; border-radius: 20px; overflow: hidden;
+            width: 260px; height: 260px; border-radius: 20px; overflow: hidden;
             margin-bottom: 30px; border: 2px solid rgba(255,255,255,0.1);
             background: #000;
         }
-        /* STABLE PEACH GOMA GIFS */
         .gif-frame img { width: 100%; height: 100%; object-fit: cover; }
 
-        .q-text { font-size: 2rem; font-weight: 800; margin-bottom: 50px; line-height: 1.3; text-shadow: 0 0 20px rgba(255,0,80,0.5); }
+        .q-text { font-size: 2.2rem; font-weight: 800; margin-bottom: 50px; line-height: 1.3; text-shadow: 0 0 20px rgba(255,0,80,0.5); }
 
         .btn-zone { position: relative; width: 100%; height: 80px; display: flex; justify-content: center; gap: 20px; }
         .btn-opt { width: 130px; height: 55px; border-radius: 50px; font-size: 1.2rem; font-weight: 700; border: none; cursor: pointer; transition: 0.2s; }
         .yes { background: var(--primary); color: white; z-index: 50; box-shadow: 0 0 20px var(--primary); }
         .no { background: white; color: black; position: absolute; z-index: 100; border: 2px solid var(--primary); }
 
-        /* --- 4. HACKER SCREEN (Crash Mode) --- */
+        /* --- 4. SUCCESS SCREEN --- */
+        .success-box img { width: 100%; border-radius: 15px; }
+
+        /* --- 5. HACKER SCREEN --- */
         #screen-crash { background: black; font-family: 'Courier New', monospace; color: #0f0; text-align: left; padding: 20px; align-items: flex-start; z-index: 999; }
         .terminal-text { font-size: 0.9rem; line-height: 1.5; }
         .error-box { 
@@ -128,7 +153,6 @@
             width: 100%; margin-top: 30px; font-weight: bold; cursor: pointer; display: none;
         }
 
-        /* --- ANIMATIONS --- */
         @keyframes flash { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
         @keyframes fall { to { transform: translateY(110vh); } }
 
@@ -138,9 +162,29 @@
 
     <div id="app">
 
+        <div class="overlay" onclick="toggleSidebar()"></div>
+        <div id="sidebar">
+            <div class="side-brand">Flux<span>Love</span></div>
+            <div class="side-item"><i class="fas fa-magic"></i> Create Magic Links</div>
+            <div class="side-item"><i class="fas fa-heart"></i> AI Love System</div>
+            <div class="side-item"><i class="fas fa-shield-alt"></i> Privacy Policy</div>
+            
+            <div class="side-footer">
+                <div class="dev-info">
+                    Powered by <b>Flux AI</b><br>
+                    Dev: <b>KAWCHUR</b><br>
+                    &copy; 2026 FluxLove. All rights reserved.
+                </div>
+            </div>
+        </div>
+
         <div id="screen-home" class="screen active">
+            <div style="position: absolute; top: 20px; left: 20px;">
+                <button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+            </div>
+
             <div class="brand">Flux<span>Love</span></div>
-            <div style="color:#888; font-size:0.9rem;">Select Prank Style</div>
+            <div class="sub">Select Prank Style</div>
 
             <div class="grid-menu">
                 <div class="menu-item" onclick="setup('runaway')">
@@ -157,25 +201,32 @@
                 </div>
                 <div class="menu-item" onclick="setup('crash')">
                     <div class="menu-icon"><i class="fas fa-bug"></i></div>
-                    <div class="menu-title">Sys Crash</div>
+                    <div class="menu-title">System Crash</div>
                 </div>
-            </div>
-            
-            <div class="about-section">
-                <div class="about-text">Powered by Flux AI</div>
-                <div class="dev-name">Dev KAWCHUR</div>
-                <div class="copy-text">&copy; 2026 FluxLove. All rights reserved.</div>
             </div>
         </div>
 
         <div id="screen-create" class="screen">
-            <div class="header-bar">
-                <button class="back-btn" onclick="nav('home')"><i class="fas fa-arrow-left"></i></button>
-                <div style="margin-left:15px; font-weight:700;">Setup Proposal</div>
+            <div style="width: 100%; display: flex; margin-bottom: 30px;">
+                <button class="menu-btn" onclick="nav('home')"><i class="fas fa-arrow-left"></i></button>
+                <span style="margin-left: 15px; font-size: 1.2rem; font-weight: 700;">Setup Proposal</span>
             </div>
 
-            <input type="text" id="sName" placeholder="Your Name">
-            <input type="text" id="rName" placeholder="Crush's Name">
+            <div class="input-group">
+                <span class="label">Your Name</span>
+                <input type="text" id="sName" placeholder="Name">
+            </div>
+            
+            <div class="input-group">
+                <span class="label">Crush's Name</span>
+                <input type="text" id="rName" placeholder="Name">
+            </div>
+
+            <div class="input-group">
+                <span class="label">Your WhatsApp (For Notification)</span>
+                <input type="number" id="waNum" placeholder="Phone Number (Optional)">
+            </div>
+
             <input type="hidden" id="mode">
 
             <button class="btn-main" onclick="genLink()">Generate Link 🔗</button>
@@ -196,8 +247,8 @@
 
         <div id="screen-crash" class="screen">
             <div class="terminal-text" id="termText"></div>
-            <div class="error-box" id="errBox">CRITICAL LOVE ERROR!</div>
-            <button class="fix-btn" id="fixBtn" onclick="sayYes()">FIX SYSTEM (ACCEPT LOVE)</button>
+            <div class="error-box" id="errBox">CRITICAL ERROR!</div>
+            <button class="fix-btn" id="fixBtn" onclick="sayYes()">FIX SYSTEM (ACCEPT)</button>
         </div>
 
         <div id="screen-success" class="screen">
@@ -205,15 +256,17 @@
                 <img src="https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif" alt="Kiss">
             </div>
             <h1 style="color:var(--primary)">Yayyy! I knew it! 😘</h1>
-            <p>Screenshot & Send!</p>
-            <button class="btn-main" onclick="location.href=location.pathname" style="margin-top:30px; width:auto; padding:10px 30px;">New</button>
+            <p>Notification sent to Chat Box! ✅</p>
+            
+            <button id="waBtn" class="btn-main" style="display:none; margin-top:20px; background:#25D366;" onclick="sendWa()">
+                <i class="fab fa-whatsapp"></i> Confirm in Chat
+            </button>
         </div>
 
     </div>
 
     <script>
-        // --- ASSETS (PEACH GOMA STICKERS) ---
-        // Using stable Tenor/Github links
+        // --- ASSETS (Peach Goma) ---
         const assets = {
             ask: "https://media.tenor.com/2yDAZyl-eXQAAAAC/cute-sad.gif",
             sad: "https://media.tenor.com/8FkS0N7fQ2gAAAAC/sad-cry.gif",
@@ -222,7 +275,13 @@
 
         const sadTexts = ["Are you sure? 🥺", "Please don't! 💔", "I'll cry... 😭", "Last chance!", "You broke my heart 💀"];
         let clickCount = 0;
-        let currentMode = 'runaway';
+        let waNumber = "";
+
+        // --- SIDEBAR ---
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.querySelector('.overlay').classList.toggle('active');
+        }
 
         // --- NAVIGATION ---
         function nav(id) {
@@ -235,12 +294,13 @@
             const p = new URLSearchParams(window.location.search);
             const s = p.get('s');
             const r = p.get('r');
-            const m = p.get('m'); // m = mode
+            const m = p.get('m');
+            const w = p.get('w'); // WhatsApp Number
 
             if(s && r) {
                 document.getElementById('qText').innerHTML = `Hey <b>${r}</b>,<br>Do you love me?`;
-                currentMode = m || 'runaway';
-                initMode(currentMode);
+                waNumber = w;
+                initMode(m || 'runaway');
                 nav('proposal');
             } else {
                 nav('home');
@@ -256,13 +316,17 @@
         function genLink() {
             const s = document.getElementById('sName').value.trim();
             const r = document.getElementById('rName').value.trim();
+            const w = document.getElementById('waNum').value.trim();
             const m = document.getElementById('mode').value;
-            if(!s || !r) return alert("Fill names!");
-            const link = `${location.href.split('?')[0]}?s=${encodeURIComponent(s)}&r=${encodeURIComponent(r)}&m=${m}`;
+            
+            if(!s || !r) return alert("Please fill names!");
+            
+            const link = `${location.href.split('?')[0]}?s=${encodeURIComponent(s)}&r=${encodeURIComponent(r)}&m=${m}&w=${w}`;
             navigator.clipboard.writeText(link);
+            
             const res = document.getElementById('result');
             res.style.display = 'block';
-            res.innerHTML = `<b>Link Ready! ✅</b><br>Mode: ${m.toUpperCase()}`;
+            res.innerHTML = `<b>Link Copied! ✅</b><br>Mode: ${m.toUpperCase()}`;
         }
 
         // --- MODES LOGIC ---
@@ -272,7 +336,7 @@
             noBtn.parentNode.replaceChild(newBtn, noBtn);
             const btn = document.getElementById('noBtn');
             
-            // Reset Image
+            // Reset
             document.getElementById('mainImg').src = assets.ask;
 
             if(mode === 'runaway') {
@@ -291,15 +355,16 @@
             }
             else if (mode === 'sad') {
                 btn.onclick = () => {
-                    document.getElementById('qText').innerText = "Please don't break my heart... 💔";
+                    document.getElementById('qText').innerText = sadTexts[clickCount % sadTexts.length];
                     document.getElementById('mainImg').src = assets.sad;
+                    clickCount++;
                     moveBtn();
                 };
             }
             else if (mode === 'crash') {
                 btn.onclick = () => {
-                    document.body.innerHTML = '<div style="color:red; font-family:monospace; padding:20px;">SYSTEM CRASHED!<br>LOVE NOT FOUND!<br>Rebooting...</div>';
-                    setTimeout(() => location.reload(), 3000);
+                    nav('crash');
+                    startCrash();
                 };
             }
         }
@@ -313,9 +378,32 @@
             btn.style.top = Math.max(10, y) + 'px';
         }
 
-        // --- YES LOGIC ---
+        function startCrash() {
+            const term = document.getElementById('termText');
+            let lines = ["INITIALIZING REJECTION...", "ERROR 404: LOVE NOT FOUND", "DELETING SYSTEM32...", "CRITICAL FAILURE!"];
+            let i = 0;
+            let interval = setInterval(() => {
+                if(i < lines.length) { term.innerHTML += `> ${lines[i]}<br>`; i++; }
+                else {
+                    clearInterval(interval);
+                    document.getElementById('errBox').style.display = 'block';
+                    document.getElementById('fixBtn').style.display = 'block';
+                }
+            }, 600);
+        }
+
+        // --- SUCCESS & NOTIFICATION ---
         function sayYes() {
             nav('success');
+            
+            // Notification Logic
+            if(waNumber) {
+                const btn = document.getElementById('waBtn');
+                btn.style.display = 'block';
+                // Auto Open (Optional, browsers might block)
+                // window.location.href = `https://wa.me/${waNumber}?text=Yes! I accepted! ❤️`;
+            }
+
             for(let i=0; i<50; i++) {
                 setTimeout(() => {
                     const e = document.createElement('div');
@@ -323,12 +411,16 @@
                     e.style.position = 'fixed';
                     e.style.left = Math.random()*100+'vw';
                     e.style.top = '-10px';
-                    e.style.fontSize = Math.random()*30+10+'px';
+                    e.style.fontSize = Math.random()*20+15+'px';
                     e.style.animation = 'fall 3s linear';
                     document.body.appendChild(e);
                     setTimeout(()=>e.remove(), 3000);
                 }, i*30);
             }
+        }
+
+        function sendWa() {
+            window.location.href = `https://wa.me/${waNumber}?text=I accepted your proposal! ❤️`;
         }
 
         const css = document.createElement('style');
