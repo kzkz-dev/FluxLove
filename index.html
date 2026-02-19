@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FluxLove</title>
+    <title>FluxLove | Professional AI Prank App</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -26,6 +26,7 @@
             color: var(--text);
             margin: 0;
             height: 100vh;
+            height: 100dvh; /* Mobile browser address bar fix */
             width: 100vw;
             overflow: hidden;
             display: flex;
@@ -129,16 +130,21 @@
         .gif-container {
             width: 260px; height: 260px; border-radius: 30px; overflow: hidden;
             margin-bottom: 40px; border: 2px solid rgba(255,255,255,0.05);
-            background: #000; box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            background: #000; box-shadow: 0 20px 60px rgba(0,0,0,0.6); z-index: 10;
         }
         .gif-container img { width: 100%; height: 100%; object-fit: cover; }
         .q-text { font-size: 2.4rem; font-weight: 900; margin-bottom: 60px; line-height: 1.2; text-shadow: 0 0 30px rgba(255,0,80,0.6); text-align: center; z-index: 10; }
 
-        .btn-zone { position: relative; width: 100%; height: 80px; display: flex; justify-content: center; gap: 20px; perspective: 1000px; }
+        .btn-zone { position: relative; width: 100%; height: 80px; display: flex; justify-content: center; gap: 20px; perspective: 1000px; z-index: 10; }
         .btn-opt { width: 140px; height: 65px; border-radius: 50px; font-size: 1.3rem; font-weight: 800; border: none; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
         
         .yes { background: linear-gradient(135deg, var(--primary), #ff4d6d); color: white; z-index: 50; box-shadow: 0 0 30px rgba(255,0,80,0.5); }
         .no { background: white; color: black; position: absolute; z-index: 100; border: 3px solid var(--primary); transform-style: preserve-3d; }
+
+        /* --- PRIVACY SCREEN --- */
+        .policy-text { flex: 1; overflow-y: auto; padding-right: 10px; font-size: 0.95rem; color: #ddd; line-height: 1.6; text-align: left; }
+        .policy-text h3 { color: var(--primary); margin-top: 20px; margin-bottom: 10px; font-size: 1.1rem; }
+        .policy-text p { margin-bottom: 15px; opacity: 0.9; }
 
         /* --- CUSTOM SCREENS --- */
         #chat-ui { width: 100%; height: 350px; background: rgba(0,0,0,0.4); border-radius: 20px; display: flex; flex-direction: column; border: 1px solid var(--border); margin-bottom: 20px; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
@@ -185,14 +191,16 @@
         <div id="sidebar">
             <div class="side-brand">Flux<span>Love</span></div>
             <div class="side-link" onclick="toggleMenu(); nav('home')"><i class="fas fa-th-large"></i> Dashboard</div>
-            <div class="side-link"><i class="fas fa-magic"></i> AI Love System</div>
-            <div class="side-link"><i class="fas fa-shield-alt"></i> Privacy Policy</div>
+            
+            <div class="side-link" onclick="window.open('https://sites.google.com/view/flux-ai-app/home', '_blank')"><i class="fas fa-magic"></i> AI Love System</div>
+            
+            <div class="side-link" onclick="toggleMenu(); nav('privacy')"><i class="fas fa-shield-alt"></i> Privacy Policy</div>
             
             <div class="about-box">
                 <div class="dev-info">
                     Powered by <b>Flux AI</b><br>
                     Dev: <b>KAWCHUR</b><br>
-                    <div class="copy-text">&copy; 2026 FluxLove. All rights reserved.</div>
+                    <div class="copy-text">&copy; 2026 Flux Brand. All rights reserved.</div>
                 </div>
             </div>
         </div>
@@ -344,6 +352,32 @@
             </div>
         </div>
 
+        <div id="screen-privacy" class="screen">
+            <div class="nav-head">
+                <button class="back-btn" onclick="nav('home')"><i class="fas fa-arrow-left"></i></button>
+                <div class="page-title">Privacy Policy</div>
+            </div>
+            <div class="policy-text">
+                <h2 style="color:var(--primary); margin-top:0; font-size: 1.8rem; letter-spacing: -1px;">FluxLove Privacy</h2>
+                <p>Welcome to <b>FluxLove</b>, a proud product of the <b>Flux Brand</b> Ecosystem. We believe in love, fun, and absolute privacy.</p>
+                
+                <h3><i class="fas fa-database" style="color:var(--accent);"></i> 1. Zero Data Logging</h3>
+                <p>We do NOT collect, store, or sell any of your personal data. Everything generated here (Names, WhatsApp Numbers, Links) stays locally on your device.</p>
+                
+                <h3><i class="fas fa-user-secret" style="color:var(--accent);"></i> 2. Tracking System</h3>
+                <p>The "Magic Tracking" feature works purely through client-side browser logic. We have no servers, meaning we literally cannot spy on your messages.</p>
+                
+                <h3><i class="fas fa-hand-holding-heart" style="color:var(--accent);"></i> 3. Fair Use</h3>
+                <p>FluxLove is designed by <b>KAWCHUR</b> to spread smiles and create fun memories. Please do not use our tools to spam or harass anyone maliciously.</p>
+                
+                <div style="text-align:center; margin-top:40px; opacity:0.6;">
+                    <i class="fas fa-heart pulse-btn" style="position:relative; display:inline-block; margin-bottom:10px; color:var(--primary);"></i><br>
+                    Flux AI Division<br>
+                    &copy; 2026 All Rights Reserved
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -374,13 +408,17 @@
             document.getElementById('screen-' + id).classList.add('active');
         }
 
-        // --- BOUNDARY LOGIC (100% Safe inside Screen) ---
+        // --- BULLETPROOF BOUNDARY LOGIC (0% BUG) ---
         function getSafePos(btnWidth, btnHeight) {
             const padding = 20; 
-            const maxX = window.innerWidth - btnWidth - padding;
-            const maxY = window.innerHeight - btnHeight - padding;
-            const x = Math.max(padding, Math.random() * maxX);
-            const y = Math.max(padding, Math.random() * maxY);
+            // Calculate maximum allowed X and Y ensuring we subtract button width and both side paddings
+            const maxX = window.innerWidth - btnWidth - (padding * 2);
+            const maxY = window.innerHeight - btnHeight - (padding * 2);
+            
+            // Randomly select position within the safe zone, starting from padding offset
+            const x = padding + (Math.random() * Math.max(0, maxX));
+            const y = padding + (Math.random() * Math.max(0, maxY));
+            
             return { x, y };
         }
 
@@ -617,12 +655,12 @@
 
         // --- SUCCESS, CLEANUP & MAGIC REDIRECT ---
         function sayYes() {
-            // Stop animations
+            // STOP ALL ANIMATIONS
             document.getElementById('app').classList.remove('quake-active');
             document.getElementById('redFlash').style.display = 'none';
             isRainActive = false; 
             
-            // Cleanup extra buttons so success screen is clean
+            // CLEAN SWEEP: Remove all extra flying/cloned elements
             document.querySelectorAll('.extra-btn').forEach(btn => btn.remove());
             const nBtn = document.getElementById('noBtn');
             if(nBtn) nBtn.style.display = 'none';
@@ -630,7 +668,7 @@
             // Show Success Screen
             nav('success');
             
-            // Expiry Lock & Hide "Create New" for the victim
+            // Expiry Lock & Hide "Create New" for the Victim
             if(linkID) {
                 localStorage.setItem('flux_' + linkID, 'done');
                 document.getElementById('createNewBtn').classList.add('hidden');
