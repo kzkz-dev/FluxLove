@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FluxLove</title>
+    <title>FluxLove App</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -31,6 +31,7 @@
             justify-content: center;
         }
 
+        /* --- APP SHELL --- */
         #app {
             width: 100%; height: 100%; max-width: 480px;
             background: radial-gradient(circle at top, #1a050a 0%, var(--bg) 80%);
@@ -41,7 +42,7 @@
             transition: 0.3s;
         }
 
-        /* --- SIDEBAR (ABOUT SECTION) --- */
+        /* --- SIDEBAR --- */
         #sidebar {
             position: absolute; top: 0; left: 0; width: 75%; height: 100%;
             background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(20px);
@@ -62,7 +63,6 @@
         .side-link:hover { color: var(--primary); transform: translateX(5px); }
         .side-link i { color: var(--accent); width: 25px; }
         
-        /* About Section Area */
         .about-box { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border); }
         .dev-info { font-size: 0.85rem; color: #888; line-height: 1.8; }
         .dev-info b { color: var(--primary); font-weight: 800; }
@@ -81,26 +81,26 @@
         .menu-btn { background: none; border: none; color: white; font-size: 1.6rem; cursor: pointer; transition: 0.2s; }
 
         .brand-logo { margin-bottom: 10px; width: 80px; height: 80px; object-fit: contain; }
-        .brand-title { font-size: 3rem; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 30px; }
+        .brand-title { font-size: 3rem; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 20px; }
         .brand-title span { color: var(--primary); }
 
         .grid-menu {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; overflow-y: auto; padding-bottom: 20px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; overflow-y: auto; padding-bottom: 40px;
         }
         
         .menu-card {
             background: var(--surface); border: 1px solid var(--border);
-            border-radius: 18px; padding: 25px 10px; text-align: center;
+            border-radius: 18px; padding: 20px 10px; text-align: center;
             cursor: pointer; transition: 0.3s;
         }
         .menu-card:active { transform: scale(0.95); background: rgba(255,0,80,0.1); border-color: var(--primary); }
-        .card-icon { font-size: 1.8rem; margin-bottom: 12px; color: var(--accent); }
-        .card-title { font-size: 0.9rem; font-weight: 600; color: #eee; }
+        .card-icon { font-size: 1.8rem; margin-bottom: 10px; color: var(--accent); }
+        .card-title { font-size: 0.85rem; font-weight: 600; color: #eee; }
 
         /* --- 2. CREATE SCREEN --- */
         .nav-head { width: 100%; display: flex; align-items: center; margin-bottom: 40px; }
-        .back-btn { background: none; border: none; color: white; font-size: 1.4rem; cursor: pointer; }
-        .page-title { font-weight: 700; font-size: 1.2rem; margin-left: 15px; }
+        .back-btn { background: none; border: none; color: white; font-size: 1.4rem; cursor: pointer; padding: 10px; }
+        .page-title { font-weight: 700; font-size: 1.2rem; margin-left: 10px; }
         
         .input-group { width: 100%; margin-bottom: 20px; position: relative; }
         .input-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #666; }
@@ -133,10 +133,29 @@
         .yes { background: var(--primary); color: white; z-index: 50; box-shadow: 0 0 25px var(--primary); }
         .no { background: white; color: black; position: absolute; z-index: 100; border: 3px solid var(--primary); transform-style: preserve-3d; }
 
-        /* --- NEW ANIMATION CLASSES --- */
+        /* --- CUSTOM SCREENS (CHAT, CALC, CRASH) --- */
+        /* Chat UI */
+        #chat-ui { width: 100%; height: 350px; background: rgba(0,0,0,0.3); border-radius: 20px; display: flex; flex-direction: column; border: 1px solid var(--border); margin-bottom: 20px; overflow: hidden; }
+        .chat-header { padding: 15px; background: rgba(255,255,255,0.05); font-weight: 600; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); }
+        .chat-msgs { flex: 1; padding: 20px; overflow-y: auto; text-align: left; }
+        .msg { padding: 10px 15px; border-radius: 12px; margin-bottom: 12px; max-width: 80%; font-size: 0.95rem; line-height: 1.4; }
+        .msg.bot { background: #333; color: white; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .msg.user { background: var(--primary); color: white; margin-left: auto; border-bottom-right-radius: 2px; }
+        .chat-input { padding: 10px; border-top: 1px solid var(--border); display: flex; background: rgba(0,0,0,0.2); }
+        #fakeInput { width: 100%; background: transparent; border: none; color: white; padding: 10px; outline: none; }
+        
+        /* Calc UI */
+        .calc-circle { width: 160px; height: 160px; border: 5px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; font-weight: 900; margin-bottom: 30px; box-shadow: 0 0 40px rgba(255,0,80,0.3); animation: pulseHeart 1.5s infinite; }
+        
+        /* Hacker UI */
+        #screen-crash { background: #000; font-family: 'Courier New', monospace; color: #0f0; padding: 20px; align-items: flex-start; z-index: 999; }
+        .terminal { font-size: 0.9rem; line-height: 1.4; opacity: 0.8; }
+        .alert-box { background: rgba(255,0,0,0.2); color: #ff3333; padding: 20px; width: 100%; border: 1px solid #ff0000; margin-top: 40px; text-align: center; font-weight: bold; animation: flashRed 0.5s infinite; display: none; }
+        .fix-btn { background: #0f0; color: black; border: none; padding: 15px; width: 100%; margin-top: 30px; font-weight: 800; cursor: pointer; display: none; }
+
+        /* --- ANIMATION CLASSES --- */
         .pulse-btn { animation: pulseHeart 1s infinite; position: absolute; }
         .tiny-fly { width: 50px !important; height: 50px !important; font-size: 0.8rem !important; border-radius: 50% !important; position: absolute; transition: all 0.2s ease-out; box-shadow: 0 0 10px rgba(255,255,255,0.5); z-index: 200; }
-        
         .quake-active { animation: extremeQuake 0.2s infinite; }
         .red-flash { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(255,0,0,0.3); pointer-events: none; z-index: 1000; animation: flashRed 0.3s infinite; display: none; }
 
@@ -188,7 +207,27 @@
             <div class="grid-menu">
                 <div class="menu-card" onclick="setup('runaway')">
                     <div class="card-icon"><i class="fas fa-person-running"></i></div>
-                    <div class="card-title">Runaway Classic</div>
+                    <div class="card-title">Runaway</div>
+                </div>
+                <div class="menu-card" onclick="setup('chat')">
+                    <div class="card-icon"><i class="fas fa-comments"></i></div>
+                    <div class="card-title">Chat Prank</div>
+                </div>
+                <div class="menu-card" onclick="setup('calc')">
+                    <div class="card-icon"><i class="fas fa-heart-pulse"></i></div>
+                    <div class="card-title">Love Calc</div>
+                </div>
+                <div class="menu-card" onclick="setup('sad')">
+                    <div class="card-icon"><i class="fas fa-face-sad-tear"></i></div>
+                    <div class="card-title">Emotional</div>
+                </div>
+                <div class="menu-card" onclick="setup('grow')">
+                    <div class="card-icon"><i class="fas fa-expand-alt"></i></div>
+                    <div class="card-title">Growing Yes</div>
+                </div>
+                <div class="menu-card" onclick="setup('crash')">
+                    <div class="card-icon"><i class="fas fa-bug"></i></div>
+                    <div class="card-title">System Crash</div>
                 </div>
                 <div class="menu-card" onclick="setup('clone')">
                     <div class="card-icon"><i class="fas fa-virus"></i></div>
@@ -229,7 +268,7 @@
             </div>
             <div class="input-group">
                 <i class="fab fa-whatsapp input-icon"></i>
-                <input type="number" id="waNum" placeholder="Your WhatsApp (Tracking)">
+                <input type="number" id="waNum" placeholder="WhatsApp (Optional)">
             </div>
 
             <input type="hidden" id="mode">
@@ -250,6 +289,37 @@
             </div>
         </div>
 
+        <div id="screen-chat" class="screen">
+            <div style="width:100%; margin-bottom:20px; font-size:1.5rem; font-weight:700;">
+                Chat with <span id="chatPartner" style="color:var(--primary)">Flux</span>
+            </div>
+            <div id="chat-ui">
+                <div class="chat-header">
+                    <div style="width:10px; height:10px; background:#0f0; border-radius:50%;"></div> Online
+                </div>
+                <div class="chat-msgs" id="chatHistory">
+                    <div class="msg bot">Hi! I have a question for you... 🥺</div>
+                </div>
+                <div class="chat-input">
+                    <input id="fakeInput" placeholder="Type your answer..." oninput="handleTyping()">
+                    <i class="fas fa-paper-plane" style="color:var(--primary); padding:10px; font-size:1.2rem;"></i>
+                </div>
+            </div>
+        </div>
+
+        <div id="screen-calc" class="screen">
+            <div style="font-size:1.5rem; font-weight:700; margin-bottom:30px;">Love Match ❤️</div>
+            <div class="calc-circle">100%</div>
+            <div style="margin-bottom: 40px; font-size:1.2rem; color:var(--accent);">Perfect Match!</div>
+            <button class="btn-main" onclick="sayYes()">Accept Match</button>
+        </div>
+
+        <div id="screen-crash" class="screen">
+            <div class="terminal" id="termText"></div>
+            <div class="alert-box" id="errBox">⚠️ CRITICAL ERROR ⚠️</div>
+            <button class="fix-btn" id="fixBtn" onclick="sayYes()">FIX SYSTEM (ACCEPT)</button>
+        </div>
+
         <div id="screen-success" class="screen">
             <div class="gif-container" style="border-color: var(--primary);">
                 <img src="https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif" alt="Kiss Goma">
@@ -258,7 +328,7 @@
             <p style="opacity:0.7;" id="trackMsg">Screenshot & Send to me!</p>
             
             <button id="waBtn" class="btn-main" style="display:none; background:#25D366; margin-top:20px;" onclick="sendWa()">
-                <i class="fab fa-whatsapp"></i> Confirm in Chat
+                <i class="fab fa-whatsapp"></i> Notify via WhatsApp
             </button>
             <button class="btn-main" style="background:transparent; border:1px solid #333; margin-top:15px;" onclick="location.href=location.pathname">
                 Create New
@@ -269,7 +339,7 @@
             <div class="expired-box">
                 <i class="fas fa-lock" style="font-size:4rem; color:#333; margin-bottom:20px;"></i>
                 <h2 style="margin-bottom:10px; color:#fff;">Link Expired</h2>
-                <p style="font-size:0.9rem;">This proposal is no longer active.</p>
+                <p style="font-size:0.9rem;">This proposal is already completed.</p>
             </div>
         </div>
 
@@ -283,11 +353,16 @@
             kiss: "https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif"
         };
         
+        const forcedText = "Yes! I love you so much! Will you marry me? ❤️";
+        const sadTexts = ["Please no! 🥺", "Don't break my heart 💔", "I'm crying... 😭", "You are my world!", "Okay, last chance..."];
+        
+        let typeIdx = 0;
+        let clickCount = 0;
         let waNumber = "";
         let linkID = "";
         let isRainActive = false;
 
-        // --- NAVIGATION ---
+        // --- NAVIGATION & UI ---
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('open');
             document.querySelector('.overlay').classList.toggle('active');
@@ -317,16 +392,25 @@
                     return;
                 }
 
-                document.getElementById('qText').innerHTML = `Hey <b>${r}</b>,<br>Do you love me?`;
-                initMode(m || 'runaway');
-                nav('proposal');
-                
+                if (m === 'chat') {
+                    document.getElementById('chatPartner').innerText = s;
+                    nav('chat');
+                } else if (m === 'calc') {
+                    nav('calc');
+                } else if (m === 'crash') {
+                    nav('crash');
+                    startCrash();
+                } else {
+                    document.getElementById('qText').innerHTML = `Hey <b>${r}</b>,<br>Do you love me?`;
+                    initMode(m || 'runaway');
+                    nav('proposal');
+                }
             } else {
                 nav('home');
             }
         };
 
-        // --- CREATOR ---
+        // --- CREATOR LOGIC ---
         function setup(mode) {
             document.getElementById('mode').value = mode;
             nav('create');
@@ -338,7 +422,7 @@
             const w = document.getElementById('waNum').value.trim();
             const m = document.getElementById('mode').value;
             
-            if(!s || !r) return alert("Please fill names!");
+            if(!s || !r) return alert("Please enter both names!");
             
             const id = Date.now().toString(36);
             const link = `${window.location.href.split('?')[0]}?id=${id}&s=${encodeURIComponent(s)}&r=${encodeURIComponent(r)}&m=${m}&w=${w}`;
@@ -349,12 +433,10 @@
             res.innerHTML = `<i class="fas fa-check-circle" style="color:#0f0;"></i> Link Copied!<br><div style="margin-top:5px; font-size:0.8rem; opacity:0.7;">Mode: ${m.toUpperCase()}</div>`;
         }
 
-        // --- MODES LOGIC ---
+        // --- ALL PRANK MODES LOGIC ---
         function initMode(mode) {
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
-            const body = document.body;
-            
             document.getElementById('mainImg').src = assets.ask;
 
             // 1. Runaway Classic
@@ -369,19 +451,42 @@
                 noBtn.ontouchstart = run;
             } 
             
-            // 2. Clone Army (Virus)
+            // 2. Growing Yes
+            else if (mode === 'grow') {
+                noBtn.onclick = () => {
+                    clickCount++;
+                    yesBtn.style.transform = `scale(${1 + clickCount * 0.5})`;
+                    yesBtn.style.zIndex = '999';
+                    if(clickCount > 5) noBtn.style.display = 'none';
+                };
+            }
+
+            // 3. Emotional
+            else if (mode === 'sad') {
+                noBtn.onclick = () => {
+                    document.getElementById('qText').innerText = sadTexts[clickCount % sadTexts.length];
+                    document.getElementById('mainImg').src = assets.sad;
+                    clickCount++;
+                    
+                    // Also move slightly
+                    noBtn.style.position = 'fixed';
+                    noBtn.style.left = Math.random() * (window.innerWidth - 140) + 'px';
+                    noBtn.style.top = Math.random() * (window.innerHeight - 60) + 'px';
+                };
+            }
+
+            // 4. Clone Army
             else if (mode === 'clone') {
                 noBtn.onclick = (e) => {
                     e.preventDefault();
                     noBtn.style.transform = 'scale(0)';
                     setTimeout(() => noBtn.style.display = 'none', 200);
                     
-                    // Click anywhere to spawn YES
                     document.getElementById('app').addEventListener('click', (ev) => {
                         let y = document.createElement('button');
                         y.className = 'btn-opt yes pulse-btn';
                         y.innerHTML = 'YES ❤️';
-                        y.style.left = (ev.clientX - 70) + 'px'; // center to finger
+                        y.style.left = (ev.clientX - 70) + 'px';
                         y.style.top = (ev.clientY - 30) + 'px';
                         y.onclick = sayYes;
                         document.getElementById('app').appendChild(y);
@@ -389,12 +494,11 @@
                 };
             }
 
-            // 3. The Swarm (Smart Flies)
+            // 5. The Swarm
             else if (mode === 'swarm') {
                 noBtn.onclick = (e) => {
                     e.preventDefault();
                     noBtn.style.display = 'none';
-                    
                     for(let i=0; i<12; i++) {
                         let n = document.createElement('button');
                         n.className = 'btn-opt no tiny-fly';
@@ -403,7 +507,6 @@
                         n.style.top = Math.random() * (window.innerHeight - 50) + 'px';
                         document.getElementById('app').appendChild(n);
                         
-                        // Evasion Logic
                         const evade = () => {
                             n.style.left = Math.random() * (window.innerWidth - 60) + 'px';
                             n.style.top = Math.random() * (window.innerHeight - 60) + 'px';
@@ -414,7 +517,7 @@
                 };
             }
 
-            // 4. Matrix Rain (3D Drop)
+            // 6. Matrix Rain
             else if (mode === 'matrix') {
                 noBtn.onclick = (e) => {
                     e.preventDefault();
@@ -431,7 +534,7 @@
                             y.style.left = Math.random() * window.innerWidth + 'px';
                             y.style.animation = `fall3D ${2 + Math.random()*2}s linear forwards`;
                             y.onclick = sayYes;
-                            y.ontouchstart = sayYes; // Auto accept if touched falling button
+                            y.ontouchstart = sayYes; 
                             document.getElementById('app').appendChild(y);
                             setTimeout(() => y.remove(), 4000);
                         }, 250);
@@ -439,12 +542,11 @@
                 };
             }
 
-            // 5. Heartbreak Earthquake
+            // 7. Earthquake
             else if (mode === 'quake') {
                 noBtn.onclick = (e) => {
                     e.preventDefault();
-                    const appEl = document.getElementById('app');
-                    appEl.classList.add('quake-active');
+                    document.getElementById('app').classList.add('quake-active');
                     document.getElementById('redFlash').style.display = 'block';
                     
                     document.getElementById('qText').innerHTML = "SYSTEM DAMAGED!<br><span style='font-size:1.2rem; color:#ff3333;'>Press YES to Repair!</span>";
@@ -453,11 +555,10 @@
                 };
             }
 
-            // 6. Shape-Shifter (3D Flip)
+            // 8. Shape-Shifter
             else if (mode === 'shape') {
                 const flipToYes = (e) => {
                     if(e) e.preventDefault();
-                    // 3D Flip animation
                     noBtn.style.transform = 'rotateY(90deg)';
                     setTimeout(() => {
                         noBtn.innerHTML = 'YES ❤️';
@@ -467,11 +568,36 @@
                             noBtn.onclick = sayYes;
                             noBtn.ontouchstart = sayYes;
                         }, 200);
-                    }, 150); // mid-flip text change
+                    }, 150);
                 };
                 noBtn.onmouseover = flipToYes;
                 noBtn.ontouchstart = flipToYes;
             }
+        }
+
+        // --- CHAT PRANK LOGIC ---
+        function handleTyping() {
+            const input = document.getElementById('fakeInput');
+            if (input.value.length > typeIdx) {
+                input.value = forcedText.substring(0, typeIdx + 1);
+                typeIdx++;
+            }
+            if (typeIdx >= forcedText.length) setTimeout(() => sayYes(), 800);
+        }
+
+        // --- CRASH LOGIC ---
+        function startCrash() {
+            const term = document.getElementById('termText');
+            let lines = ["INITIALIZING REJECTION PROTOCOL...", "ERROR 404: LOVE NOT FOUND...", "DELETING HEART.EXE...", "SYSTEM CORRUPTION DETECTED!"];
+            let i = 0;
+            let interval = setInterval(() => {
+                if(i < lines.length) { term.innerHTML += `<br>> ${lines[i]}`; i++; }
+                else {
+                    clearInterval(interval);
+                    document.getElementById('errBox').style.display = 'block';
+                    document.getElementById('fixBtn').style.display = 'block';
+                }
+            }, 800);
         }
 
         // --- SUCCESS & TRACKING ---
@@ -479,19 +605,16 @@
             nav('success');
             document.getElementById('app').classList.remove('quake-active');
             document.getElementById('redFlash').style.display = 'none';
-            isRainActive = false; // stop rain if active
+            isRainActive = false; 
             
-            // Lock Link (Expiry)
             if(linkID) localStorage.setItem('flux_' + linkID, 'done');
 
-            // WhatsApp Notification Trigger
             if(waNumber) {
                 document.getElementById('waBtn').style.display = 'block';
                 document.getElementById('trackMsg').innerHTML = "Auto-redirecting to WhatsApp...";
-                setTimeout(() => sendWa(), 2500); // 2.5s delay
+                setTimeout(() => sendWa(), 2500); 
             }
 
-            // HD Confetti
             for(let i=0; i<60; i++) {
                 setTimeout(() => {
                     const e = document.createElement('div');
