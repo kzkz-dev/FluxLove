@@ -14,7 +14,6 @@
             --primary: #ff0050;
             --accent: #00f3ff;
             --text: #ffffff;
-            --glass: rgba(255, 255, 255, 0.05);
             --border: rgba(255, 255, 255, 0.1);
         }
 
@@ -40,16 +39,6 @@
             box-shadow: 0 0 50px rgba(0,0,0,0.5);
             overflow: hidden;
         }
-
-        /* --- LOADING SCREEN --- */
-        #loader {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg); z-index: 3000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 0.5s ease;
-        }
-        .loader-icon { font-size: 3rem; color: var(--primary); animation: pulse 1.5s infinite; }
-        .loader-text { margin-top: 15px; font-size: 0.9rem; color: #666; letter-spacing: 2px; }
 
         /* --- SIDEBAR --- */
         #sidebar {
@@ -81,33 +70,31 @@
         .screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: none; flex-direction: column; align-items: center; justify-content: center;
-            padding: 25px; opacity: 0; transform: scale(0.95); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 25px; opacity: 0; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .screen.active { display: flex; opacity: 1; transform: scale(1); }
+        .screen.active { display: flex; opacity: 1; }
 
         /* --- 1. DASHBOARD --- */
         .top-bar { position: absolute; top: 25px; left: 25px; z-index: 100; }
         .menu-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; transition: 0.2s; }
-        .menu-btn:active { transform: scale(0.9); }
-
-        .brand-logo { margin-bottom: 15px; width: 80px; height: 80px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(255,0,80,0.3)); }
+        
+        .brand-logo { margin-bottom: 15px; width: 80px; height: 80px; object-fit: contain; }
         .brand-title { font-size: 2.8rem; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 5px; }
         .brand-title span { color: var(--primary); }
-        .brand-sub { color: #888; font-size: 0.9rem; margin-bottom: 40px; }
+        .brand-sub { color: #888; font-size: 0.9rem; margin-bottom: 30px; }
 
         .grid-menu {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; overflow-y: auto; padding-bottom: 20px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; overflow-y: auto; padding-bottom: 40px;
         }
         
         .menu-card {
             background: var(--surface); border: 1px solid var(--border);
-            border-radius: 20px; padding: 25px 15px; text-align: center;
-            cursor: pointer; transition: 0.3s; position: relative; overflow: hidden;
+            border-radius: 18px; padding: 20px 10px; text-align: center;
+            cursor: pointer; transition: 0.3s;
         }
-        .menu-card:hover { border-color: var(--primary); background: rgba(255,0,80,0.05); }
-        .menu-card:active { transform: scale(0.95); }
-        .card-icon { font-size: 1.8rem; margin-bottom: 12px; color: var(--accent); }
-        .card-title { font-size: 0.95rem; font-weight: 600; }
+        .menu-card:active { transform: scale(0.95); background: rgba(255,0,80,0.1); border-color: var(--primary); }
+        .card-icon { font-size: 1.8rem; margin-bottom: 10px; color: var(--accent); }
+        .card-title { font-size: 0.85rem; font-weight: 600; color: #eee; }
 
         /* --- 2. CREATE SCREEN --- */
         .nav-head { width: 100%; display: flex; align-items: center; margin-bottom: 40px; }
@@ -116,43 +103,27 @@
         
         .input-group { width: 100%; margin-bottom: 20px; position: relative; }
         .input-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #666; }
-        
         input {
             width: 100%; padding: 18px 18px 18px 45px; background: var(--surface);
             border: 1px solid var(--border); border-radius: 16px; color: white;
             font-size: 1rem; outline: none; transition: 0.3s;
         }
         input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(255,0,80,0.15); }
-        input::placeholder { color: #555; }
-
+        
         .btn-main {
             width: 100%; padding: 18px; background: linear-gradient(135deg, var(--primary), #ff4d6d);
             border: none; border-radius: 50px; color: white;
-            font-size: 1.1rem; font-weight: 700; cursor: pointer;
-            margin-top: 20px; box-shadow: 0 10px 30px rgba(255,0,80,0.3);
-            transition: 0.3s;
+            font-size: 1.1rem; font-weight: 700; cursor: pointer; margin-top: 15px;
         }
-        .btn-main:active { transform: scale(0.98); }
-
-        .result-box {
-            margin-top: 25px; padding: 20px; background: rgba(0,243,255,0.05);
-            border: 1px dashed var(--accent); border-radius: 16px;
-            font-size: 0.9rem; display: none; width: 100%; word-break: break-all; text-align: center;
-        }
+        .result-box { margin-top: 20px; padding: 15px; background: rgba(0,243,255,0.05); border: 1px dashed var(--accent); border-radius: 16px; font-size: 0.9rem; display: none; width: 100%; word-break: break-all; text-align: center; }
 
         /* --- 3. PROPOSAL SCREEN --- */
         .gif-container {
-            width: 280px; height: 280px; border-radius: 30px; overflow: hidden;
+            width: 250px; height: 250px; border-radius: 30px; overflow: hidden;
             margin-bottom: 40px; border: 1px solid var(--border);
             background: #000; box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-            position: relative;
-        }
-        .gif-container::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5); pointer-events: none;
         }
         .gif-container img { width: 100%; height: 100%; object-fit: cover; }
-
         .q-text { font-size: 2.2rem; font-weight: 800; margin-bottom: 60px; line-height: 1.2; text-shadow: 0 0 30px rgba(255,0,80,0.4); text-align: center; }
 
         .btn-zone { position: relative; width: 100%; height: 80px; display: flex; justify-content: center; gap: 20px; }
@@ -160,44 +131,41 @@
         .yes { background: var(--primary); color: white; z-index: 50; box-shadow: 0 0 25px var(--primary); }
         .no { background: white; color: black; position: absolute; z-index: 100; border: 3px solid var(--primary); }
 
-        /* --- 4. EXPIRED SCREEN --- */
-        .expired-box { text-align: center; color: #888; background: var(--surface); padding: 40px; border-radius: 30px; border: 1px solid var(--border); }
-        .expired-icon { font-size: 4rem; margin-bottom: 20px; color: #333; }
+        /* --- NEW MODES CSS --- */
+        .tiny-no { width: 50px !important; height: 50px !important; font-size: 0.8rem !important; border-radius: 50% !important; transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); }
+        
+        @keyframes quake {
+            0% { transform: translate(3px, 2px) rotate(0deg); }
+            10% { transform: translate(-3px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+        .quake-active { animation: quake 0.4s infinite; border: 5px solid red; }
 
-        /* --- SPECIAL MODES --- */
-        /* Chat UI */
-        #chat-ui { width: 100%; height: 350px; background: rgba(0,0,0,0.3); border-radius: 20px; display: flex; flex-direction: column; border: 1px solid var(--border); margin-bottom: 20px; overflow: hidden; }
-        .chat-header { padding: 15px; background: rgba(255,255,255,0.05); font-weight: 600; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); }
+        /* --- OTHERS --- */
+        #screen-crash { background: #000; font-family: 'Courier New', monospace; color: #0f0; padding: 20px; align-items: flex-start; z-index: 999; }
+        #chat-ui { width: 100%; height: 350px; background: rgba(0,0,0,0.3); border-radius: 20px; display: flex; flex-direction: column; border: 1px solid var(--border); margin-bottom: 20px; }
         .chat-msgs { flex: 1; padding: 20px; overflow-y: auto; text-align: left; }
-        .msg { padding: 10px 15px; border-radius: 12px; margin-bottom: 12px; max-width: 80%; font-size: 0.95rem; line-height: 1.4; }
+        .msg { padding: 10px 15px; border-radius: 12px; margin-bottom: 12px; max-width: 80%; font-size: 0.95rem; }
         .msg.bot { background: #333; color: white; align-self: flex-start; border-bottom-left-radius: 2px; }
         .msg.user { background: var(--primary); color: white; margin-left: auto; border-bottom-right-radius: 2px; }
         .chat-input { padding: 10px; border-top: 1px solid var(--border); display: flex; background: rgba(0,0,0,0.2); }
         #fakeInput { width: 100%; background: transparent; border: none; color: white; padding: 10px; outline: none; }
-        
-        /* Hacker Mode */
-        #screen-crash { background: #000; font-family: 'Courier New', monospace; color: #0f0; padding: 20px; align-items: flex-start; z-index: 999; }
-        .terminal { font-size: 0.9rem; line-height: 1.4; opacity: 0.8; }
-        .alert-box { 
-            background: rgba(255,0,0,0.2); color: #ff3333; padding: 20px; width: 100%; 
-            border: 1px solid #ff0000; margin-top: 40px; text-align: center; 
-            font-weight: bold; animation: flash 0.5s infinite; letter-spacing: 1px;
-        }
-        .fix-btn { background: #0f0; color: black; border: none; padding: 15px; width: 100%; margin-top: 30px; font-weight: 800; cursor: pointer; display: none; text-transform: uppercase; letter-spacing: 1px; }
 
-        @keyframes pulse { 0% {transform:scale(1);} 50% {transform:scale(1.1);} 100% {transform:scale(1);} }
-        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        @keyframes flash { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+        /* --- EXPIRED / SUCCESS --- */
+        .expired-box { text-align: center; color: #888; background: var(--surface); padding: 40px; border-radius: 30px; border: 1px solid var(--border); }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
     </style>
 </head>
 <body>
-
-    <div id="loader">
-        <i class="fas fa-heart loader-icon"></i>
-        <div class="loader-text">FLUXLOVE</div>
-    </div>
 
     <div id="app">
 
@@ -205,10 +173,8 @@
         <div id="sidebar">
             <div class="side-brand">Flux<span>Love</span></div>
             <div class="side-link" onclick="toggleMenu(); nav('home')"><i class="fas fa-th-large"></i> Dashboard</div>
-            <div class="side-link" onclick="window.open('https://github.com/kzkz-dev', '_blank')"><i class="fab fa-github"></i> Developer</div>
             <div class="side-link"><i class="fas fa-shield-alt"></i> Privacy & Terms</div>
             <div class="side-link"><i class="fas fa-star"></i> Rate Us</div>
-            
             <div class="side-footer">
                 Powered by <b>Flux AI</b><br>
                 Dev: <b>KAWCHUR</b><br>
@@ -223,28 +189,36 @@
 
             <img src="https://media.tenor.com/2yDAZyl-eXQAAAAC/cute-sad.gif" class="brand-logo" alt="Logo">
             <div class="brand-title">Flux<span>Love</span></div>
-            <div class="brand-sub">Professional Proposal System</div>
+            <div class="brand-sub">Professional Prank System</div>
 
             <div class="grid-menu">
                 <div class="menu-card" onclick="setup('runaway')">
                     <div class="card-icon"><i class="fas fa-person-running"></i></div>
-                    <div class="card-title">Runaway Button</div>
+                    <div class="card-title">Runaway</div>
+                </div>
+                <div class="menu-card" onclick="setup('clone')">
+                    <div class="card-icon"><i class="fas fa-copy"></i></div>
+                    <div class="card-title">Clone Army</div>
+                </div>
+                <div class="menu-card" onclick="setup('swarm')">
+                    <div class="card-icon"><i class="fas fa-bugs"></i></div>
+                    <div class="card-title">The Swarm</div>
+                </div>
+                <div class="menu-card" onclick="setup('matrix')">
+                    <div class="card-icon"><i class="fas fa-cloud-showers-heavy"></i></div>
+                    <div class="card-title">Matrix Rain</div>
+                </div>
+                <div class="menu-card" onclick="setup('quake')">
+                    <div class="card-icon"><i class="fas fa-heart-crack"></i></div>
+                    <div class="card-title">Earthquake</div>
+                </div>
+                <div class="menu-card" onclick="setup('shape')">
+                    <div class="card-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+                    <div class="card-title">Shape-Shifter</div>
                 </div>
                 <div class="menu-card" onclick="setup('chat')">
                     <div class="card-icon"><i class="fas fa-comments"></i></div>
                     <div class="card-title">Chat Prank</div>
-                </div>
-                <div class="menu-card" onclick="setup('calc')">
-                    <div class="card-icon"><i class="fas fa-heart-pulse"></i></div>
-                    <div class="card-title">Love Calc</div>
-                </div>
-                <div class="menu-card" onclick="setup('grow')">
-                    <div class="card-icon"><i class="fas fa-expand-alt"></i></div>
-                    <div class="card-title">Growing Yes</div>
-                </div>
-                <div class="menu-card" onclick="setup('sad')">
-                    <div class="card-icon"><i class="fas fa-face-sad-tear"></i></div>
-                    <div class="card-title">Emotional Mode</div>
                 </div>
                 <div class="menu-card" onclick="setup('crash')">
                     <div class="card-icon"><i class="fas fa-bug"></i></div>
@@ -256,7 +230,7 @@
         <div id="screen-create" class="screen">
             <div class="nav-head">
                 <button class="back-btn" onclick="nav('home')"><i class="fas fa-arrow-left"></i></button>
-                <div class="page-title">Create New Link</div>
+                <div class="page-title">Create Proposal</div>
             </div>
 
             <div class="input-group">
@@ -295,9 +269,6 @@
                 Chat with <span id="chatPartner" style="color:var(--primary)">Flux</span>
             </div>
             <div id="chat-ui">
-                <div class="chat-header">
-                    <div style="width:10px; height:10px; background:#0f0; border-radius:50%;"></div> Online
-                </div>
                 <div class="chat-msgs" id="chatHistory">
                     <div class="msg bot">Hi! I have a question for you... 🥺</div>
                 </div>
@@ -308,71 +279,47 @@
             </div>
         </div>
 
-        <div id="screen-calc" class="screen">
-            <div style="font-size:1.5rem; font-weight:700; margin-bottom:30px;">Compatibility Check</div>
-            <div style="width:180px; height:180px; border:5px solid var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:3rem; font-weight:900; margin-bottom:30px; box-shadow:0 0 40px rgba(255,0,80,0.3); animation:pulse 1.5s infinite;">
-                100%
-            </div>
-            <div style="margin-bottom: 40px; font-size:1.2rem; color:var(--accent);">Perfect Match Found! ❤️</div>
-            <button class="btn-main" onclick="sayYes()">Accept Destiny</button>
-        </div>
-
         <div id="screen-crash" class="screen">
             <div class="terminal" id="termText"></div>
-            <div class="alert-box" id="errBox">⚠️ CRITICAL SYSTEM FAILURE ⚠️</div>
-            <button class="fix-btn" id="fixBtn" onclick="sayYes()">REPAIR & ACCEPT LOVE</button>
+            <button class="btn-main" id="fixBtn" style="display:none; background:#0f0; color:black;" onclick="sayYes()">REPAIR & ACCEPT LOVE</button>
         </div>
 
         <div id="screen-success" class="screen">
             <div class="gif-container" style="border-color: var(--primary);">
                 <img src="https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif" alt="Kiss">
             </div>
-            <h1 style="color:var(--primary); font-size:2.5rem; margin-bottom:10px;">She Said YES! 🎉</h1>
-            <p style="opacity:0.7;">Confirmation sent via WhatsApp!</p>
+            <h1 style="color:var(--primary); font-size:2.5rem; margin-bottom:10px;">Yayyy! 🎉</h1>
+            <p style="opacity:0.7;" id="trackMsg">Screenshot & Send to me!</p>
             
             <button id="waBtn" class="btn-main" style="display:none; background:#25D366; margin-top:30px;" onclick="sendWa()">
-                <i class="fab fa-whatsapp"></i> Open WhatsApp
-            </button>
-            <button class="btn-main" style="background:transparent; border:1px solid #333; margin-top:15px;" onclick="location.href=location.pathname">
-                Create Another Link
+                <i class="fab fa-whatsapp"></i> Confirm via WhatsApp
             </button>
         </div>
 
         <div id="screen-expired" class="screen">
             <div class="expired-box">
-                <i class="fas fa-lock expired-icon"></i>
+                <i class="fas fa-lock" style="font-size: 3rem; margin-bottom: 20px;"></i>
                 <h2 style="margin-bottom:10px;">Link Expired</h2>
-                <p style="font-size:0.9rem;">This proposal has already been accepted.</p>
+                <p style="font-size:0.9rem;">This proposal has already been answered.</p>
             </div>
         </div>
 
     </div>
 
     <script>
-        // --- ASSETS ---
+        // --- ASSETS (PEACH GOMA) ---
         const assets = {
             ask: "https://media.tenor.com/2yDAZyl-eXQAAAAC/cute-sad.gif",
             sad: "https://media.tenor.com/8FkS0N7fQ2gAAAAC/sad-cry.gif",
             kiss: "https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif"
         };
-
-        const forcedText = "Yes! I love you so much! Will you marry me? ❤️";
-        const sadTexts = ["Please no! 🥺", "Don't break my heart 💔", "I'm crying... 😭", "You are my world!", "Okay, last chance..."];
         
+        const forcedText = "Yes! I love you so much! Will you marry me? ❤️";
         let typeIdx = 0;
-        let clickCount = 0;
         let waNumber = "";
         let linkID = "";
 
-        // --- LOADER ---
-        setTimeout(() => {
-            document.getElementById('loader').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-            }, 500);
-        }, 1500);
-
-        // --- NAVIGATION ---
+        // --- NAVIGATION & UI ---
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('open');
             document.querySelector('.overlay').classList.toggle('active');
@@ -395,7 +342,8 @@
             if (id && s && r) {
                 linkID = id;
                 waNumber = w;
-
+                
+                // Expiry Check
                 if (localStorage.getItem('flux_' + id) === 'done') {
                     nav('expired');
                     return;
@@ -404,8 +352,9 @@
                 if (m === 'chat') {
                     document.getElementById('chatPartner').innerText = s;
                     nav('chat');
-                } else if (m === 'calc') {
-                    nav('calc');
+                } else if (m === 'crash') {
+                    nav('crash');
+                    startCrash();
                 } else {
                     document.getElementById('qText').innerHTML = `Hey <b>${r}</b>,<br>Do you love me?`;
                     initMode(m || 'runaway');
@@ -416,7 +365,7 @@
             }
         };
 
-        // --- CREATOR ---
+        // --- CREATOR LOGIC ---
         function setup(mode) {
             document.getElementById('mode').value = mode;
             nav('create');
@@ -436,94 +385,151 @@
             navigator.clipboard.writeText(link);
             const res = document.getElementById('result');
             res.style.display = 'block';
-            res.innerHTML = `<i class="fas fa-check-circle" style="color:#0f0;"></i> Link Copied!<br><div style="margin-top:5px; font-size:0.8rem; opacity:0.7;">Style: ${m.toUpperCase()}</div>`;
+            res.innerHTML = `<i class="fas fa-check-circle" style="color:#0f0;"></i> Link Copied!<br><div style="margin-top:5px; font-size:0.8rem; opacity:0.7;">Mode: ${m.toUpperCase()}</div>`;
         }
 
-        // --- MODES LOGIC ---
+        // --- ALL PRANK MODES LOGIC ---
         function initMode(mode) {
             const noBtn = document.getElementById('noBtn');
-            const newBtn = noBtn.cloneNode(true);
-            noBtn.parentNode.replaceChild(newBtn, noBtn);
-            const btn = document.getElementById('noBtn');
-            
+            const yesBtn = document.getElementById('yesBtn');
             document.getElementById('mainImg').src = assets.ask;
 
+            // 1. Runaway
             if(mode === 'runaway') {
-                btn.onclick = moveBtn;
-                btn.ontouchstart = (e) => { e.preventDefault(); moveBtn(); };
-                btn.onmouseover = moveBtn;
+                const run = (e) => {
+                    if(e) e.preventDefault();
+                    noBtn.style.position = 'fixed';
+                    noBtn.style.left = Math.random() * (window.innerWidth - 140) + 'px';
+                    noBtn.style.top = Math.random() * (window.innerHeight - 60) + 'px';
+                };
+                noBtn.onmouseover = run;
+                noBtn.ontouchstart = run;
             } 
-            else if (mode === 'grow') {
-                btn.onclick = () => {
-                    clickCount++;
-                    const yes = document.getElementById('yesBtn');
-                    yes.style.transform = `scale(${1 + clickCount * 0.5})`;
-                    yes.style.zIndex = '999';
-                    if(clickCount > 5) btn.style.display = 'none';
+            
+            // 2. Clone Army
+            else if (mode === 'clone') {
+                noBtn.onclick = (e) => {
+                    e.preventDefault();
+                    noBtn.style.display = 'none'; // Hide Original NO
+                    for(let i=0; i<3; i++) {
+                        let y = document.createElement('button');
+                        y.className = 'btn-opt yes';
+                        y.innerHTML = 'YES ❤️';
+                        y.style.position = 'fixed';
+                        y.style.left = Math.random() * (window.innerWidth - 140) + 'px';
+                        y.style.top = Math.random() * (window.innerHeight - 60) + 'px';
+                        y.onclick = sayYes;
+                        document.body.appendChild(y);
+                    }
                 };
             }
-            else if (mode === 'sad') {
-                btn.onclick = () => {
-                    document.getElementById('qText').innerText = sadTexts[clickCount % sadTexts.length];
+
+            // 3. The Swarm (Tiny NOs)
+            else if (mode === 'swarm') {
+                noBtn.onclick = (e) => {
+                    e.preventDefault();
+                    noBtn.style.display = 'none';
+                    for(let i=0; i<10; i++) {
+                        let n = document.createElement('button');
+                        n.className = 'btn-opt no tiny-no';
+                        n.innerHTML = 'NO';
+                        n.style.position = 'fixed';
+                        n.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+                        n.style.top = Math.random() * (window.innerHeight - 50) + 'px';
+                        document.body.appendChild(n);
+                        
+                        setInterval(() => {
+                            n.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+                            n.style.top = Math.random() * (window.innerHeight - 50) + 'px';
+                        }, 500 + Math.random()*300);
+                    }
+                };
+            }
+
+            // 4. Matrix Rain
+            else if (mode === 'matrix') {
+                noBtn.onclick = (e) => {
+                    e.preventDefault();
+                    noBtn.style.display = 'none';
+                    setInterval(() => {
+                        let y = document.createElement('button');
+                        y.className = 'btn-opt yes';
+                        y.innerHTML = 'YES ❤️';
+                        y.style.position = 'fixed';
+                        y.style.left = Math.random() * window.innerWidth + 'px';
+                        y.style.top = '-80px';
+                        y.style.animation = `fall ${2 + Math.random()*2}s linear forwards`;
+                        y.onclick = sayYes;
+                        document.body.appendChild(y);
+                        setTimeout(() => y.remove(), 4000);
+                    }, 300);
+                };
+            }
+
+            // 5. Heartbreak Earthquake
+            else if (mode === 'quake') {
+                noBtn.onclick = (e) => {
+                    e.preventDefault();
+                    document.getElementById('app').classList.add('quake-active');
+                    document.getElementById('qText').innerHTML = "<span style='color:red;'>You broke my heart! 💔</span><br>Press YES to fix it!";
                     document.getElementById('mainImg').src = assets.sad;
-                    clickCount++;
-                    moveBtn();
+                    noBtn.style.display = 'none'; // hide No
                 };
             }
-            else if (mode === 'crash') {
-                btn.onclick = () => {
-                    nav('crash');
-                    startCrash();
+
+            // 6. Shape-Shifter
+            else if (mode === 'shape') {
+                const shiftToYes = (e) => {
+                    if(e) e.preventDefault();
+                    noBtn.innerHTML = 'YES ❤️';
+                    noBtn.className = 'btn-opt yes';
+                    setTimeout(() => { noBtn.onclick = sayYes; noBtn.ontouchstart = sayYes; }, 100);
                 };
+                noBtn.onmouseover = shiftToYes;
+                noBtn.ontouchstart = shiftToYes;
             }
         }
 
-        function moveBtn() {
-            const btn = document.getElementById('noBtn');
-            btn.style.position = 'fixed';
-            const x = Math.random() * (window.innerWidth - 140);
-            const y = Math.random() * (window.innerHeight - 60);
-            btn.style.left = Math.max(10, x) + 'px';
-            btn.style.top = Math.max(10, y) + 'px';
-        }
-
-        // --- CHAT ---
+        // --- CHAT PRANK LOGIC ---
         function handleTyping() {
             const input = document.getElementById('fakeInput');
-            const val = input.value;
-            if (val.length > typeIdx) {
+            if (input.value.length > typeIdx) {
                 input.value = forcedText.substring(0, typeIdx + 1);
                 typeIdx++;
             }
             if (typeIdx >= forcedText.length) setTimeout(() => sayYes(), 800);
         }
 
-        // --- CRASH ---
+        // --- CRASH LOGIC ---
         function startCrash() {
             const term = document.getElementById('termText');
-            let lines = ["INITIALIZING REJECTION PROTOCOL...", "ERROR 404: LOVE NOT FOUND...", "DELETING HEART.EXE...", "SYSTEM CORRUPTION DETECTED..."];
+            let lines = ["INITIALIZING REJECTION...", "ERROR 404: LOVE NOT FOUND...", "SYSTEM OVERHEATING...", "CRITICAL DAMAGE DETECTED!"];
             let i = 0;
             let interval = setInterval(() => {
-                if(i < lines.length) { term.innerHTML += `> ${lines[i]}<br>`; i++; }
+                if(i < lines.length) { term.innerHTML += `<br>> ${lines[i]}`; i++; }
                 else {
                     clearInterval(interval);
-                    document.getElementById('errBox').style.display = 'block';
                     document.getElementById('fixBtn').style.display = 'block';
                 }
             }, 800);
         }
 
-        // --- SUCCESS ---
+        // --- SUCCESS & TRACKING ---
         function sayYes() {
             nav('success');
+            document.getElementById('app').classList.remove('quake-active');
+            
+            // Mark Link as Expired
             if(linkID) localStorage.setItem('flux_' + linkID, 'done');
 
+            // Trigger WhatsApp if provided
             if(waNumber) {
                 document.getElementById('waBtn').style.display = 'block';
-                // Auto redirect attempt
+                document.getElementById('trackMsg').innerHTML = "Auto-redirecting to WhatsApp...";
                 setTimeout(() => sendWa(), 2500);
             }
 
+            // Confetti
             for(let i=0; i<60; i++) {
                 setTimeout(() => {
                     const e = document.createElement('div');
@@ -542,10 +548,6 @@
         function sendWa() {
             window.location.href = `https://wa.me/${waNumber}?text=Yes! I accepted your proposal! ❤️`;
         }
-
-        const css = document.createElement('style');
-        css.innerHTML = `@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }`;
-        document.head.appendChild(css);
 
     </script>
 </body>
