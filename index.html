@@ -4,18 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>FluxLove App</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --bg: #09090b;
-            --surface: #18181b;
+            --bg: #050505;
+            --surface: #121212;
             --primary: #ff0050;
             --accent: #00f3ff;
             --text: #ffffff;
-            --text-dim: #888888;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
@@ -31,7 +29,6 @@
             justify-content: center;
         }
 
-        /* --- APP SHELL --- */
         #app {
             width: 100%; height: 100%; max-width: 480px;
             background: radial-gradient(circle at top, #2a0b14 0%, var(--bg) 70%);
@@ -41,132 +38,97 @@
             overflow: hidden;
         }
 
-        /* --- SIDEBAR MENU --- */
+        /* --- SIDEBAR --- */
         #sidebar {
             position: absolute; top: 0; left: 0; width: 75%; height: 100%;
             background: rgba(10, 10, 10, 0.98); backdrop-filter: blur(15px);
-            z-index: 2000; transform: translateX(-100%); transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2000; transform: translateX(-100%); transition: 0.3s;
             border-right: 1px solid rgba(255,255,255,0.1);
             padding: 30px; display: flex; flex-direction: column;
         }
         #sidebar.open { transform: translateX(0); }
-        
         .overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); z-index: 1500; display: none; opacity: 0; transition: opacity 0.3s;
+            background: rgba(0,0,0,0.6); z-index: 1500; display: none;
         }
-        .overlay.active { display: block; opacity: 1; }
+        .overlay.active { display: block; }
 
-        .side-brand { font-size: 2rem; font-weight: 800; color: var(--text); margin-bottom: 40px; letter-spacing: -1px; }
+        .side-brand { font-size: 2rem; font-weight: 800; margin-bottom: 40px; }
         .side-brand span { color: var(--primary); }
-        
-        .side-link { 
-            color: #ddd; margin-bottom: 25px; font-size: 1.1rem; 
-            display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.2s;
-        }
-        .side-link:hover { color: var(--primary); }
-        .side-link i { width: 25px; color: var(--accent); }
-        
-        .side-footer { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
-        .dev-info { font-size: 0.85rem; color: #666; line-height: 1.8; }
-        .dev-info b { color: var(--primary); font-weight: 700; }
-        .copy-text { margin-top: 5px; font-size: 0.75rem; color: #444; }
+        .side-link { margin-bottom: 20px; font-size: 1.1rem; color: #ddd; display: flex; gap: 10px; cursor: pointer; }
+        .side-link i { color: var(--accent); }
+        .dev-info { margin-top: auto; font-size: 0.8rem; color: #666; line-height: 1.6; }
 
         /* --- SCREENS --- */
         .screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: none; flex-direction: column; align-items: center; justify-content: center;
-            padding: 25px; opacity: 0; transition: opacity 0.3s ease;
+            padding: 20px; opacity: 0; transition: opacity 0.3s ease;
         }
         .screen.active { display: flex; opacity: 1; }
 
-        /* --- 1. HOME SCREEN --- */
-        .top-nav { position: absolute; top: 20px; left: 20px; z-index: 100; }
-        .menu-btn { background: none; border: none; color: white; font-size: 1.6rem; cursor: pointer; }
+        /* --- 1. HOME (DASHBOARD) --- */
+        .top-bar { position: absolute; top: 20px; left: 20px; z-index: 100; }
+        .menu-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
 
-        .logo-area { margin-bottom: 20px; animation: float 3s infinite ease-in-out; }
-        .logo-img { width: 120px; height: 120px; object-fit: contain; } /* Peach Goma Logo */
-
-        .brand-main { font-size: 3.5rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 40px; line-height: 1; }
+        .logo-area img { width: 100px; margin-bottom: 10px; }
+        .brand-main { font-size: 3rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 30px; }
         .brand-main span { color: var(--primary); }
 
-        .grid-menu {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%;
-        }
-        
-        .menu-card {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 20px; padding: 25px 15px; text-align: center;
-            cursor: pointer; transition: 0.2s;
-        }
-        .menu-card:active { background: rgba(255,0,80,0.15); border-color: var(--primary); transform: scale(0.96); }
-        .card-icon { font-size: 2rem; margin-bottom: 12px; color: var(--accent); }
-        .card-title { font-size: 1rem; font-weight: 600; color: #eee; }
-
-        /* --- 2. CREATE SCREEN --- */
-        .nav-header { width: 100%; display: flex; align-items: center; margin-bottom: 40px; }
-        .back-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
-        .page-title { margin-left: 15px; font-size: 1.3rem; font-weight: 700; }
-
-        .input-wrapper { width: 100%; margin-bottom: 20px; }
-        .input-label { display: block; font-size: 0.85rem; color: var(--text-dim); margin-bottom: 8px; margin-left: 5px; }
-        
-        input {
-            width: 100%; padding: 18px; background: var(--surface);
-            border: 1px solid #333; border-radius: 16px;
-            color: white; font-size: 1.1rem;
-            text-align: center; outline: none; transition: 0.3s;
-        }
-        input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(255,0,80,0.1); }
-
-        .btn-action {
+        .btn-create {
             width: 100%; padding: 18px; background: var(--primary);
             border: none; border-radius: 50px; color: white;
             font-size: 1.2rem; font-weight: 700; cursor: pointer;
-            margin-top: 20px; box-shadow: 0 10px 30px rgba(255,0,80,0.3);
+            box-shadow: 0 10px 30px rgba(255,0,80,0.3); margin-bottom: 30px;
         }
 
+        .history-title { width: 100%; text-align: left; font-size: 0.9rem; color: var(--accent); margin-bottom: 10px; font-weight: 600; }
+        .history-list {
+            width: 100%; flex: 1; overflow-y: auto; padding-bottom: 20px;
+        }
+        .history-item {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px; padding: 15px; margin-bottom: 10px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .h-info { font-size: 0.9rem; color: #ddd; }
+        .h-date { font-size: 0.7rem; color: #666; }
+        .btn-del { background: none; border: none; color: #ff4d6d; cursor: pointer; font-size: 1rem; }
+
+        /* --- 2. CREATE SCREEN --- */
+        .nav-head { width: 100%; display: flex; align-items: center; margin-bottom: 40px; }
+        .input-group { width: 100%; margin-bottom: 20px; }
+        .label { display: block; font-size: 0.8rem; color: #888; margin-bottom: 5px; margin-left: 5px; }
+        input {
+            width: 100%; padding: 16px; background: var(--surface);
+            border: 1px solid #333; border-radius: 12px; color: white;
+            font-size: 1.1rem; text-align: center; outline: none;
+        }
+        input:focus { border-color: var(--primary); }
+        
         .result-area {
-            margin-top: 25px; padding: 15px; background: rgba(0,243,255,0.1);
+            margin-top: 20px; padding: 15px; background: rgba(0,243,255,0.1);
             border: 1px solid var(--accent); border-radius: 12px;
-            font-size: 0.9rem; display: none; width: 100%; word-break: break-all;
-            text-align: center;
+            font-size: 0.85rem; display: none; width: 100%; word-break: break-all;
         }
 
         /* --- 3. PROPOSAL SCREEN --- */
         .gif-box {
-            width: 260px; height: 260px; border-radius: 24px; overflow: hidden;
-            margin-bottom: 40px; border: 2px solid rgba(255,255,255,0.05);
-            background: #000; box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            width: 250px; height: 250px; border-radius: 20px; overflow: hidden;
+            margin-bottom: 40px; border: 2px solid rgba(255,255,255,0.1); background: black;
         }
         .gif-box img { width: 100%; height: 100%; object-fit: cover; }
+        .q-text { font-size: 2rem; font-weight: 800; margin-bottom: 60px; line-height: 1.3; }
+        .btn-zone { position: relative; width: 100%; height: 80px; display: flex; justify-content: center; gap: 20px; }
+        .btn-opt { width: 130px; height: 55px; border-radius: 50px; font-size: 1.2rem; font-weight: 700; border: none; cursor: pointer; }
+        .yes { background: var(--primary); color: white; z-index: 50; box-shadow: 0 0 20px var(--primary); }
+        .no { background: white; color: black; position: absolute; z-index: 100; border: 2px solid var(--primary); }
 
-        .question-main { font-size: 2.2rem; font-weight: 800; margin-bottom: 60px; line-height: 1.3; text-shadow: 0 0 30px rgba(255,0,80,0.4); }
+        /* --- 4. EXPIRED SCREEN --- */
+        .expired-box { text-align: center; color: #666; }
+        .expired-icon { font-size: 3rem; margin-bottom: 20px; color: #333; }
 
-        .btn-group { position: relative; width: 100%; height: 80px; display: flex; justify-content: center; gap: 25px; }
-        .btn-opt { width: 140px; height: 60px; border-radius: 50px; font-size: 1.3rem; font-weight: 700; border: none; cursor: pointer; transition: 0.2s; }
-        .yes { background: var(--primary); color: white; z-index: 50; box-shadow: 0 0 25px var(--primary); }
-        .no { background: white; color: black; position: absolute; z-index: 100; border: 3px solid var(--primary); }
-
-        /* --- 4. SUCCESS SCREEN --- */
-        .success-title { color: var(--primary); font-size: 2.5rem; font-weight: 900; margin-top: 20px; }
-
-        /* --- 5. HACKER SCREEN --- */
-        #screen-crash { background: black; font-family: 'Courier New', monospace; color: #0f0; text-align: left; padding: 25px; align-items: flex-start; z-index: 999; }
-        .terminal { font-size: 0.95rem; line-height: 1.6; }
-        .alert-box { 
-            background: red; color: white; padding: 15px; text-align: center; 
-            font-weight: bold; margin-top: 30px; width: 100%; border: 2px solid white;
-            display: none; animation: flash 0.4s infinite; font-family: sans-serif;
-        }
-        .fix-system-btn {
-            background: #0f0; color: black; border: none; padding: 15px; 
-            width: 100%; margin-top: 30px; font-weight: 800; cursor: pointer; display: none; text-transform: uppercase;
-        }
-
-        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        @keyframes flash { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        @keyframes fall { to { transform: translateY(110vh); } }
 
     </style>
 </head>
@@ -177,70 +139,55 @@
         <div class="overlay" onclick="toggleMenu()"></div>
         <div id="sidebar">
             <div class="side-brand">Flux<span>Love</span></div>
-            
-            <div class="side-link" onclick="toggleMenu(); nav('home')"><i class="fas fa-home"></i> Home</div>
-            <div class="side-link"><i class="fas fa-gem"></i> Premium Features</div>
-            <div class="side-link"><i class="fas fa-cog"></i> Settings</div>
-            
-            <div class="side-footer">
-                <div class="dev-info">
-                    Powered by <b>Flux AI</b><br>
-                    Dev: <b>KAWCHUR</b><br>
-                    <div class="copy-text">&copy; 2026 FluxLove Inc.</div>
-                </div>
+            <div class="side-link" onclick="toggleMenu(); nav('home')"><i class="fas fa-home"></i> Dashboard</div>
+            <div class="side-link"><i class="fas fa-heart"></i> About</div>
+            <div class="dev-info">
+                Powered by <b>Flux AI</b><br>
+                Dev: <b>KAWCHUR</b><br>
+                &copy; 2026 FluxLove
             </div>
         </div>
 
         <div id="screen-home" class="screen active">
-            <div class="top-nav">
+            <div class="top-bar">
                 <button class="menu-btn" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
             </div>
 
             <div class="logo-area">
-                <img src="https://media.tenor.com/2yDAZyl-eXQAAAAC/cute-sad.gif" class="logo-img" alt="Logo">
+                <img src="https://media.tenor.com/2yDAZyl-eXQAAAAC/cute-sad.gif" alt="Logo">
             </div>
-
             <div class="brand-main">Flux<span>Love</span></div>
 
-            <div class="grid-menu">
-                <div class="menu-card" onclick="setup('runaway')">
-                    <div class="card-icon"><i class="fas fa-person-running"></i></div>
-                    <div class="card-title">Runaway</div>
-                </div>
-                <div class="menu-card" onclick="setup('grow')">
-                    <div class="card-icon"><i class="fas fa-expand-arrows-alt"></i></div>
-                    <div class="card-title">Growing Yes</div>
-                </div>
-                <div class="menu-card" onclick="setup('sad')">
-                    <div class="card-icon"><i class="fas fa-face-sad-tear"></i></div>
-                    <div class="card-title">Emotional</div>
-                </div>
-                <div class="menu-card" onclick="setup('crash')">
-                    <div class="card-icon"><i class="fas fa-bug"></i></div>
-                    <div class="card-title">System Crash</div>
-                </div>
+            <button class="btn-create" onclick="nav('create')">
+                <i class="fas fa-plus"></i> Create New Link
+            </button>
+
+            <div class="history-title">RECENT LINKS</div>
+            <div class="history-list" id="historyList">
+                <div style="text-align:center; color:#444; font-size:0.8rem; margin-top:20px;">No links created yet.</div>
             </div>
         </div>
 
         <div id="screen-create" class="screen">
-            <div class="nav-header">
-                <button class="back-btn" onclick="nav('home')"><i class="fas fa-arrow-left"></i></button>
-                <div class="page-title">Setup Proposal</div>
+            <div class="nav-head">
+                <button class="menu-btn" onclick="nav('home')"><i class="fas fa-arrow-left"></i></button>
+                <span style="font-weight:700; font-size:1.2rem; margin-left:15px;">New Proposal</span>
             </div>
 
-            <div class="input-wrapper">
-                <span class="input-label">Your Name</span>
+            <div class="input-group">
+                <span class="label">Your Name</span>
                 <input type="text" id="sName" placeholder="Name">
             </div>
-            
-            <div class="input-wrapper">
-                <span class="input-label">Crush's Name</span>
+            <div class="input-group">
+                <span class="label">Crush's Name</span>
                 <input type="text" id="rName" placeholder="Name">
             </div>
+            <div class="input-group">
+                <span class="label">Your WhatsApp (For Tracking)</span>
+                <input type="number" id="waNum" placeholder="Phone (with country code)">
+            </div>
 
-            <input type="hidden" id="mode">
-
-            <button class="btn-action" onclick="genLink()">Generate Link 🔗</button>
+            <button class="btn-create" onclick="createLink()">Generate Link 🔗</button>
             <div id="result" class="result-area"></div>
         </div>
 
@@ -248,177 +195,182 @@
             <div class="gif-box">
                 <img id="mainImg" src="https://media.tenor.com/2yDAZyl-eXQAAAAC/cute-sad.gif" alt="Cute">
             </div>
-            <div class="question-main" id="qText">Do you love me?</div>
+            <div class="q-text" id="qText">Do you love me?</div>
 
-            <div class="btn-group">
-                <button class="btn-opt yes" id="yesBtn" onclick="sayYes()">YES ❤️</button>
+            <div class="btn-zone">
+                <button class="btn-opt yes" onclick="sayYes()">YES ❤️</button>
                 <button class="btn-opt no" id="noBtn">NO 💔</button>
             </div>
         </div>
 
-        <div id="screen-crash" class="screen">
-            <div class="terminal" id="termText"></div>
-            <div class="alert-box" id="errBox">SYSTEM FAILURE!</div>
-            <button class="fix-system-btn" id="fixBtn" onclick="sayYes()">RECOVER (ACCEPT LOVE)</button>
-        </div>
-
-        <div id="screen-success" class="screen">
-            <div class="gif-box" style="border-color: var(--primary);">
-                <img src="https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif" alt="Kiss">
+        <div id="screen-expired" class="screen">
+            <div class="expired-box">
+                <i class="fas fa-lock expired-icon"></i>
+                <h2>Link Inactive</h2>
+                <p>This proposal has already been responded to.</p>
             </div>
-            <div class="success-title">Yayyy! 😘</div>
-            <p style="opacity: 0.7; margin-top: 10px;">Screenshot & Send to me!</p>
-            
-            <button class="btn-action" style="width: auto; padding: 12px 30px; margin-top: 40px;" onclick="location.href=location.pathname">
-                Create New
-            </button>
         </div>
 
     </div>
 
     <script>
-        // --- ASSETS (Official Tenor Links) ---
+        // --- ASSETS ---
         const assets = {
             ask: "https://media.tenor.com/2yDAZyl-eXQAAAAC/cute-sad.gif",
-            sad: "https://media.tenor.com/8FkS0N7fQ2gAAAAC/sad-cry.gif",
             kiss: "https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif"
         };
 
-        const sadTexts = ["Please no! 🥺", "Don't break my heart 💔", "I'm crying... 😭", "You are my world!", "Okay, last chance..."];
-        let clickCount = 0;
+        // --- STATE ---
+        let currentLinkID = null;
+        let waNumber = "";
 
-        // --- SIDEBAR ---
+        // --- NAVIGATION ---
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('open');
             document.querySelector('.overlay').classList.toggle('active');
         }
 
-        // --- NAVIGATION ---
         function nav(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('screen-' + id).classList.add('active');
+            if(id === 'home') renderHistory();
         }
 
         // --- INIT ---
         window.onload = () => {
             const p = new URLSearchParams(window.location.search);
+            const id = p.get('id');
             const s = p.get('s');
             const r = p.get('r');
-            const m = p.get('m');
+            const w = p.get('w');
 
-            if(s && r) {
-                document.getElementById('qText').innerHTML = `Hey <b>${r}</b>,<br>Do you love me?`;
-                initMode(m || 'runaway');
-                nav('proposal');
+            if (id && s && r) {
+                // RECIPIENT MODE
+                currentLinkID = id;
+                waNumber = w;
+                
+                // Check if already accepted (Browser Storage)
+                const status = localStorage.getItem('flux_status_' + id);
+                if (status === 'accepted') {
+                    nav('expired');
+                } else {
+                    document.getElementById('qText').innerHTML = `Hey <b>${r}</b>,<br>Do you love me?`;
+                    initButtons();
+                    nav('proposal');
+                }
             } else {
+                // CREATOR MODE
                 nav('home');
             }
         };
 
-        // --- CREATOR ---
-        function setup(mode) {
-            document.getElementById('mode').value = mode;
-            nav('create');
-        }
-
-        function genLink() {
+        // --- CREATOR LOGIC ---
+        function createLink() {
             const s = document.getElementById('sName').value.trim();
             const r = document.getElementById('rName').value.trim();
-            const m = document.getElementById('mode').value;
+            const w = document.getElementById('waNum').value.trim();
             
-            if(!s || !r) return alert("Please enter names!");
+            if(!s || !r) return alert("Enter names!");
+
+            const id = Date.now().toString(36); // Unique ID
+            const link = `${window.location.href.split('?')[0]}?id=${id}&s=${encodeURIComponent(s)}&r=${encodeURIComponent(r)}&w=${w}`;
             
-            const link = `${location.href.split('?')[0]}?s=${encodeURIComponent(s)}&r=${encodeURIComponent(r)}&m=${m}`;
+            // Save to History
+            const history = JSON.parse(localStorage.getItem('flux_history') || "[]");
+            history.unshift({ id, name: r, date: new Date().toLocaleDateString(), link });
+            localStorage.setItem('flux_history', JSON.stringify(history));
+
+            // Show Result
             navigator.clipboard.writeText(link);
-            
             const res = document.getElementById('result');
             res.style.display = 'block';
-            res.innerHTML = `<b>Link Copied! ✅</b><br>Mode: ${m.toUpperCase()}`;
-        }
-
-        // --- MODES LOGIC ---
-        function initMode(mode) {
-            const noBtn = document.getElementById('noBtn');
-            const newBtn = noBtn.cloneNode(true); // Remove old listeners
-            noBtn.parentNode.replaceChild(newBtn, noBtn);
-            const btn = document.getElementById('noBtn');
+            res.innerHTML = `<b>Link Copied! ✅</b><br>Send to ${r}`;
             
-            // Reset Image
-            document.getElementById('mainImg').src = assets.ask;
-
-            if(mode === 'runaway') {
-                btn.onclick = moveBtn;
-                btn.ontouchstart = (e) => { e.preventDefault(); moveBtn(); };
-                btn.onmouseover = moveBtn;
-            } 
-            else if (mode === 'grow') {
-                btn.onclick = () => {
-                    clickCount++;
-                    const yes = document.getElementById('yesBtn');
-                    yes.style.transform = `scale(${1 + clickCount * 0.5})`;
-                    yes.style.zIndex = '999';
-                    if(clickCount > 5) btn.style.display = 'none';
-                };
-            }
-            else if (mode === 'sad') {
-                btn.onclick = () => {
-                    document.getElementById('qText').innerText = sadTexts[clickCount % sadTexts.length];
-                    document.getElementById('mainImg').src = assets.sad;
-                    clickCount++;
-                    moveBtn();
-                };
-            }
-            else if (mode === 'crash') {
-                btn.onclick = () => {
-                    nav('crash');
-                    startCrash();
-                };
-            }
+            // Clear inputs
+            document.getElementById('rName').value = "";
         }
 
-        function moveBtn() {
-            const btn = document.getElementById('noBtn');
-            btn.style.position = 'fixed';
-            const x = Math.random() * (window.innerWidth - 100);
-            const y = Math.random() * (window.innerHeight - 50);
-            btn.style.left = Math.max(10, x) + 'px';
-            btn.style.top = Math.max(10, y) + 'px';
+        function renderHistory() {
+            const list = document.getElementById('historyList');
+            const history = JSON.parse(localStorage.getItem('flux_history') || "[]");
+            
+            if(history.length === 0) {
+                list.innerHTML = '<div style="text-align:center; color:#444; font-size:0.8rem; margin-top:20px;">No links created yet.</div>';
+                return;
+            }
+
+            list.innerHTML = history.map((item, index) => `
+                <div class="history-item">
+                    <div>
+                        <div class="h-info">To: <b>${item.name}</b></div>
+                        <div class="h-date">${item.date}</div>
+                    </div>
+                    <button class="btn-del" onclick="deleteLink(${index})"><i class="fas fa-trash"></i></button>
+                </div>
+            `).join('');
         }
 
-        function startCrash() {
-            const term = document.getElementById('termText');
-            let lines = ["INITIALIZING REJECTION...", "ERROR 404: LOVE NOT FOUND", "DELETING HEART.EXE...", "CRITICAL SYSTEM FAILURE!"];
-            let i = 0;
-            let interval = setInterval(() => {
-                if(i < lines.length) { term.innerHTML += `> ${lines[i]}<br>`; i++; }
-                else {
-                    clearInterval(interval);
-                    document.getElementById('errBox').style.display = 'block';
-                    document.getElementById('fixBtn').style.display = 'block';
-                }
-            }, 600);
+        function deleteLink(index) {
+            const history = JSON.parse(localStorage.getItem('flux_history') || "[]");
+            history.splice(index, 1);
+            localStorage.setItem('flux_history', JSON.stringify(history));
+            renderHistory();
         }
 
-        // --- SUCCESS ---
+        // --- RECIPIENT LOGIC ---
+        function initButtons() {
+            const noBtn = document.getElementById('noBtn');
+            // Runaway Logic
+            const run = (e) => {
+                e.preventDefault();
+                noBtn.style.position = 'fixed';
+                const x = Math.random() * (window.innerWidth - 100);
+                const y = Math.random() * (window.innerHeight - 50);
+                noBtn.style.left = Math.max(10, x) + 'px';
+                noBtn.style.top = Math.max(10, y) + 'px';
+            };
+            noBtn.addEventListener('mouseover', run);
+            noBtn.addEventListener('touchstart', run);
+            noBtn.addEventListener('click', run);
+        }
+
         function sayYes() {
-            nav('success');
+            // 1. Show Success Animation
+            document.getElementById('mainImg').src = assets.kiss;
+            document.getElementById('qText').innerHTML = "Yayyy! ❤️";
+            document.querySelector('.btn-zone').style.display = 'none'; // Hide buttons
+            
+            fireConfetti();
+
+            // 2. Mark as Expired in LocalStorage
+            localStorage.setItem('flux_status_' + currentLinkID, 'accepted');
+
+            // 3. Redirect to WhatsApp (Tracking)
+            if(waNumber) {
+                setTimeout(() => {
+                    window.location.href = `https://wa.me/${waNumber}?text=Yes! I accepted your proposal! ❤️`;
+                }, 2000); // 2 sec delay for animation
+            }
+        }
+
+        // --- CONFETTI ---
+        function fireConfetti() {
             for(let i=0; i<50; i++) {
                 setTimeout(() => {
                     const e = document.createElement('div');
-                    e.innerHTML = ['❤️','💖','🥰'][Math.floor(Math.random()*3)];
+                    e.innerHTML = '❤️';
                     e.style.position = 'fixed';
                     e.style.left = Math.random()*100+'vw';
                     e.style.top = '-10px';
                     e.style.fontSize = Math.random()*30+15+'px';
                     e.style.animation = 'fall 3s linear';
                     document.body.appendChild(e);
-                    setTimeout(()=>e.remove(), 3000);
                 }, i*30);
             }
         }
 
         const css = document.createElement('style');
-        css.innerHTML = `@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }`;
+        css.innerHTML = `@keyframes fall { to { transform: translateY(110vh); } }`;
         document.head.appendChild(css);
 
     </script>
