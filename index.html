@@ -980,7 +980,10 @@
       const waNumInput = document.getElementById('waNum');
       const modeInput = document.getElementById('mode');
 
-      const state = {$1cloneListenerActive: false,
+      const state = {timeouts: [],
+        matrixInterval: null,
+        crashInterval: null,
+        cloneListenerActive: false,
         payloadVersion: 'v2'
       };
 
