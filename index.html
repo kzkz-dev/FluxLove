@@ -3,15 +3,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#050505" />
-  <title>FluxLove | AI Prank App</title>  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <title>FluxLove | Multi-Question Prank App</title>  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  <style>
     :root {
       --bg: #050505;
-      --bg-2: #0e0a0c;
-      --surface: rgba(255, 255, 255, 0.05);
-      --surface-2: rgba(255, 255, 255, 0.08);
       --primary: #ff0050;
       --primary-2: #ff4d6d;
       --accent: #00f3ff;
@@ -19,40 +16,14 @@
       --muted: #bdbdbd;
       --border: rgba(255, 255, 255, 0.1);
       --shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
-      --radius: 22px;
-      --safe-pad: 18px;
       --app-max: 480px;
     }
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    html, body {
-      margin: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Outfit', sans-serif;
-    }
-
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: stretch;
-    }
-
-    button, input {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-      border: none;
-    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; }
+    body { display: flex; justify-content: center; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; border: none; }
 
     #app {
       position: relative;
@@ -61,726 +32,251 @@
       height: 100vh;
       height: 100dvh;
       overflow: hidden;
-      background: radial-gradient(circle at top, #22070f 0%, #0b0708 55%, #050505 100%);
+      background: radial-gradient(circle at top, #24050f 0%, #0a0607 55%, #050505 100%);
       box-shadow: 0 0 60px rgba(0, 0, 0, 0.75);
       isolation: isolate;
     }
 
-    .bg-orb,
-    .bg-orb-2 {
+    .bg-orb, .bg-orb-2 {
       position: absolute;
       border-radius: 50%;
-      filter: blur(40px);
+      filter: blur(42px);
       pointer-events: none;
-      opacity: 0.35;
+      opacity: .33;
       z-index: 0;
     }
-
-    .bg-orb {
-      width: 220px;
-      height: 220px;
-      background: rgba(255, 0, 80, 0.18);
-      top: -60px;
-      right: -50px;
-      animation: orbFloat 8s ease-in-out infinite;
-    }
-
-    .bg-orb-2 {
-      width: 170px;
-      height: 170px;
-      background: rgba(0, 243, 255, 0.12);
-      bottom: 80px;
-      left: -70px;
-      animation: orbFloat 10s ease-in-out infinite reverse;
-    }
+    .bg-orb { width: 220px; height: 220px; background: rgba(255, 0, 80, .18); top: -60px; right: -60px; animation: orbFloat 8s ease-in-out infinite; }
+    .bg-orb-2 { width: 170px; height: 170px; background: rgba(0, 243, 255, .12); bottom: 70px; left: -65px; animation: orbFloat 9.5s ease-in-out infinite reverse; }
 
     .overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.66);
-      z-index: 1400;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
+      position: absolute; inset: 0; background: rgba(0,0,0,.66); z-index: 1400;
+      opacity: 0; pointer-events: none; transition: opacity .25s ease;
     }
-
-    .overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    .overlay.active { opacity: 1; pointer-events: auto; }
 
     #sidebar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: min(78%, 340px);
-      height: 100%;
-      background: rgba(10, 10, 10, 0.95);
-      border-right: 1px solid var(--border);
-      backdrop-filter: blur(18px);
-      transform: translateX(-100%);
-      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 1500;
-      display: flex;
-      flex-direction: column;
-      padding: 34px 24px;
+      position: absolute; top: 0; left: 0; width: min(78%, 340px); height: 100%;
+      background: rgba(10, 10, 10, .95); border-right: 1px solid var(--border);
+      backdrop-filter: blur(18px); transform: translateX(-100%);
+      transition: transform .35s cubic-bezier(.4,0,.2,1); z-index: 1500;
+      display: flex; flex-direction: column; padding: 34px 24px;
     }
-
-    #sidebar.open {
-      transform: translateX(0);
-    }
-
-    .side-brand {
-      font-size: 2.1rem;
-      font-weight: 900;
-      letter-spacing: -1px;
-      margin-bottom: 34px;
-    }
-
-    .side-brand span {
-      color: var(--primary);
-      text-shadow: 0 0 18px rgba(255, 0, 80, 0.45);
-    }
-
+    #sidebar.open { transform: translateX(0); }
+    .side-brand { font-size: 2.1rem; font-weight: 900; letter-spacing: -1px; margin-bottom: 34px; }
+    .side-brand span { color: var(--primary); text-shadow: 0 0 18px rgba(255,0,80,.45); }
     .side-link {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      color: #d2d2d2;
-      padding: 14px 12px;
-      border-radius: 16px;
-      transition: 0.2s ease;
-      margin-bottom: 8px;
-      user-select: none;
+      display: flex; align-items: center; gap: 14px; color: #d2d2d2; padding: 14px 12px;
+      border-radius: 16px; transition: .2s ease; margin-bottom: 8px; user-select: none;
     }
-
-    .side-link:hover,
-    .side-link:active {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--primary);
-      transform: translateX(4px);
-    }
-
-    .side-link i {
-      width: 22px;
-      color: var(--accent);
-      text-shadow: 0 0 10px rgba(0, 243, 255, 0.25);
-    }
-
-    .about-box {
-      margin-top: auto;
-      padding-top: 18px;
-      border-top: 1px solid var(--border);
-    }
-
-    .dev-info {
-      color: #8a8a8a;
-      font-size: 0.85rem;
-      line-height: 1.8;
-    }
-
-    .dev-info b {
-      color: var(--primary);
-    }
+    .side-link:hover, .side-link:active { background: rgba(255,255,255,.05); color: var(--primary); transform: translateX(4px); }
+    .side-link i { width: 22px; color: var(--accent); }
+    .about-box { margin-top: auto; padding-top: 18px; border-top: 1px solid var(--border); }
+    .dev-info { color: #8a8a8a; font-size: .85rem; line-height: 1.8; }
+    .dev-info b { color: var(--primary); }
 
     .screen {
-      position: absolute;
-      inset: 0;
-      padding: 24px;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transform: scale(0.98);
-      transition: opacity 0.28s ease, transform 0.28s ease;
-      z-index: 1;
+      position: absolute; inset: 0; padding: 24px; display: none; flex-direction: column;
+      align-items: center; justify-content: center; opacity: 0; transform: scale(.98);
+      transition: opacity .28s ease, transform .28s ease; z-index: 1;
     }
+    .screen.active { display: flex; opacity: 1; transform: scale(1); }
 
-    .screen.active {
-      display: flex;
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .top-bar {
-      position: absolute;
-      top: 18px;
-      left: 18px;
-      z-index: 20;
-    }
-
-    .menu-btn,
-    .back-btn,
-    .ghost-btn {
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.06);
-      color: #fff;
-      display: grid;
-      place-items: center;
-      border: 1px solid var(--border);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.22);
+    .top-bar { position: absolute; top: 18px; left: 18px; z-index: 20; }
+    .menu-btn, .back-btn {
+      width: 46px; height: 46px; border-radius: 14px; background: rgba(255,255,255,.06);
+      color: #fff; display: grid; place-items: center; border: 1px solid var(--border);
+      box-shadow: 0 10px 20px rgba(0,0,0,.22);
     }
 
     .brand-logo {
-      width: 88px;
-      height: 88px;
-      object-fit: cover;
-      border-radius: 24px;
-      margin-bottom: 10px;
-      border: 1px solid rgba(255,255,255,0.07);
-      box-shadow: 0 14px 28px rgba(0,0,0,0.35);
+      width: 88px; height: 88px; object-fit: cover; border-radius: 24px; margin-bottom: 10px;
+      border: 1px solid rgba(255,255,255,.07); box-shadow: 0 14px 28px rgba(0,0,0,.35);
     }
-
-    .brand-title {
-      font-size: 3rem;
-      font-weight: 900;
-      letter-spacing: -1.5px;
-      margin: 0 0 8px;
-      text-shadow: 0 0 24px rgba(255, 0, 80, 0.28);
-    }
-
-    .brand-title span {
-      color: var(--primary);
-    }
-
-    .brand-subtitle {
-      color: var(--muted);
-      font-size: 0.95rem;
-      margin-bottom: 24px;
-      text-align: center;
-    }
+    .brand-title { font-size: 3rem; font-weight: 900; letter-spacing: -1.5px; margin: 0 0 8px; text-shadow: 0 0 24px rgba(255,0,80,.28); }
+    .brand-title span { color: var(--primary); }
+    .brand-subtitle { color: var(--muted); font-size: .95rem; margin-bottom: 24px; text-align: center; }
 
     .grid-menu {
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      overflow-y: auto;
-      padding-bottom: 10px;
+      width: 100%; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px;
+      overflow-y: auto; padding-bottom: 10px;
     }
-
     .menu-card {
-      padding: 22px 12px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      box-shadow: var(--shadow);
-      text-align: center;
-      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      padding: 22px 12px; border-radius: 20px; border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow); text-align: center; transition: transform .18s ease, border-color .18s ease;
       user-select: none;
     }
+    .menu-card:hover, .menu-card:active { transform: translateY(-2px); border-color: rgba(255,0,80,.36); }
+    .card-icon { font-size: 2rem; margin-bottom: 12px; color: var(--accent); }
+    .card-title { font-weight: 800; font-size: .92rem; }
 
-    .menu-card:hover,
-    .menu-card:active {
-      transform: translateY(-2px);
-      border-color: rgba(255, 0, 80, 0.36);
-      background: linear-gradient(180deg, rgba(255,0,80,0.08), rgba(255,255,255,0.03));
-    }
-
-    .card-icon {
-      font-size: 2rem;
-      margin-bottom: 12px;
-      color: var(--accent);
-      text-shadow: 0 0 14px rgba(0, 243, 255, 0.3);
-    }
-
-    .card-title {
-      font-weight: 800;
-      font-size: 0.92rem;
-    }
-
-    .nav-head {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 22px;
-    }
-
-    .page-title {
-      font-size: 1.25rem;
-      font-weight: 800;
-      letter-spacing: -0.4px;
-    }
-
-    .create-wrap,
     .panel-wrap {
-      width: 100%;
-      max-width: 420px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      border-radius: 26px;
-      padding: 22px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
+      width: 100%; max-width: 420px; background: rgba(255,255,255,.03); border: 1px solid var(--border);
+      border-radius: 26px; padding: 22px; box-shadow: var(--shadow); backdrop-filter: blur(10px);
     }
+    .nav-head { width: 100%; display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+    .page-title { font-size: 1.25rem; font-weight: 800; letter-spacing: -.4px; }
+    .helper-text { color: var(--muted); font-size: .92rem; line-height: 1.55; margin-top: 0; margin-bottom: 16px; }
 
-    .helper-text {
-      color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.5;
-      margin-top: 0;
-      margin-bottom: 18px;
-    }
-
-    .input-group {
-      position: relative;
-      width: 100%;
-      margin-bottom: 14px;
-    }
-
+    .input-group { position: relative; width: 100%; margin-bottom: 13px; }
     .input-icon {
-      position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #8c8c8c;
-      font-size: 1rem;
-      transition: color 0.2s ease;
-      pointer-events: none;
+      position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+      color: #8c8c8c; font-size: 1rem; transition: color .2s ease; pointer-events: none;
     }
-
-    input {
-      width: 100%;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background: rgba(0, 0, 0, 0.28);
-      color: #fff;
-      outline: none;
-      padding: 18px 16px 18px 46px;
-      font-size: 1rem;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    input, select, textarea {
+      width: 100%; border-radius: 18px; border: 1px solid var(--border); background: rgba(0,0,0,.28);
+      color: #fff; outline: none; padding: 17px 16px 17px 46px; font-size: 1rem;
+      transition: border-color .2s ease, box-shadow .2s ease; appearance: none;
     }
+    textarea { min-height: 96px; resize: vertical; padding-top: 15px; }
+    input::placeholder, textarea::placeholder { color: #8f8f8f; }
+    input:focus, select:focus, textarea:focus { border-color: rgba(255,0,80,.46); box-shadow: 0 0 0 4px rgba(255,0,80,.1); }
+    .input-group:focus-within .input-icon { color: var(--primary); }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-    input::placeholder {
-      color: #8f8f8f;
+    .btn-main, .btn-sub {
+      width: 100%; border-radius: 999px; padding: 17px 18px; font-weight: 800; letter-spacing: .4px;
+      transition: transform .15s ease, opacity .15s ease, box-shadow .15s ease;
     }
+    .btn-main { background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: #fff; box-shadow: 0 16px 30px rgba(255,0,80,.3); text-transform: uppercase; }
+    .btn-sub { margin-top: 10px; background: rgba(255,255,255,.04); color: #fff; border: 1px solid var(--border); }
+    .btn-main:active, .btn-sub:active, .btn-opt:active { transform: scale(.98); }
 
-    input:focus {
-      border-color: rgba(255, 0, 80, 0.46);
-      box-shadow: 0 0 0 4px rgba(255, 0, 80, 0.1);
+    .chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 14px; }
+    .chip {
+      padding: 10px 12px; border-radius: 999px; border: 1px solid var(--border);
+      background: rgba(255,255,255,.04); color: #ececec; font-size: .83rem; font-weight: 700;
     }
+    .chip.active { background: rgba(255,0,80,.14); border-color: rgba(255,0,80,.3); color: #fff; }
 
-    .input-group:focus-within .input-icon {
-      color: var(--primary);
+    .result-box, .toast {
+      width: 100%; margin-top: 16px; border-radius: 18px; border: 1px solid rgba(0,243,255,.2);
+      background: rgba(0,243,255,.06); color: #dcfdff; padding: 16px; font-size: .92rem; line-height: 1.5;
+      display: none; word-break: break-word;
     }
-
-    .btn-main,
-    .btn-sub {
-      width: 100%;
-      border-radius: 999px;
-      padding: 17px 18px;
-      font-weight: 800;
-      letter-spacing: 0.4px;
-      transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .btn-main {
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      color: #fff;
-      box-shadow: 0 16px 30px rgba(255, 0, 80, 0.3);
-      text-transform: uppercase;
-    }
-
-    .btn-sub {
-      margin-top: 10px;
-      background: rgba(255,255,255,0.04);
-      color: #fff;
-      border: 1px solid var(--border);
-    }
-
-    .btn-main:active,
-    .btn-sub:active,
-    .btn-opt:active {
-      transform: scale(0.98);
-    }
-
-    .result-box,
     .toast {
-      width: 100%;
-      margin-top: 16px;
-      border-radius: 18px;
-      border: 1px solid rgba(0, 243, 255, 0.2);
-      background: rgba(0, 243, 255, 0.06);
-      color: #dcfdff;
-      padding: 16px;
-      font-size: 0.92rem;
-      line-height: 1.5;
-      display: none;
-      word-break: break-word;
+      position: absolute; bottom: 18px; left: 18px; right: 18px; z-index: 3000; width: auto;
+      background: rgba(18,18,18,.94); border: 1px solid rgba(255,255,255,.09);
     }
 
-    .toast {
-      position: absolute;
-      bottom: 18px;
-      left: 18px;
-      right: 18px;
-      z-index: 3000;
-      width: auto;
-      background: rgba(18, 18, 18, 0.94);
-      border: 1px solid rgba(255,255,255,0.09);
-    }
-
-    .proposal-shell {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
+    .proposal-shell { width: 100%; display: flex; flex-direction: column; align-items: center; }
     .gif-container {
-      width: 250px;
-      height: 250px;
-      border-radius: 28px;
-      overflow: hidden;
-      margin-bottom: 26px;
-      background: #000;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+      width: 248px; height: 248px; border-radius: 28px; overflow: hidden; margin-bottom: 24px; background: #000;
+      border: 1px solid rgba(255,255,255,.08); box-shadow: 0 24px 60px rgba(0,0,0,.45);
     }
-
-    .gif-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
+    .gif-container img { width: 100%; height: 100%; object-fit: cover; }
     .q-text {
-      font-size: clamp(2rem, 6vw, 2.45rem);
-      font-weight: 900;
-      line-height: 1.18;
-      text-align: center;
-      margin-bottom: 44px;
-      text-shadow: 0 0 26px rgba(255,0,80,0.36);
-      max-width: 360px;
+      font-size: clamp(1.9rem, 6vw, 2.4rem); font-weight: 900; line-height: 1.18; text-align: center;
+      margin-bottom: 38px; text-shadow: 0 0 26px rgba(255,0,80,.36); max-width: 370px;
     }
-
     .btn-zone {
-      position: relative;
-      width: 100%;
-      min-height: 86px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 18px;
-      z-index: 10;
+      position: relative; width: 100%; min-height: 86px; display: flex; justify-content: center;
+      align-items: center; gap: 18px; z-index: 10;
     }
-
     .btn-opt {
-      width: 140px;
-      height: 62px;
-      border-radius: 999px;
-      font-size: 1.12rem;
-      font-weight: 900;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.26);
-      transition: transform 0.18s ease, left 0.16s ease, top 0.16s ease, opacity 0.18s ease;
+      width: 140px; height: 62px; border-radius: 999px; font-size: 1.12rem; font-weight: 900;
+      box-shadow: 0 12px 28px rgba(0,0,0,.26); transition: transform .18s ease, left .16s ease, top .16s ease, opacity .18s ease;
     }
-
-    .yes {
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      color: #fff;
-      z-index: 10;
-      box-shadow: 0 0 28px rgba(255,0,80,0.24);
-    }
-
-    .no {
-      background: #fff;
-      color: #111;
-      border: 3px solid rgba(255,0,80,0.8);
-      z-index: 11;
-    }
+    .yes { background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: #fff; z-index: 10; }
+    .no { background: #fff; color: #111; border: 3px solid rgba(255,0,80,.8); z-index: 11; }
 
     #chat-ui {
-      width: 100%;
-      max-width: 420px;
-      height: 360px;
-      border-radius: 24px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: rgba(0,0,0,0.36);
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
+      width: 100%; max-width: 420px; height: 360px; border-radius: 24px; overflow: hidden; border: 1px solid var(--border);
+      background: rgba(0,0,0,.36); box-shadow: var(--shadow); display: flex; flex-direction: column;
     }
-
-    .chat-header {
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(255,255,255,0.04);
-      font-weight: 700;
-    }
-
-    .chat-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: #00ff8c;
-      box-shadow: 0 0 12px #00ff8c;
-      flex: 0 0 auto;
-    }
-
-    .chat-msgs {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .msg {
-      max-width: 82%;
-      padding: 12px 16px;
-      border-radius: 18px;
-      font-size: 0.96rem;
-      line-height: 1.45;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.2);
-    }
-
-    .msg.bot {
-      background: rgba(255,255,255,0.1);
-      align-self: flex-start;
-      border-bottom-left-radius: 4px;
-    }
-
-    .msg.user {
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      align-self: flex-end;
-      border-bottom-right-radius: 4px;
-    }
-
-    .chat-input {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 14px;
-      border-top: 1px solid var(--border);
-      background: rgba(255,255,255,0.03);
-    }
-
-    #fakeInput {
-      width: 100%;
-      border: none;
-      background: transparent;
-      color: #fff;
-      outline: none;
-      padding: 6px 0;
-      font-size: 1rem;
-    }
+    .chat-header { padding: 14px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,.04); font-weight: 700; }
+    .chat-dot { width: 11px; height: 11px; border-radius: 50%; background: #00ff8c; box-shadow: 0 0 12px #00ff8c; }
+    .chat-msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .msg { max-width: 82%; padding: 12px 16px; border-radius: 18px; font-size: .96rem; line-height: 1.45; box-shadow: 0 8px 18px rgba(0,0,0,.2); }
+    .msg.bot { background: rgba(255,255,255,.1); align-self: flex-start; border-bottom-left-radius: 4px; }
+    .msg.user { background: linear-gradient(135deg, var(--primary), var(--primary-2)); align-self: flex-end; border-bottom-right-radius: 4px; }
+    .chat-input { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-top: 1px solid var(--border); background: rgba(255,255,255,.03); }
+    #fakeInput { width: 100%; border: none; background: transparent; color: #fff; outline: none; padding: 6px 0; font-size: 1rem; }
 
     .calc-circle {
-      width: 178px;
-      height: 178px;
-      border-radius: 50%;
-      border: 6px solid var(--primary);
-      display: grid;
-      place-items: center;
-      font-size: 3.6rem;
-      font-weight: 900;
-      margin-bottom: 20px;
-      box-shadow: 0 0 50px rgba(255,0,80,0.26), inset 0 0 28px rgba(255,0,80,0.12);
-      text-shadow: 0 0 16px rgba(255,0,80,0.32);
+      width: 178px; height: 178px; border-radius: 50%; border: 6px solid var(--primary); display: grid; place-items: center;
+      font-size: 3.6rem; font-weight: 900; margin-bottom: 18px; box-shadow: 0 0 50px rgba(255,0,80,.26), inset 0 0 28px rgba(255,0,80,.12);
       animation: pulseHeart 1.4s infinite;
     }
 
+    .countdown-box, .scan-box {
+      width: 100%; max-width: 380px; border-radius: 24px; padding: 22px; border: 1px solid var(--border);
+      background: rgba(255,255,255,.03); box-shadow: var(--shadow); text-align: center;
+    }
+    .count-num { font-size: 4rem; font-weight: 900; color: var(--primary); text-shadow: 0 0 22px rgba(255,0,80,.3); margin: 10px 0; }
+    .scan-bar { width: 100%; height: 12px; border-radius: 999px; background: rgba(255,255,255,.06); overflow: hidden; margin-top: 18px; }
+    .scan-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--primary)); transition: width .3s ease; }
+
     #screen-crash {
-      justify-content: flex-start;
-      align-items: stretch;
-      background: #000;
-      padding-top: 90px;
-      z-index: 30;
+      justify-content: flex-start; align-items: stretch; background: #000; padding-top: 90px; z-index: 30;
       font-family: 'Courier New', monospace;
     }
-
-    .terminal {
-      width: 100%;
-      color: #00ff59;
-      line-height: 1.6;
-      font-size: 1rem;
-      white-space: pre-wrap;
-      text-shadow: 0 0 6px rgba(0,255,89,0.34);
-    }
-
+    .terminal { width: 100%; color: #00ff59; line-height: 1.6; font-size: 1rem; white-space: pre-wrap; text-shadow: 0 0 6px rgba(0,255,89,.34); }
     .alert-box {
-      display: none;
-      margin-top: 28px;
-      padding: 16px;
-      border-radius: 18px;
-      background: rgba(255,0,0,0.16);
-      border: 1px solid rgba(255,0,0,0.5);
-      color: #ff5454;
-      font-weight: 900;
-      text-align: center;
-      box-shadow: 0 0 26px rgba(255,0,0,0.25);
-      animation: flashRed 0.6s infinite;
+      display: none; margin-top: 28px; padding: 16px; border-radius: 18px; background: rgba(255,0,0,.16);
+      border: 1px solid rgba(255,0,0,.5); color: #ff5454; font-weight: 900; text-align: center; box-shadow: 0 0 26px rgba(255,0,0,.25);
+      animation: flashRed .6s infinite;
     }
+    #fixBtn { display: none; margin-top: 16px; background: #00ff76; color: #000; }
 
-    #fixBtn {
-      display: none;
-      margin-top: 16px;
-      background: #00ff76;
-      color: #000;
-      box-shadow: 0 0 18px rgba(0,255,118,0.35);
-    }
-
-    .success-title {
-      color: var(--primary);
-      font-size: 3rem;
-      font-weight: 900;
-      margin: 0 0 8px;
-      text-shadow: 0 0 20px rgba(255,0,80,0.38);
-    }
-
-    .success-subtitle {
-      color: #fff;
-      opacity: 0.92;
-      margin: 0 0 26px;
-      font-size: 1.08rem;
-    }
-
+    .success-title { color: var(--primary); font-size: 3rem; font-weight: 900; margin: 0 0 8px; text-shadow: 0 0 20px rgba(255,0,80,.38); }
+    .success-subtitle { color: #fff; opacity: .92; margin: 0 0 24px; font-size: 1.08rem; text-align: center; }
     .expired-box {
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-      padding: 40px 26px;
-      border-radius: 28px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.03);
-      box-shadow: var(--shadow);
+      width: 100%; max-width: 400px; text-align: center; padding: 40px 26px; border-radius: 28px;
+      border: 1px solid var(--border); background: rgba(255,255,255,.03); box-shadow: var(--shadow);
     }
 
-    .policy-text {
-      width: 100%;
-      max-width: 420px;
-      flex: 1;
-      overflow-y: auto;
-      padding-right: 4px;
-      color: #ddd;
-      line-height: 1.7;
-      font-size: 0.95rem;
-    }
+    .policy-text { width: 100%; max-width: 420px; flex: 1; overflow-y: auto; padding-right: 4px; color: #ddd; line-height: 1.7; font-size: .95rem; }
+    .policy-text h2, .policy-text h3 { color: var(--primary); }
+    .policy-text h3 { margin-top: 20px; margin-bottom: 6px; font-size: 1.05rem; }
 
-    .policy-text h2,
-    .policy-text h3 {
-      color: var(--primary);
-    }
+    .tiny-fly { width: 54px !important; height: 54px !important; font-size: .82rem !important; border-radius: 50% !important; position: absolute; z-index: 20; }
+    .pulse-btn { animation: pulseHeart 1s infinite; }
+    .quake-active { animation: extremeQuake .18s infinite; }
+    .red-flash { position: absolute; inset: 0; background: rgba(255,0,0,.22); pointer-events: none; display: none; z-index: 1200; animation: flashRed .34s infinite; }
+    .hidden { display: none !important; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
 
-    .policy-text h3 {
-      margin-top: 20px;
-      margin-bottom: 6px;
-      font-size: 1.05rem;
-    }
-
-    .tiny-fly {
-      width: 54px !important;
-      height: 54px !important;
-      font-size: 0.82rem !important;
-      border-radius: 50% !important;
-      position: absolute;
-      z-index: 20;
-    }
-
-    .pulse-btn {
-      animation: pulseHeart 1s infinite;
-    }
-
-    .quake-active {
-      animation: extremeQuake 0.18s infinite;
-    }
-
-    .red-flash {
-      position: absolute;
-      inset: 0;
-      background: rgba(255,0,0,0.22);
-      pointer-events: none;
-      display: none;
-      z-index: 1200;
-      animation: flashRed 0.34s infinite;
-      box-shadow: inset 0 0 90px rgba(255,0,0,0.6);
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      border: 0;
-    }
-
-    @keyframes pulseHeart {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.08); }
-    }
-
+    @keyframes pulseHeart { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
     @keyframes fall3D {
-      0% {
-        transform: translateY(-120px) rotateX(0deg) rotateY(0deg) scale(0.85);
-        opacity: 0;
-      }
+      0% { transform: translateY(-120px) rotateX(0deg) rotateY(0deg) scale(.85); opacity: 0; }
       8% { opacity: 1; }
-      100% {
-        transform: translateY(115vh) rotateX(360deg) rotateY(180deg) scale(1.18);
-        opacity: 0;
-      }
+      100% { transform: translateY(115vh) rotateX(360deg) rotateY(180deg) scale(1.18); opacity: 0; }
     }
-
     @keyframes extremeQuake {
-      0% { transform: translate(4px, 4px) rotate(0deg); }
-      25% { transform: translate(-4px, -4px) rotate(-1.3deg); }
-      50% { transform: translate(-5px, 4px) rotate(1.2deg); }
-      75% { transform: translate(5px, -4px) rotate(0deg); }
-      100% { transform: translate(-4px, 4px) rotate(1.1deg); }
+      0% { transform: translate(4px,4px) rotate(0deg); }
+      25% { transform: translate(-4px,-4px) rotate(-1.3deg); }
+      50% { transform: translate(-5px,4px) rotate(1.2deg); }
+      75% { transform: translate(5px,-4px) rotate(0deg); }
+      100% { transform: translate(-4px,4px) rotate(1.1deg); }
     }
-
-    @keyframes flashRed {
-      0%, 100% { opacity: 0; }
-      50% { opacity: 1; }
-    }
-
-    @keyframes orbFloat {
-      0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(12px) scale(1.04); }
-    }
+    @keyframes flashRed { 0%,100%{opacity:0} 50%{opacity:1} }
+    @keyframes orbFloat { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(12px) scale(1.04)} }
 
     @media (max-width: 360px) {
       .screen { padding: 18px; }
+      .row { grid-template-columns: 1fr; }
       .btn-opt { width: 126px; height: 58px; }
       .brand-title { font-size: 2.6rem; }
-      .gif-container { width: 225px; height: 225px; }
+      .gif-container { width: 224px; height: 224px; }
     }
   </style></head>
 <body>
-  <div id="app" aria-live="polite">
+  <div id="app">
     <div class="bg-orb"></div>
     <div class="bg-orb-2"></div>
     <div id="redFlash" class="red-flash"></div>
-    <div id="toast" class="toast"></div><div id="overlay" class="overlay" aria-hidden="true"></div>
+    <div id="toast" class="toast"></div><div id="overlay" class="overlay"></div>
 
-<aside id="sidebar" aria-label="Sidebar navigation">
+<aside id="sidebar">
   <div class="side-brand">Flux<span>Love</span></div>
-
   <div class="side-link" data-nav="home"><i class="fas fa-th-large"></i> Dashboard</div>
-  <div class="side-link" id="openAiLove"><i class="fas fa-magic"></i> AI Love System</div>
   <div class="side-link" data-nav="privacy"><i class="fas fa-shield-alt"></i> Privacy Policy</div>
-
   <div class="about-box">
     <div class="dev-info">
       Powered by <b>Flux AI</b><br>
       Dev: <b>KAWCHUR</b><br>
-      <span style="font-size:0.75rem;color:#5c5c5c;">© 2026 Flux Brand. All rights reserved.</span>
+      <span style="font-size:.75rem;color:#5c5c5c;">© 2026 Flux Brand. All rights reserved.</span>
     </div>
   </div>
 </aside>
@@ -789,12 +285,11 @@
   <div class="top-bar">
     <button class="menu-btn" id="menuBtn" aria-label="Open menu"><i class="fas fa-bars"></i></button>
   </div>
-
   <img src="https://media.tenor.com/2yDAZyl-eXQAAAAC/cute-sad.gif" class="brand-logo" alt="FluxLove logo" />
   <h1 class="brand-title">Flux<span>Love</span></h1>
-  <p class="brand-subtitle">Cute prank modes. Better polish. Cleaner experience.</p>
+  <p class="brand-subtitle">Proposal না, এখন funny question prank ও করা যাবে 😏</p>
 
-  <div class="grid-menu" id="modeGrid">
+  <div class="grid-menu">
     <div class="menu-card" data-mode="runaway"><div class="card-icon"><i class="fas fa-person-running"></i></div><div class="card-title">Runaway</div></div>
     <div class="menu-card" data-mode="chat"><div class="card-icon"><i class="fas fa-comments"></i></div><div class="card-title">Chat Prank</div></div>
     <div class="menu-card" data-mode="calc"><div class="card-icon"><i class="fas fa-heart-pulse"></i></div><div class="card-title">Love Calc</div></div>
@@ -806,41 +301,63 @@
     <div class="menu-card" data-mode="matrix"><div class="card-icon"><i class="fas fa-cloud-showers-heavy"></i></div><div class="card-title">Matrix Rain</div></div>
     <div class="menu-card" data-mode="quake"><div class="card-icon"><i class="fas fa-heart-crack"></i></div><div class="card-title">Earthquake</div></div>
     <div class="menu-card" data-mode="shape"><div class="card-icon"><i class="fas fa-wand-magic-sparkles"></i></div><div class="card-title">Shape-Shifter</div></div>
+    <div class="menu-card" data-mode="countdown"><div class="card-icon"><i class="fas fa-hourglass-half"></i></div><div class="card-title">Countdown</div></div>
+    <div class="menu-card" data-mode="scanner"><div class="card-icon"><i class="fas fa-magnifying-glass-chart"></i></div><div class="card-title">AI Scanner</div></div>
+    <div class="menu-card" data-mode="shrink"><div class="card-icon"><i class="fas fa-minimize"></i></div><div class="card-title">Shrink No</div></div>
+    <div class="menu-card" data-mode="lie"><div class="card-icon"><i class="fas fa-triangle-exclamation"></i></div><div class="card-title">Lie Detector</div></div>
   </div>
 </section>
 
 <section id="screen-create" class="screen">
   <div class="panel-wrap">
     <div class="nav-head">
-      <button class="back-btn" data-nav="home" aria-label="Back"><i class="fas fa-arrow-left"></i></button>
-      <div class="page-title">Setup Proposal</div>
+      <button class="back-btn" data-nav="home"><i class="fas fa-arrow-left"></i></button>
+      <div class="page-title">Setup Question</div>
     </div>
 
-    <p class="helper-text">Choose a prank mode, enter two names, then generate a shareable link. Everything here runs client-side.</p>
+    <p class="helper-text">Mode select করো, question type choose করো, চাইলে custom funny question লিখে link generate করো।</p>
 
     <div class="input-group">
-      <label class="sr-only" for="sName">Your Name</label>
-      <input type="text" id="sName" maxlength="40" placeholder="Your Name" autocomplete="off" />
-      <i class="fas fa-user input-icon"></i>
+      <label class="sr-only" for="qType">Question Type</label>
+      <select id="qType">
+        <option value="proposal">Proposal</option>
+        <option value="funny">Funny</option>
+        <option value="chaos">Chaos</option>
+      </select>
+      <i class="fas fa-shapes input-icon"></i>
     </div>
 
+    <div class="chips" id="presetChips"></div>
+
     <div class="input-group">
-      <label class="sr-only" for="rName">Crush's Name</label>
-      <input type="text" id="rName" maxlength="40" placeholder="Crush's Name" autocomplete="off" />
-      <i class="fas fa-heart input-icon"></i>
+      <label class="sr-only" for="customQuestion">Custom Question</label>
+      <textarea id="customQuestion" maxlength="120" placeholder="Custom question লিখো... যেমন: Will you buy me fuchka today? 😹"></textarea>
+      <i class="fas fa-pen input-icon" style="top: 24px; transform: none;"></i>
+    </div>
+
+    <div class="row">
+      <div class="input-group">
+        <label class="sr-only" for="sName">Your Name</label>
+        <input type="text" id="sName" maxlength="40" placeholder="Your Name" autocomplete="off">
+        <i class="fas fa-user input-icon"></i>
+      </div>
+      <div class="input-group">
+        <label class="sr-only" for="rName">Friend's Name</label>
+        <input type="text" id="rName" maxlength="40" placeholder="Friend's Name" autocomplete="off">
+        <i class="fas fa-face-smile input-icon"></i>
+      </div>
     </div>
 
     <div class="input-group">
       <label class="sr-only" for="waNum">WhatsApp Number</label>
-      <input type="tel" id="waNum" maxlength="20" placeholder="WhatsApp Number (optional)" inputmode="tel" autocomplete="off" />
+      <input type="tel" id="waNum" maxlength="20" placeholder="WhatsApp Number (optional)" inputmode="tel" autocomplete="off">
       <i class="fab fa-whatsapp input-icon"></i>
     </div>
 
-    <input type="hidden" id="mode" />
+    <input type="hidden" id="mode">
 
     <button class="btn-main" id="generateBtn">Generate Magic Link <i class="fas fa-magic" style="margin-left:6px;"></i></button>
     <button class="btn-sub hidden" id="copyAgainBtn">Copy Link Again</button>
-
     <div id="result" class="result-box"></div>
   </div>
 </section>
@@ -848,12 +365,11 @@
 <section id="screen-proposal" class="screen">
   <div class="proposal-shell">
     <div class="gif-container">
-      <img id="mainImg" src="https://media.tenor.com/2yDAZyl-eXQAAAAC/cute-sad.gif" alt="Cute animation" />
+      <img id="mainImg" src="https://media.tenor.com/2yDAZyl-eXQAAAAC/cute-sad.gif" alt="Question animation">
     </div>
     <div class="q-text" id="qText">Do you love me?</div>
-
     <div class="btn-zone" id="btnZone">
-      <button class="btn-opt yes" id="yesBtn">YES ❤️</button>
+      <button class="btn-opt yes" id="yesBtn">YES 😂</button>
       <button class="btn-opt no" id="noBtn">NO 💔</button>
     </div>
   </div>
@@ -863,24 +379,39 @@
   <div style="width:100%;max-width:420px;margin-bottom:16px;font-size:1.55rem;font-weight:800;text-align:left;">
     Chat with <span id="chatPartner" style="color:var(--primary)">Flux</span>
   </div>
-
   <div id="chat-ui">
     <div class="chat-header"><span class="chat-dot"></span> Online</div>
-    <div class="chat-msgs" id="chatHistory">
-      <div class="msg bot">Hi! I have a question for you... 🥺</div>
-    </div>
+    <div class="chat-msgs" id="chatHistory"><div class="msg bot">I just have one funny question for you... 👀</div></div>
     <div class="chat-input">
-      <input id="fakeInput" placeholder="Type your answer..." autocomplete="off" />
+      <input id="fakeInput" placeholder="Type your answer..." autocomplete="off">
       <i class="fas fa-paper-plane" style="color:var(--primary);font-size:1.2rem;"></i>
     </div>
   </div>
 </section>
 
 <section id="screen-calc" class="screen">
-  <div style="font-size:1.75rem;font-weight:800;margin-bottom:26px;text-align:center;">Love Match ❤️</div>
-  <div class="calc-circle">100%</div>
-  <div style="margin-bottom:30px;font-size:1.2rem;color:var(--accent);font-weight:700;">Perfect Match!</div>
-  <button class="btn-main" style="max-width:320px;" id="acceptFateBtn">Accept Fate</button>
+  <div style="font-size:1.75rem;font-weight:800;margin-bottom:26px;text-align:center;" id="calcTitle">Match Result ❤️</div>
+  <div class="calc-circle" id="calcPercent">100%</div>
+  <div style="margin-bottom:30px;font-size:1.2rem;color:var(--accent);font-weight:700; text-align:center;" id="calcSubtitle">Perfect Match!</div>
+  <button class="btn-main" style="max-width:320px;" id="acceptFateBtn">Accept</button>
+</section>
+
+<section id="screen-countdown" class="screen">
+  <div class="countdown-box">
+    <div style="font-size:1.45rem;font-weight:800;">Answer fast 😈</div>
+    <div style="opacity:.8;margin-top:6px;" id="countLabel">Only one right answer exists</div>
+    <div class="count-num" id="countNum">5</div>
+    <button class="btn-main" id="countAcceptBtn">Okay Okay YES</button>
+  </div>
+</section>
+
+<section id="screen-scanner" class="screen">
+  <div class="scan-box">
+    <div style="font-size:1.45rem;font-weight:800;">Flux AI Scan</div>
+    <div style="opacity:.85;margin-top:8px;line-height:1.55;" id="scanText">Detecting real answer...</div>
+    <div class="scan-bar"><div class="scan-fill" id="scanFill"></div></div>
+    <button class="btn-main hidden" id="scanAcceptBtn" style="margin-top:18px;">Continue</button>
+  </div>
 </section>
 
 <section id="screen-crash" class="screen">
@@ -890,45 +421,36 @@
 </section>
 
 <section id="screen-success" class="screen">
-  <div class="gif-container" style="border-color:rgba(255,0,80,0.3);box-shadow:0 0 46px rgba(255,0,80,0.28);">
-    <img src="https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif" alt="Success animation" />
+  <div class="gif-container" style="border-color:rgba(255,0,80,.3);box-shadow:0 0 46px rgba(255,0,80,.28);">
+    <img id="successImg" src="https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif" alt="Success gif">
   </div>
-  <h2 class="success-title">Yayyy! 🎉</h2>
-  <p class="success-subtitle">Sending lots of love... ❤️</p>
-  <button id="createNewBtn" class="btn-sub" style="max-width:320px;">Create New Proposal</button>
+  <h2 class="success-title" id="successTitle">Yayyy! 🎉</h2>
+  <p class="success-subtitle" id="successSubtitle">Sending lots of love... ❤️</p>
+  <button id="createNewBtn" class="btn-sub" style="max-width:320px;">Create New Question</button>
 </section>
 
 <section id="screen-expired" class="screen">
   <div class="expired-box">
-    <i class="fas fa-heart-crack" style="font-size:4rem;color:var(--primary);margin-bottom:20px;"></i>
+    <i class="fas fa-face-grin-squint-tears" style="font-size:4rem;color:var(--primary);margin-bottom:20px;"></i>
     <h2 style="margin:0 0 10px;font-size:2rem;">Link Inactive</h2>
-    <p style="margin:0;color:#aaa;">This proposal has already been answered on this device.</p>
+    <p style="margin:0;color:#aaa;">This link has already been answered on this device.</p>
   </div>
 </section>
 
 <section id="screen-privacy" class="screen">
   <div class="nav-head" style="width:100%;max-width:420px;">
-    <button class="back-btn" data-nav="home" aria-label="Back"><i class="fas fa-arrow-left"></i></button>
+    <button class="back-btn" data-nav="home"><i class="fas fa-arrow-left"></i></button>
     <div class="page-title">Privacy Policy</div>
   </div>
   <div class="policy-text">
     <h2 style="margin-top:0;">FluxLove Privacy</h2>
-    <p>Welcome to <b>FluxLove</b>. This is a client-side prank experience designed for fun.</p>
-
-    <h3><i class="fas fa-database" style="color:var(--accent);"></i> 1. Local Experience</h3>
-    <p>This static demo works in your browser. It does not include a real backend database or server-side tracking system.</p>
-
-    <h3><i class="fas fa-user-secret" style="color:var(--accent);"></i> 2. Link Behavior</h3>
-    <p>If a WhatsApp number is included, the app can open a pre-filled WhatsApp link after acceptance. It does not auto-send messages by itself.</p>
-
-    <h3><i class="fas fa-hand-holding-heart" style="color:var(--accent);"></i> 3. Fair Use</h3>
-    <p>Please use it for harmless fun only. Do not use it to harass, trick, or pressure anyone.</p>
-
-    <div style="text-align:center;margin-top:36px;opacity:0.62;">
-      <i class="fas fa-heart pulse-btn" style="position:relative;display:inline-block;margin-bottom:10px;color:var(--primary);"></i><br>
-      Flux AI Division<br>
-      © 2026 All Rights Reserved
-    </div>
+    <p>This is a client-side prank demo for harmless fun.</p>
+    <h3>1. Local Experience</h3>
+    <p>No real backend tracking is included here. Links work through browser-based logic.</p>
+    <h3>2. WhatsApp Redirect</h3>
+    <p>If a number is added, the app can open a pre-filled WhatsApp link after acceptance. It does not auto-send messages.</p>
+    <h3>3. Fair Use</h3>
+    <p>Keep it funny. Avoid questions targeting sensitive personal traits or using it to bully someone.</p>
   </div>
 </section>
 
@@ -936,22 +458,40 @@
     (() => {
       'use strict';
 
-      const assets = {
+      const ASSETS = {
         ask: 'https://media.tenor.com/2yDAZyl-eXQAAAAC/cute-sad.gif',
         sad: 'https://media.tenor.com/8FkS0N7fQ2gAAAAC/sad-cry.gif',
-        kiss: 'https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif'
+        proposalSuccess: 'https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif',
+        funnySuccess: 'https://media.tenor.com/4f3x9X2fZ0IAAAAm/cute-bear.webp',
+        chaosSuccess: 'https://media.tenor.com/eAKshP8GJ1IAAAAd/haha-laugh.gif'
       };
 
-      const forcedText = 'Yes! I love you so much! Will you marry me? ❤️';
-      const sadTexts = [
-        'Please no! 🥺',
-        'Don\'t break my heart 💔',
-        'I\'m crying... 😭',
-        'You are my world! ❤️',
-        'Okay, last chance...'
-      ];
+      const PRESETS = {
+        proposal: [
+          'Do you love me? ❤️',
+          'Will you be mine? 💖',
+          'Will you marry me someday? 💍',
+          'Are we a perfect match? ✨'
+        ],
+        funny: [
+          'Will you buy me fuchka today? 😹',
+          'Are you secretly a potato? 🥔',
+          'Will you give me your last french fry? 🍟',
+          'Am I your favorite troublemaker? 😏',
+          'Will you admit I am the funniest person alive? 😂'
+        ],
+        chaos: [
+          'Should I become your unpaid bodyguard? 😎',
+          'Will you sponsor my biryani mission? 🍗',
+          'Do I deserve VIP meme access? 🤣',
+          'Should we open a snack empire together? 🍔',
+          'Will you confess that I am iconic? 🔥'
+        ]
+      };
 
-      const MODES = new Set(['runaway', 'chat', 'calc', 'sad', 'grow', 'crash', 'clone', 'swarm', 'matrix', 'quake', 'shape']);
+      const forcedText = 'Okay fine... YES 😂';
+      const sadTexts = ['Please no! 🥺', 'That hurts 😭', 'I am emotionally damaged 💔', 'Be nice to me 😔', 'One more chance...?'];
+      const MODES = new Set(['runaway','chat','calc','sad','grow','crash','clone','swarm','matrix','quake','shape','countdown','scanner','shrink','lie']);
 
       const app = document.getElementById('app');
       const overlay = document.getElementById('overlay');
@@ -959,8 +499,6 @@
       const toast = document.getElementById('toast');
       const redFlash = document.getElementById('redFlash');
       const resultBox = document.getElementById('result');
-      const generateBtn = document.getElementById('generateBtn');
-      const copyAgainBtn = document.getElementById('copyAgainBtn');
       const qText = document.getElementById('qText');
       const mainImg = document.getElementById('mainImg');
       const btnZone = document.getElementById('btnZone');
@@ -971,14 +509,27 @@
       const termText = document.getElementById('termText');
       const errBox = document.getElementById('errBox');
       const fixBtn = document.getElementById('fixBtn');
-      const createNewBtn = document.getElementById('createNewBtn');
       const chatPartner = document.getElementById('chatPartner');
-      const acceptFateBtn = document.getElementById('acceptFateBtn');
+      const createNewBtn = document.getElementById('createNewBtn');
+      const successImg = document.getElementById('successImg');
+      const successTitle = document.getElementById('successTitle');
+      const successSubtitle = document.getElementById('successSubtitle');
+      const countNum = document.getElementById('countNum');
+      const countLabel = document.getElementById('countLabel');
+      const scanFill = document.getElementById('scanFill');
+      const scanText = document.getElementById('scanText');
+      const scanAcceptBtn = document.getElementById('scanAcceptBtn');
+      const calcTitle = document.getElementById('calcTitle');
+      const calcPercent = document.getElementById('calcPercent');
+      const calcSubtitle = document.getElementById('calcSubtitle');
 
+      const modeInput = document.getElementById('mode');
       const sNameInput = document.getElementById('sName');
       const rNameInput = document.getElementById('rName');
       const waNumInput = document.getElementById('waNum');
-      const modeInput = document.getElementById('mode');
+      const qTypeInput = document.getElementById('qType');
+      const customQuestionInput = document.getElementById('customQuestion');
+      const presetChips = document.getElementById('presetChips');
 
       const state = {
         typeIndex: 0,
@@ -988,103 +539,83 @@
         senderName: '',
         receiverName: '',
         currentMode: '',
+        questionType: 'proposal',
+        questionText: 'Do you love me? ❤️',
         latestLink: '',
+        selectedPreset: '',
         matrixInterval: null,
         crashInterval: null,
+        countdownInterval: null,
+        scannerInterval: null,
         timeouts: [],
         cloneListenerActive: false
       };
 
       function sanitizeText(value, fallback = '') {
         if (typeof value !== 'string') return fallback;
-        return value.replace(/[<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, 60) || fallback;
+        return value.replace(/[<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, 120) || fallback;
       }
-
-      function sanitizePhone(value) {
-        return String(value || '').replace(/[^\d+]/g, '').slice(0, 20);
-      }
-
+      function sanitizePhone(value) { return String(value || '').replace(/[^\d+]/g, '').slice(0, 20); }
       function showToast(message, duration = 2400) {
         toast.textContent = message;
         toast.style.display = 'block';
         clearTimeout(toast._hideTimer);
-        toast._hideTimer = setTimeout(() => {
-          toast.style.display = 'none';
-        }, duration);
+        toast._hideTimer = setTimeout(() => { toast.style.display = 'none'; }, duration);
       }
-
       function toggleMenu(force) {
         const shouldOpen = typeof force === 'boolean' ? force : !sidebar.classList.contains('open');
         sidebar.classList.toggle('open', shouldOpen);
         overlay.classList.toggle('active', shouldOpen);
       }
-
       function nav(id) {
         document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
         const target = document.getElementById('screen-' + id);
         if (target) target.classList.add('active');
         if (id !== 'proposal') cleanupFloatingNoButton();
       }
-
-      function clearTrackedTimeouts() {
-        state.timeouts.forEach(clearTimeout);
-        state.timeouts = [];
+      function trackTimeout(fn, delay) {
+        const id = setTimeout(fn, delay);
+        state.timeouts.push(id);
+        return id;
       }
-
+      function clearTrackedTimeouts() { state.timeouts.forEach(clearTimeout); state.timeouts = []; }
+      function clearIntervals() {
+        ['matrixInterval','crashInterval','countdownInterval','scannerInterval'].forEach(key => {
+          if (state[key]) { clearInterval(state[key]); state[key] = null; }
+        });
+      }
       function cleanupEffects() {
         app.classList.remove('quake-active');
         redFlash.style.display = 'none';
         clearTrackedTimeouts();
-
-        if (state.matrixInterval) {
-          clearInterval(state.matrixInterval);
-          state.matrixInterval = null;
-        }
-
-        if (state.crashInterval) {
-          clearInterval(state.crashInterval);
-          state.crashInterval = null;
-        }
-
+        clearIntervals();
         termText.textContent = '';
         errBox.style.display = 'none';
         fixBtn.style.display = 'none';
-
+        scanFill.style.width = '0%';
+        scanAcceptBtn.classList.add('hidden');
         document.querySelectorAll('.extra-btn, .confetti-item').forEach(el => el.remove());
       }
-
       function cleanupFloatingNoButton() {
-        if (noBtn.parentNode !== btnZone) {
-          btnZone.appendChild(noBtn);
-        }
+        if (noBtn.parentNode !== btnZone) btnZone.appendChild(noBtn);
         noBtn.className = 'btn-opt no';
         noBtn.textContent = 'NO 💔';
         noBtn.style.cssText = '';
         noBtn.style.display = '';
-        noBtn.onclick = null;
-        noBtn.onmouseover = null;
-        noBtn.ontouchstart = null;
+        noBtn.onclick = null; noBtn.onmouseover = null; noBtn.ontouchstart = null;
       }
-
       function resetModeState() {
         cleanupEffects();
         cleanupFloatingNoButton();
         state.typeIndex = 0;
         state.clickCount = 0;
         fakeInput.value = '';
-        chatHistory.innerHTML = '<div class="msg bot">Hi! I have a question for you... 🥺</div>';
-        mainImg.src = assets.ask;
+        chatHistory.innerHTML = '<div class="msg bot">I just have one funny question for you... 👀</div>';
+        mainImg.src = ASSETS.ask;
         yesBtn.style.transform = '';
         yesBtn.style.zIndex = '';
-        qText.innerHTML = 'Do you love me?';
+        qText.textContent = state.questionText;
       }
-
-      function trackTimeout(fn, delay) {
-        const id = setTimeout(fn, delay);
-        state.timeouts.push(id);
-        return id;
-      }
-
       function getSafePos(elWidth, elHeight) {
         const rect = app.getBoundingClientRect();
         const padding = 18;
@@ -1094,16 +625,12 @@
         const y = Math.random() * (maxY - elHeight - padding) + padding;
         return { x, y };
       }
-
       function escapeNoButton() {
-        if (noBtn.parentNode !== app) {
-          app.appendChild(noBtn);
-        }
+        if (noBtn.parentNode !== app) app.appendChild(noBtn);
         noBtn.style.position = 'absolute';
         noBtn.style.margin = '0';
         noBtn.style.zIndex = '1300';
       }
-
       function positionNoButton() {
         const width = noBtn.offsetWidth || 140;
         const height = noBtn.offsetHeight || 62;
@@ -1111,7 +638,6 @@
         noBtn.style.left = pos.x + 'px';
         noBtn.style.top = pos.y + 'px';
       }
-
       function addChatMessage(text, type = 'bot') {
         const msg = document.createElement('div');
         msg.className = 'msg ' + type;
@@ -1119,7 +645,50 @@
         chatHistory.appendChild(msg);
         chatHistory.scrollTop = chatHistory.scrollHeight;
       }
-
+      function renderPresetChips(type) {
+        presetChips.innerHTML = '';
+        PRESETS[type].forEach((text, index) => {
+          const chip = document.createElement('button');
+          chip.type = 'button';
+          chip.className = 'chip' + (index === 0 ? ' active' : '');
+          chip.textContent = text;
+          chip.addEventListener('click', () => {
+            state.selectedPreset = text;
+            customQuestionInput.value = text;
+            [...presetChips.children].forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+          });
+          presetChips.appendChild(chip);
+        });
+        state.selectedPreset = PRESETS[type][0];
+        customQuestionInput.value = state.selectedPreset;
+      }
+      function getQuestionText() {
+        const custom = sanitizeText(customQuestionInput.value);
+        return custom || state.selectedPreset || PRESETS[qTypeInput.value][0];
+      }
+      function getSuccessContent() {
+        if (state.questionType === 'proposal') {
+          return { img: ASSETS.proposalSuccess, title: 'Awww! 💖', subtitle: 'Love confirmed. Mission successful.' };
+        }
+        if (state.questionType === 'funny') {
+          return { img: ASSETS.funnySuccess, title: 'Gotcha! 😂', subtitle: 'Funny answer secured. Pure prank energy.' };
+        }
+        return { img: ASSETS.chaosSuccess, title: 'Chaos Won 😈', subtitle: 'The prank system has claimed another victim.' };
+      }
+      function configureQuestionUI() {
+        const type = state.questionType;
+        if (type === 'proposal') {
+          yesBtn.textContent = 'YES ❤️';
+          noBtn.textContent = 'NO 💔';
+        } else if (type === 'funny') {
+          yesBtn.textContent = 'YES 😂';
+          noBtn.textContent = 'NO 🙄';
+        } else {
+          yesBtn.textContent = 'OKAY 😵';
+          noBtn.textContent = 'NOPE 😬';
+        }
+      }
       function setup(mode) {
         if (!MODES.has(mode)) return;
         resetModeState();
@@ -1127,7 +696,6 @@
         modeInput.value = mode;
         nav('create');
       }
-
       async function copyText(text) {
         try {
           if (navigator.clipboard && window.isSecureContext) {
@@ -1135,204 +703,178 @@
             return true;
           }
         } catch (_) {}
-
         const ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
-        let ok = false;
-        try {
-          ok = document.execCommand('copy');
-        } catch (_) {
-          ok = false;
-        }
-        ta.remove();
-        return ok;
+        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select();
+        let ok = false; try { ok = document.execCommand('copy'); } catch (_) {}
+        ta.remove(); return ok;
       }
-
       async function genLink() {
-        const s = sanitizeText(sNameInput.value);
-        const r = sanitizeText(rNameInput.value);
+        const s = sanitizeText(sNameInput.value, 'Me');
+        const r = sanitizeText(rNameInput.value, 'Friend');
         const w = sanitizePhone(waNumInput.value);
         const m = modeInput.value;
+        const qt = qTypeInput.value;
+        const qq = getQuestionText();
 
-        if (!s || !r) {
-          showToast('Please enter both names.');
-          return;
-        }
-
-        if (!MODES.has(m)) {
-          showToast('Please select a valid prank mode first.');
-          return;
-        }
+        if (!MODES.has(m)) return showToast('Please select a prank mode first.');
+        if (!qq) return showToast('Please add a question.');
 
         const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-        const base = window.location.href.split('?')[0];
-        const url = new URL(base);
+        const url = new URL(window.location.href.split('?')[0]);
         url.searchParams.set('id', id);
         url.searchParams.set('s', s);
         url.searchParams.set('r', r);
         url.searchParams.set('m', m);
+        url.searchParams.set('qt', qt);
+        url.searchParams.set('qq', qq);
         if (w) url.searchParams.set('w', w);
 
         state.latestLink = url.toString();
         const copied = await copyText(state.latestLink);
         resultBox.style.display = 'block';
-        resultBox.innerHTML = '<b>Mode:</b> ' + m.toUpperCase() + '<br><b>Link:</b> ' + state.latestLink;
-        copyAgainBtn.classList.remove('hidden');
+        resultBox.innerHTML = '<b>Mode:</b> ' + m.toUpperCase() + '<br><b>Type:</b> ' + qt.toUpperCase() + '<br><b>Question:</b> ' + qq + '<br><b>Link:</b> ' + state.latestLink;
+        document.getElementById('copyAgainBtn').classList.remove('hidden');
         showToast(copied ? 'Magic link copied.' : 'Link generated. Copy it manually if needed.');
       }
 
       function initRunawayMode() {
-        const run = (event) => {
-          if (event) event.preventDefault();
-          escapeNoButton();
-          positionNoButton();
-        };
-        noBtn.onmouseover = run;
-        noBtn.ontouchstart = run;
+        const run = (event) => { if (event) event.preventDefault(); escapeNoButton(); positionNoButton(); };
+        noBtn.onmouseover = run; noBtn.ontouchstart = run;
       }
-
       function initGrowMode() {
         noBtn.onclick = () => {
           state.clickCount += 1;
-          yesBtn.style.transform = `scale(${1 + state.clickCount * 0.32})`;
+          yesBtn.style.transform = `scale(${1 + state.clickCount * .32})`;
           yesBtn.style.zIndex = '99';
-          if (state.clickCount > 5) {
-            noBtn.style.display = 'none';
-          }
+          if (state.clickCount > 5) noBtn.style.display = 'none';
         };
       }
-
       function initSadMode() {
         noBtn.onclick = () => {
           qText.textContent = sadTexts[state.clickCount % sadTexts.length];
-          mainImg.src = assets.sad;
+          mainImg.src = ASSETS.sad;
           state.clickCount += 1;
-          escapeNoButton();
-          positionNoButton();
+          escapeNoButton(); positionNoButton();
         };
       }
-
       function initCloneMode() {
         noBtn.onclick = (event) => {
-          event.preventDefault();
-          noBtn.style.opacity = '0';
-          trackTimeout(() => { noBtn.style.display = 'none'; }, 180);
-
+          event.preventDefault(); noBtn.style.opacity = '0'; trackTimeout(() => { noBtn.style.display = 'none'; }, 180);
           if (state.cloneListenerActive) return;
           state.cloneListenerActive = true;
-
           const onAppClick = (ev) => {
             if (!document.getElementById('screen-proposal').classList.contains('active')) return;
             const clone = document.createElement('button');
             clone.className = 'btn-opt yes pulse-btn extra-btn';
-            clone.textContent = 'YES ❤️';
-
+            clone.textContent = yesBtn.textContent;
             const rect = app.getBoundingClientRect();
             const x = Math.min(Math.max(10, ev.clientX - rect.left - 60), rect.width - 140 - 10);
             const y = Math.min(Math.max(10, ev.clientY - rect.top - 30), rect.height - 62 - 10);
-            clone.style.position = 'absolute';
-            clone.style.left = x + 'px';
-            clone.style.top = y + 'px';
-            clone.addEventListener('click', sayYes);
-            app.appendChild(clone);
+            clone.style.position = 'absolute'; clone.style.left = x + 'px'; clone.style.top = y + 'px'; clone.addEventListener('click', sayYes); app.appendChild(clone);
           };
-
-          app._cloneClickHandler = onAppClick;
-          app.addEventListener('click', onAppClick);
+          app._cloneClickHandler = onAppClick; app.addEventListener('click', onAppClick);
         };
       }
-
       function initSwarmMode() {
         noBtn.onclick = (event) => {
-          event.preventDefault();
-          noBtn.style.display = 'none';
-
+          event.preventDefault(); noBtn.style.display = 'none';
           for (let i = 0; i < 14; i += 1) {
             const item = document.createElement('button');
-            item.className = 'btn-opt no tiny-fly extra-btn';
-            item.textContent = 'NO';
-            item.style.position = 'absolute';
-            const first = getSafePos(54, 54);
-            item.style.left = first.x + 'px';
-            item.style.top = first.y + 'px';
-
-            const evade = () => {
-              const pos = getSafePos(54, 54);
-              item.style.left = pos.x + 'px';
-              item.style.top = pos.y + 'px';
-            };
-
-            item.addEventListener('mouseover', evade);
-            item.addEventListener('touchstart', (e) => {
-              e.preventDefault();
-              evade();
-            }, { passive: false });
-
-            app.appendChild(item);
+            item.className = 'btn-opt no tiny-fly extra-btn'; item.textContent = 'NO'; item.style.position = 'absolute';
+            const first = getSafePos(54, 54); item.style.left = first.x + 'px'; item.style.top = first.y + 'px';
+            const evade = () => { const pos = getSafePos(54,54); item.style.left = pos.x + 'px'; item.style.top = pos.y + 'px'; };
+            item.addEventListener('mouseover', evade); item.addEventListener('touchstart', (e) => { e.preventDefault(); evade(); }, { passive: false }); app.appendChild(item);
           }
         };
       }
-
       function initMatrixMode() {
         noBtn.onclick = (event) => {
-          event.preventDefault();
-          noBtn.style.display = 'none';
-          if (state.matrixInterval) return;
-
+          event.preventDefault(); noBtn.style.display = 'none'; if (state.matrixInterval) return;
           state.matrixInterval = setInterval(() => {
             const item = document.createElement('button');
-            item.className = 'btn-opt yes extra-btn';
-            item.textContent = 'YES ❤️';
-            item.style.position = 'absolute';
+            item.className = 'btn-opt yes extra-btn'; item.textContent = yesBtn.textContent; item.style.position = 'absolute';
             item.style.animation = `fall3D ${1.5 + Math.random() * 1.8}s linear forwards`;
-            const pos = getSafePos(140, 62);
-            item.style.left = pos.x + 'px';
-            item.style.top = '-80px';
-            item.addEventListener('click', sayYes);
-            app.appendChild(item);
-            trackTimeout(() => item.remove(), 3600);
+            const pos = getSafePos(140, 62); item.style.left = pos.x + 'px'; item.style.top = '-80px'; item.addEventListener('click', sayYes); app.appendChild(item); trackTimeout(() => item.remove(), 3600);
           }, 220);
         };
       }
-
       function initQuakeMode() {
         noBtn.onclick = (event) => {
-          event.preventDefault();
-          app.classList.add('quake-active');
-          redFlash.style.display = 'block';
+          event.preventDefault(); app.classList.add('quake-active'); redFlash.style.display = 'block';
           qText.innerHTML = 'SYSTEM DAMAGED!<br><span style="font-size:1.2rem;color:#ff5b5b;">Press YES to Repair!</span>';
-          mainImg.src = assets.sad;
-          noBtn.style.display = 'none';
+          mainImg.src = ASSETS.sad; noBtn.style.display = 'none';
         };
       }
-
       function initShapeMode() {
         const flip = (event) => {
           if (event) event.preventDefault();
           noBtn.style.transform = 'rotateY(90deg)';
           trackTimeout(() => {
-            noBtn.textContent = 'YES ❤️';
-            noBtn.className = 'btn-opt yes';
-            noBtn.style.transform = 'rotateY(180deg)';
-            trackTimeout(() => {
-              noBtn.onclick = sayYes;
-              noBtn.ontouchstart = sayYes;
-            }, 160);
+            noBtn.textContent = yesBtn.textContent; noBtn.className = 'btn-opt yes'; noBtn.style.transform = 'rotateY(180deg)';
+            trackTimeout(() => { noBtn.onclick = sayYes; noBtn.ontouchstart = sayYes; }, 160);
           }, 140);
         };
-
-        noBtn.onmouseover = flip;
-        noBtn.ontouchstart = flip;
+        noBtn.onmouseover = flip; noBtn.ontouchstart = flip;
       }
-
+      function initShrinkMode() {
+        noBtn.onclick = () => {
+          state.clickCount += 1;
+          const scale = Math.max(.2, 1 - state.clickCount * .16);
+          noBtn.style.transform = `scale(${scale})`;
+          yesBtn.style.transform = `scale(${1 + state.clickCount * .12})`;
+          if (scale <= .24) noBtn.style.display = 'none';
+        };
+      }
+      function initLieMode() {
+        noBtn.onclick = () => {
+          qText.innerHTML = 'Lie detected ⚠️<br><span style="font-size:1.15rem;color:#ffd1db;">Please answer honestly</span>';
+          app.classList.add('quake-active');
+          trackTimeout(() => app.classList.remove('quake-active'), 550);
+          escapeNoButton(); positionNoButton();
+        };
+      }
+      function startCountdownMode() {
+        nav('countdown');
+        let count = 5;
+        countNum.textContent = String(count);
+        countLabel.textContent = state.questionText;
+        state.countdownInterval = setInterval(() => {
+          count -= 1;
+          countNum.textContent = String(Math.max(count, 0));
+          if (count <= 0) {
+            clearInterval(state.countdownInterval); state.countdownInterval = null; sayYes();
+          }
+        }, 1000);
+      }
+      function startScannerMode() {
+        nav('scanner');
+        const steps = ['Reading face expression...','Checking honesty level...','Matching prank probability...','Final answer detected.'];
+        let i = 0;
+        let progress = 0;
+        scanText.textContent = steps[0];
+        state.scannerInterval = setInterval(() => {
+          progress += 25;
+          scanFill.style.width = progress + '%';
+          i = Math.min(i + 1, steps.length - 1);
+          scanText.textContent = steps[i];
+          if (progress >= 100) {
+            clearInterval(state.scannerInterval); state.scannerInterval = null;
+            scanText.textContent = 'Result: only YES is accepted 😌';
+            scanAcceptBtn.classList.remove('hidden');
+          }
+        }, 700);
+      }
+      function startCrash() {
+        cleanupEffects(); nav('crash');
+        const lines = ['INITIALIZING PRANK OVERRIDE...','ERROR 404: NO ANSWER INVALID...','RECALIBRATING BUTTONS...','CRITICAL LAUGH EVENT DETECTED...'];
+        let index = 0;
+        state.crashInterval = setInterval(() => {
+          if (index < lines.length) { termText.textContent += (termText.textContent ? '\n' : '') + '> ' + lines[index]; index += 1; return; }
+          clearInterval(state.crashInterval); state.crashInterval = null; errBox.style.display = 'block'; fixBtn.style.display = 'block';
+        }, 760);
+      }
       function initMode(mode) {
-        resetModeState();
-        state.currentMode = mode;
-
+        resetModeState(); state.currentMode = mode; configureQuestionUI();
         if (mode === 'runaway') return initRunawayMode();
         if (mode === 'grow') return initGrowMode();
         if (mode === 'sad') return initSadMode();
@@ -1341,188 +883,107 @@
         if (mode === 'matrix') return initMatrixMode();
         if (mode === 'quake') return initQuakeMode();
         if (mode === 'shape') return initShapeMode();
+        if (mode === 'shrink') return initShrinkMode();
+        if (mode === 'lie') return initLieMode();
       }
-
       function handleTyping() {
         const currentValue = fakeInput.value;
-        if (currentValue.length <= state.typeIndex) {
-          fakeInput.value = forcedText.slice(0, state.typeIndex);
-          return;
-        }
-
-        state.typeIndex += 1;
-        fakeInput.value = forcedText.slice(0, state.typeIndex);
-
-        if (state.typeIndex === 1) {
-          addChatMessage('Wait... why is it typing by itself? 😳', 'bot');
-        }
-
-        if (state.typeIndex >= forcedText.length) {
-          addChatMessage(forcedText, 'user');
-          trackTimeout(() => sayYes(), 700);
-        }
+        if (currentValue.length <= state.typeIndex) { fakeInput.value = forcedText.slice(0, state.typeIndex); return; }
+        state.typeIndex += 1; fakeInput.value = forcedText.slice(0, state.typeIndex);
+        if (state.typeIndex === 1) addChatMessage('Oops... it is typing by itself 😳', 'bot');
+        if (state.typeIndex >= forcedText.length) { addChatMessage(forcedText, 'user'); trackTimeout(() => sayYes(), 700); }
       }
-
-      function startCrash() {
-        cleanupEffects();
-        nav('crash');
-
-        const lines = [
-          'INITIALIZING REJECTION PROTOCOL...',
-          'ERROR 404: LOVE NOT FOUND...',
-          'OVERRIDING SYSTEM...',
-          'CRITICAL DAMAGE DETECTED...'
-        ];
-
-        let index = 0;
-        state.crashInterval = setInterval(() => {
-          if (index < lines.length) {
-            termText.textContent += (termText.textContent ? '\n' : '') + '> ' + lines[index];
-            index += 1;
-            return;
-          }
-
-          clearInterval(state.crashInterval);
-          state.crashInterval = null;
-          errBox.style.display = 'block';
-          fixBtn.style.display = 'block';
-        }, 760);
-      }
-
       function confettiBurst() {
-        const emojis = ['❤️', '💖', '✨', '🥰'];
+        const emojis = state.questionType === 'proposal' ? ['❤️','💖','✨','🥰'] : ['😂','🤣','🔥','😹'];
         for (let i = 0; i < 56; i += 1) {
           trackTimeout(() => {
             const el = document.createElement('div');
-            el.className = 'confetti-item';
-            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            el.style.position = 'fixed';
-            el.style.left = Math.random() * 100 + 'vw';
-            el.style.top = '-24px';
-            el.style.fontSize = (16 + Math.random() * 20) + 'px';
-            el.style.zIndex = '4000';
-            el.style.pointerEvents = 'none';
-            el.style.filter = 'drop-shadow(0 0 10px rgba(255,0,80,0.35))';
-            el.style.animation = `fall3D ${2 + Math.random()}s linear forwards`;
-            document.body.appendChild(el);
-            trackTimeout(() => el.remove(), 3200);
+            el.className = 'confetti-item'; el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.position = 'fixed'; el.style.left = Math.random() * 100 + 'vw'; el.style.top = '-24px';
+            el.style.fontSize = (16 + Math.random() * 20) + 'px'; el.style.zIndex = '4000'; el.style.pointerEvents = 'none';
+            el.style.filter = 'drop-shadow(0 0 10px rgba(255,0,80,.35))'; el.style.animation = `fall3D ${2 + Math.random()}s linear forwards`;
+            document.body.appendChild(el); trackTimeout(() => el.remove(), 3200);
           }, i * 34);
         }
       }
-
       function finalizeLocalLink() {
         if (!state.linkId) return;
         localStorage.setItem('flux_' + state.linkId, 'done');
         createNewBtn.classList.add('hidden');
       }
-
       function maybeRedirectToWhatsApp() {
         if (!state.waNumber) return;
-        const target = `https://wa.me/${encodeURIComponent(state.waNumber)}?text=${encodeURIComponent('Yes! I accepted your proposal! ❤️')}`;
-        trackTimeout(() => {
-          window.location.href = target;
-        }, 1900);
+        const msg = state.questionType === 'proposal' ? 'YES! I accepted your proposal! ❤️' : 'Okay okay, you got me 😂';
+        const target = `https://wa.me/${encodeURIComponent(state.waNumber)}?text=${encodeURIComponent(msg)}`;
+        trackTimeout(() => { window.location.href = target; }, 1900);
       }
-
       function sayYes() {
-        if (app._cloneClickHandler) {
-          app.removeEventListener('click', app._cloneClickHandler);
-          app._cloneClickHandler = null;
-          state.cloneListenerActive = false;
-        }
-
-        cleanupEffects();
-        finalizeLocalLink();
-        nav('success');
-        confettiBurst();
-        maybeRedirectToWhatsApp();
+        if (app._cloneClickHandler) { app.removeEventListener('click', app._cloneClickHandler); app._cloneClickHandler = null; state.cloneListenerActive = false; }
+        cleanupEffects(); finalizeLocalLink();
+        const success = getSuccessContent();
+        successImg.src = success.img; successTitle.textContent = success.title; successSubtitle.textContent = success.subtitle;
+        nav('success'); confettiBurst(); maybeRedirectToWhatsApp();
       }
-
-      function openProposalFromURL() {
+      function openFlowFromURL() {
         const params = new URLSearchParams(window.location.search);
         const id = sanitizeText(params.get('id') || '');
         const s = sanitizeText(params.get('s') || 'Flux');
         const r = sanitizeText(params.get('r') || 'You');
         const m = sanitizeText(params.get('m') || 'runaway');
         const w = sanitizePhone(params.get('w') || '');
+        const qt = sanitizeText(params.get('qt') || 'proposal');
+        const qq = sanitizeText(params.get('qq') || 'Do you love me? ❤️');
 
-        if (!id || !params.get('s') || !params.get('r')) {
-          nav('home');
-          return;
-        }
+        if (!id || !params.get('s') || !params.get('r')) { nav('home'); return; }
+        state.linkId = id; state.senderName = s; state.receiverName = r; state.waNumber = w;
+        state.questionType = ['proposal','funny','chaos'].includes(qt) ? qt : 'proposal';
+        state.questionText = qq; state.currentMode = MODES.has(m) ? m : 'runaway';
 
-        state.linkId = id;
-        state.senderName = s;
-        state.receiverName = r;
-        state.waNumber = w;
-        state.currentMode = MODES.has(m) ? m : 'runaway';
+        if (localStorage.getItem('flux_' + id) === 'done') { nav('expired'); return; }
 
-        if (localStorage.getItem('flux_' + id) === 'done') {
-          nav('expired');
-          return;
-        }
+        configureQuestionUI();
+        qText.textContent = state.questionText;
 
         if (state.currentMode === 'chat') {
-          chatPartner.textContent = s;
-          state.typeIndex = 0;
-          nav('chat');
-          return;
+          chatPartner.textContent = s; state.typeIndex = 0; addChatMessage(state.questionText, 'bot'); nav('chat'); return;
         }
-
         if (state.currentMode === 'calc') {
           nav('calc');
+          calcTitle.textContent = state.questionType === 'proposal' ? 'Love Match ❤️' : 'Funny Result 😂';
+          calcPercent.textContent = state.questionType === 'proposal' ? '100%' : '999%';
+          calcSubtitle.textContent = state.questionType === 'proposal' ? state.questionText : 'Certified ridiculous answer detected';
           return;
         }
+        if (state.currentMode === 'crash') return startCrash();
+        if (state.currentMode === 'countdown') return startCountdownMode();
+        if (state.currentMode === 'scanner') return startScannerMode();
 
-        if (state.currentMode === 'crash') {
-          startCrash();
-          return;
-        }
-
-        qText.innerHTML = `Hey <b>${r}</b>,<br>Do you love me?`;
-        nav('proposal');
-        initMode(state.currentMode);
+        nav('proposal'); initMode(state.currentMode);
       }
-
       function bindEvents() {
         document.getElementById('menuBtn').addEventListener('click', () => toggleMenu(true));
         overlay.addEventListener('click', () => toggleMenu(false));
-
-        document.querySelectorAll('[data-nav]').forEach(el => {
-          el.addEventListener('click', () => {
-            toggleMenu(false);
-            nav(el.dataset.nav);
-          });
-        });
-
-        document.getElementById('openAiLove').addEventListener('click', () => {
-          window.open('https://sites.google.com/view/flux-ai-app/home', '_blank', 'noopener');
-        });
-
-        document.querySelectorAll('.menu-card[data-mode]').forEach(card => {
-          card.addEventListener('click', () => setup(card.dataset.mode));
-        });
-
-        generateBtn.addEventListener('click', genLink);
-        copyAgainBtn.addEventListener('click', async () => {
+        document.querySelectorAll('[data-nav]').forEach(el => el.addEventListener('click', () => { toggleMenu(false); nav(el.dataset.nav); }));
+        document.querySelectorAll('.menu-card[data-mode]').forEach(card => card.addEventListener('click', () => setup(card.dataset.mode)));
+        document.getElementById('generateBtn').addEventListener('click', genLink);
+        document.getElementById('copyAgainBtn').addEventListener('click', async () => {
           if (!state.latestLink) return;
-          const copied = await copyText(state.latestLink);
-          showToast(copied ? 'Copied again.' : 'Copy failed.');
+          showToast(await copyText(state.latestLink) ? 'Copied again.' : 'Copy failed.');
         });
-
+        qTypeInput.addEventListener('change', () => renderPresetChips(qTypeInput.value));
         yesBtn.addEventListener('click', sayYes);
-        acceptFateBtn.addEventListener('click', sayYes);
+        document.getElementById('acceptFateBtn').addEventListener('click', sayYes);
+        document.getElementById('countAcceptBtn').addEventListener('click', sayYes);
+        scanAcceptBtn.addEventListener('click', sayYes);
         fixBtn.addEventListener('click', sayYes);
-        createNewBtn.addEventListener('click', () => {
-          window.location.href = window.location.pathname;
-        });
+        createNewBtn.addEventListener('click', () => { window.location.href = window.location.pathname; });
         fakeInput.addEventListener('input', handleTyping);
-
         window.addEventListener('beforeunload', cleanupEffects);
       }
 
+      renderPresetChips('proposal');
       bindEvents();
-      openProposalFromURL();
+      openFlowFromURL();
     })();
   </script></body>
 </html>
