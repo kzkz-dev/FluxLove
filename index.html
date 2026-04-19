@@ -1,1539 +1,841 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#050505" />
-  <title>FluxLink | Fun Tap App</title>  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  <style>
-    :root {
-      --bg: #050505;
-      --bg-2: #0e0a0c;
-      --surface: rgba(255, 255, 255, 0.05);
-      --surface-2: rgba(255, 255, 255, 0.08);
-      --primary: #ff0050;
-      --primary-2: #ff4d6d;
-      --accent: #00f3ff;
-      --text: #ffffff;
-      --muted: #bdbdbd;
-      --border: rgba(255, 255, 255, 0.1);
-      --shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
-      --radius: 22px;
-      --safe-pad: 18px;
-      --app-max: 480px;
-    }
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Flowers</title>
+  <style>
     * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
     }
 
-    html, body {
-      margin: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Outfit', sans-serif;
+    :root {
+      --bg1: #090712;
+      --bg2: #140b24;
+      --bg3: #22113a;
+      --glass: rgba(255, 255, 255, 0.08);
+      --line: rgba(255, 255, 255, 0.12);
+      --text: #f5f2ff;
+      --muted: #cdbff5;
+      --pink: #ff5cc8;
+      --pink2: #ff84dc;
+      --violet: #8d5cff;
+      --green: #54e38e;
+      --green2: #27c76f;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
     }
 
     body {
-      display: flex;
-      justify-content: center;
-      align-items: stretch;
-    }
-
-    button, input {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-      border: none;
-    }
-
-    #app {
-      position: relative;
-      width: 100%;
-      max-width: var(--app-max);
-      height: 100vh;
-      height: 100dvh;
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
       overflow: hidden;
-      background: radial-gradient(circle at top, #22070f 0%, #0b0708 55%, #050505 100%);
-      box-shadow: 0 0 60px rgba(0, 0, 0, 0.75);
-      isolation: isolate;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(141, 92, 255, 0.24), transparent 25%),
+        radial-gradient(circle at 80% 25%, rgba(255, 92, 200, 0.18), transparent 24%),
+        radial-gradient(circle at 70% 80%, rgba(84, 227, 142, 0.12), transparent 22%),
+        linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3));
     }
 
-    .bg-orb,
-    .bg-orb-2 {
+    .ambient {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .blob {
       position: absolute;
       border-radius: 50%;
-      filter: blur(40px);
-      pointer-events: none;
+      filter: blur(60px);
       opacity: 0.35;
-      z-index: 0;
+      animation: drift 12s ease-in-out infinite alternate;
     }
 
-    .bg-orb {
+    .blob.one {
+      width: 240px;
+      height: 240px;
+      background: rgba(255, 92, 200, 0.28);
+      top: 8%;
+      left: 8%;
+    }
+
+    .blob.two {
+      width: 280px;
+      height: 280px;
+      background: rgba(141, 92, 255, 0.24);
+      top: 50%;
+      right: 8%;
+      animation-duration: 16s;
+    }
+
+    .blob.three {
       width: 220px;
       height: 220px;
-      background: rgba(255, 0, 80, 0.18);
-      top: -60px;
-      right: -50px;
-      animation: orbFloat 8s ease-in-out infinite;
+      background: rgba(84, 227, 142, 0.18);
+      bottom: 8%;
+      left: 28%;
+      animation-duration: 18s;
     }
 
-    .bg-orb-2 {
-      width: 170px;
-      height: 170px;
-      background: rgba(0, 243, 255, 0.12);
-      bottom: 80px;
-      left: -70px;
-      animation: orbFloat 10s ease-in-out infinite reverse;
+    @keyframes drift {
+      from { transform: translateY(-10px) translateX(-10px) scale(1); }
+      to { transform: translateY(15px) translateX(12px) scale(1.08); }
     }
 
-    .overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.66);
-      z-index: 1400;
-      opacity: 0;
+    .mouse-glow {
+      position: fixed;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
       pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-
-    .overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    #sidebar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: min(78%, 340px);
-      height: 100%;
-      background: rgba(10, 10, 10, 0.95);
-      border-right: 1px solid var(--border);
-      backdrop-filter: blur(18px);
-      transform: translateX(-100%);
-      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 1500;
-      display: flex;
-      flex-direction: column;
-      padding: 34px 24px;
-    }
-
-    #sidebar.open {
-      transform: translateX(0);
-    }
-
-    .side-brand {
-      font-size: 2.1rem;
-      font-weight: 900;
-      letter-spacing: -1px;
-      margin-bottom: 34px;
-    }
-
-    .side-brand span {
-      color: var(--primary);
-      text-shadow: 0 0 18px rgba(255, 0, 80, 0.45);
-    }
-
-    .side-link {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      color: #d2d2d2;
-      padding: 14px 12px;
-      border-radius: 16px;
-      transition: 0.2s ease;
-      margin-bottom: 8px;
-      user-select: none;
-    }
-
-    .side-link:hover,
-    .side-link:active {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--primary);
-      transform: translateX(4px);
-    }
-
-    .side-link i {
-      width: 22px;
-      color: var(--accent);
-      text-shadow: 0 0 10px rgba(0, 243, 255, 0.25);
-    }
-
-    .about-box {
-      margin-top: auto;
-      padding-top: 18px;
-      border-top: 1px solid var(--border);
-    }
-
-    .dev-info {
-      color: #8a8a8a;
-      font-size: 0.85rem;
-      line-height: 1.8;
-    }
-
-    .dev-info b {
-      color: var(--primary);
-    }
-
-    .screen {
-      position: absolute;
-      inset: 0;
-      padding: 24px;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transform: scale(0.98);
-      transition: opacity 0.28s ease, transform 0.28s ease;
+      background: radial-gradient(circle, rgba(255,255,255,0.18), rgba(255,255,255,0.03) 45%, transparent 70%);
+      transform: translate(-50%, -50%);
+      filter: blur(18px);
+      mix-blend-mode: screen;
       z-index: 1;
     }
 
-    .screen.active {
-      display: flex;
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .top-bar {
-      position: absolute;
-      top: 18px;
-      left: 18px;
-      z-index: 20;
-    }
-
-    .menu-btn,
-    .back-btn,
-    .ghost-btn {
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.06);
-      color: #fff;
-      display: grid;
-      place-items: center;
-      border: 1px solid var(--border);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.22);
-    }
-
-    .brand-logo {
-      width: 88px;
-      height: 88px;
-      object-fit: cover;
-      border-radius: 24px;
-      margin-bottom: 10px;
-      border: 1px solid rgba(255,255,255,0.07);
-      box-shadow: 0 14px 28px rgba(0,0,0,0.35);
-    }
-
-    .brand-title {
-      font-size: 3rem;
-      font-weight: 900;
-      letter-spacing: -1.5px;
-      margin: 0 0 8px;
-      text-shadow: 0 0 24px rgba(255, 0, 80, 0.28);
-    }
-
-    .brand-title span {
-      color: var(--primary);
-    }
-
-    .brand-subtitle {
-      color: var(--muted);
-      font-size: 0.95rem;
-      margin-bottom: 24px;
-      text-align: center;
-    }
-
-    .grid-menu {
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      overflow-y: auto;
-      padding-bottom: 10px;
-    }
-
-    .menu-card {
-      padding: 22px 12px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      box-shadow: var(--shadow);
-      text-align: center;
-      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
-      user-select: none;
-    }
-
-    .menu-card:hover,
-    .menu-card:active {
-      transform: translateY(-2px);
-      border-color: rgba(255, 0, 80, 0.36);
-      background: linear-gradient(180deg, rgba(255,0,80,0.08), rgba(255,255,255,0.03));
-    }
-
-    .card-icon {
-      font-size: 2rem;
-      margin-bottom: 12px;
-      color: var(--accent);
-      text-shadow: 0 0 14px rgba(0, 243, 255, 0.3);
-    }
-
-    .card-title {
-      font-weight: 800;
-      font-size: 0.92rem;
-    }
-
-    .nav-head {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 22px;
-    }
-
-    .page-title {
-      font-size: 1.25rem;
-      font-weight: 800;
-      letter-spacing: -0.4px;
-    }
-
-    .create-wrap,
-    .panel-wrap {
-      width: 100%;
-      max-width: 420px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      border-radius: 26px;
-      padding: 22px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
-    }
-
-    .helper-text {
-      color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.5;
-      margin-top: 0;
-      margin-bottom: 18px;
-    }
-
-    .input-group {
+    .wrap {
       position: relative;
+      z-index: 2;
       width: 100%;
-      margin-bottom: 14px;
-    }
-
-    .input-icon {
-      position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #8c8c8c;
-      font-size: 1rem;
-      transition: color 0.2s ease;
-      pointer-events: none;
-    }
-
-    input {
-      width: 100%;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background: rgba(0, 0, 0, 0.28);
-      color: #fff;
-      outline: none;
-      padding: 18px 16px 18px 46px;
-      font-size: 1rem;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    input::placeholder {
-      color: #8f8f8f;
-    }
-
-    input:focus {
-      border-color: rgba(255, 0, 80, 0.46);
-      box-shadow: 0 0 0 4px rgba(255, 0, 80, 0.1);
-    }
-
-    .input-group:focus-within .input-icon {
-      color: var(--primary);
-    }
-
-    .btn-main,
-    .btn-sub {
-      width: 100%;
-      border-radius: 999px;
-      padding: 17px 18px;
-      font-weight: 800;
-      letter-spacing: 0.4px;
-      transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .btn-main {
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      color: #fff;
-      box-shadow: 0 16px 30px rgba(255, 0, 80, 0.3);
-      text-transform: uppercase;
-    }
-
-    .btn-sub {
-      margin-top: 10px;
-      background: rgba(255,255,255,0.04);
-      color: #fff;
-      border: 1px solid var(--border);
-    }
-
-    .btn-main:active,
-    .btn-sub:active,
-    .btn-opt:active {
-      transform: scale(0.98);
-    }
-
-    .result-box,
-    .toast {
-      width: 100%;
-      margin-top: 16px;
-      border-radius: 18px;
-      border: 1px solid rgba(0, 243, 255, 0.2);
-      background: rgba(0, 243, 255, 0.06);
-      color: #dcfdff;
-      padding: 16px;
-      font-size: 0.92rem;
-      line-height: 1.5;
-      display: none;
-      word-break: break-word;
-    }
-
-    .toast {
-      position: absolute;
-      bottom: 18px;
-      left: 18px;
-      right: 18px;
-      z-index: 3000;
-      width: auto;
-      background: rgba(18, 18, 18, 0.94);
-      border: 1px solid rgba(255,255,255,0.09);
-    }
-
-    .proposal-shell {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .gif-container {
-      width: 250px;
-      height: 250px;
-      border-radius: 28px;
-      overflow: hidden;
-      margin-bottom: 26px;
-      background: #000;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 24px 60px rgba(0,0,0,0.45);
-    }
-
-    .gif-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .q-text {
-      font-size: clamp(2rem, 6vw, 2.45rem);
-      font-weight: 900;
-      line-height: 1.18;
-      text-align: center;
-      margin-bottom: 44px;
-      text-shadow: 0 0 26px rgba(255,0,80,0.36);
-      max-width: 360px;
-    }
-
-    .btn-zone {
-      position: relative;
-      width: 100%;
-      min-height: 86px;
+      min-height: 100vh;
+      padding: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 18px;
-      z-index: 10;
     }
 
-    .btn-opt {
-      width: 140px;
-      height: 62px;
-      border-radius: 999px;
-      font-size: 1.12rem;
-      font-weight: 900;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.26);
-      transition: transform 0.18s ease, left 0.16s ease, top 0.16s ease, opacity 0.18s ease;
-    }
-
-    .yes {
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      color: #fff;
-      z-index: 10;
-      box-shadow: 0 0 28px rgba(255,0,80,0.24);
-    }
-
-    .no {
-      background: #fff;
-      color: #111;
-      border: 3px solid rgba(255,0,80,0.8);
-      z-index: 11;
-    }
-
-    #chat-ui {
-      width: 100%;
-      max-width: 420px;
-      height: 360px;
-      border-radius: 24px;
+    .phone {
+      width: 390px;
+      max-width: 100%;
+      height: 780px;
+      border-radius: 34px;
+      position: relative;
       overflow: hidden;
-      border: 1px solid var(--border);
-      background: rgba(0,0,0,0.36);
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
+      border: 1px solid rgba(255,255,255,0.12);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)),
+        rgba(8, 8, 20, 0.6);
+      backdrop-filter: blur(18px);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.05),
+        0 30px 80px rgba(0,0,0,0.55),
+        0 0 70px rgba(141,92,255,0.14);
     }
 
-    .chat-header {
-      padding: 14px 16px;
+    .phone::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top center, rgba(255,255,255,0.08), transparent 28%),
+        linear-gradient(180deg, rgba(255,255,255,0.02), transparent 18%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .topbar {
+      position: absolute;
+      top: 16px;
+      left: 18px;
+      right: 18px;
+      z-index: 5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .pill {
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      font-size: 12px;
+      color: #f6eaff;
+      box-shadow: var(--shadow);
+    }
+
+    .title-box {
+      position: absolute;
+      top: 70px;
+      left: 22px;
+      right: 22px;
+      z-index: 4;
+      text-align: center;
+      animation: fadeUp 1.2s ease;
+    }
+
+    .title {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      line-height: 1.05;
+      background: linear-gradient(90deg, #ffffff, #ffd4f3, #c8b2ff, #ffffff);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 5s linear infinite;
+      text-shadow: 0 0 30px rgba(255,255,255,0.15);
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      opacity: 0.9;
+    }
+
+    @keyframes shine {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .scene {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .grid-light {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 24px 24px;
+      mask-image: linear-gradient(180deg, transparent, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 70%, transparent);
+      opacity: 0.25;
+    }
+
+    .flower-field {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 118px;
+      height: 420px;
+      pointer-events: none;
+    }
+
+    .flower {
+      position: absolute;
+      bottom: 0;
+      width: 86px;
+      height: 240px;
+      transform-origin: bottom center;
+      animation: sway 4.8s ease-in-out infinite;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.28));
+    }
+
+    .flower .stem {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 8px;
+      height: 0;
+      border-radius: 999px;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, #71f3a9, #22995a);
+      box-shadow: 0 0 14px rgba(84, 227, 142, 0.25);
+      animation: growStem 1.5s ease forwards;
+    }
+
+    .flower .leaf {
+      position: absolute;
+      width: 28px;
+      height: 16px;
+      background: linear-gradient(135deg, #65eba0, #28b868);
+      border-radius: 100% 0 100% 0;
+      opacity: 0;
+      animation: leafIn 0.8s ease forwards;
+      box-shadow: 0 0 12px rgba(84, 227, 142, 0.18);
+    }
+
+    .flower .leaf.left {
+      left: 18px;
+      bottom: 72px;
+      transform: rotate(-34deg);
+      animation-delay: 0.8s;
+    }
+
+    .flower .leaf.right {
+      right: 18px;
+      bottom: 108px;
+      transform: scaleX(-1) rotate(-32deg);
+      animation-delay: 1s;
+    }
+
+    .flower .center {
+      position: absolute;
+      left: 50%;
+      top: 18px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      transform: translateX(-50%) scale(0);
+      background: radial-gradient(circle at 35% 35%, #ffe9a7, #ffbf47 70%, #ff9f1a 100%);
+      box-shadow: 0 0 18px rgba(255, 185, 73, 0.45);
+      animation: bloom 0.6s ease forwards;
+      animation-delay: 1.15s;
+      z-index: 3;
+    }
+
+    .flower .petal {
+      position: absolute;
+      left: 50%;
+      top: 6px;
+      width: 24px;
+      height: 42px;
+      border-radius: 50% 50% 48% 48%;
+      transform-origin: center 30px;
+      opacity: 0;
+      background: radial-gradient(circle at 40% 30%, var(--pink2), var(--pink) 55%, #ce3794 100%);
+      box-shadow:
+        0 0 20px rgba(255, 92, 200, 0.22),
+        inset 0 0 10px rgba(255,255,255,0.12);
+      animation: petalIn 0.7s ease forwards;
+      animation-delay: 1.1s;
+    }
+
+    .flower .spark {
+      position: absolute;
+      top: 26px;
+      left: 50%;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.8);
+      box-shadow: 0 0 12px rgba(255,255,255,0.8);
+      opacity: 0;
+      animation: sparkle 2.6s ease-in-out infinite;
+      animation-delay: 1.6s;
+    }
+
+    .flower .petal.p1 { transform: translateX(-50%) rotate(0deg) translateY(-16px) scale(0.2); }
+    .flower .petal.p2 { transform: translateX(-50%) rotate(45deg) translateY(-16px) scale(0.2); }
+    .flower .petal.p3 { transform: translateX(-50%) rotate(90deg) translateY(-16px) scale(0.2); }
+    .flower .petal.p4 { transform: translateX(-50%) rotate(135deg) translateY(-16px) scale(0.2); }
+    .flower .petal.p5 { transform: translateX(-50%) rotate(180deg) translateY(-16px) scale(0.2); }
+    .flower .petal.p6 { transform: translateX(-50%) rotate(225deg) translateY(-16px) scale(0.2); }
+    .flower .petal.p7 { transform: translateX(-50%) rotate(270deg) translateY(-16px) scale(0.2); }
+    .flower .petal.p8 { transform: translateX(-50%) rotate(315deg) translateY(-16px) scale(0.2); }
+
+    @keyframes growStem {
+      from { height: 0; }
+      to { height: 165px; }
+    }
+
+    @keyframes bloom {
+      from { transform: translateX(-50%) scale(0); opacity: 0; }
+      to { transform: translateX(-50%) scale(1); opacity: 1; }
+    }
+
+    @keyframes petalIn {
+      from { opacity: 0; }
+      to { opacity: 1; transform: translateX(-50%) rotate(var(--rot)) translateY(-16px) scale(1); }
+    }
+
+    @keyframes leafIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.4) rotate(-20deg); }
+      to { opacity: 1; }
+    }
+
+    @keyframes sway {
+      0%, 100% { transform: rotate(-2deg); }
+      50% { transform: rotate(2deg); }
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; transform: translate(-50%, 0) scale(0.5); }
+      50% { opacity: 1; transform: translate(-50%, -14px) scale(1.2); }
+    }
+
+    .code-card {
+      position: absolute;
+      width: 180px;
+      padding: 14px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      animation: floatCard 6s ease-in-out infinite;
+      overflow: hidden;
+    }
+
+    .code-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.07), transparent);
+      transform: translateX(-100%);
+      animation: sweep 4.5s linear infinite;
+    }
+
+    .card1 {
+      top: 190px;
+      left: 16px;
+      transform: rotate(-7deg);
+    }
+
+    .card2 {
+      top: 270px;
+      right: 16px;
+      transform: rotate(7deg);
+      animation-delay: 1.2s;
+    }
+
+    .dots {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.38);
+    }
+
+    .line {
+      height: 8px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.15));
+      opacity: 0.88;
+    }
+
+    .line.small { width: 48%; }
+    .line.mid { width: 70%; }
+    .line.full { width: 100%; }
+
+    @keyframes floatCard {
+      0%, 100% { translate: 0 0; }
+      50% { translate: 0 -10px; }
+    }
+
+    @keyframes sweep {
+      100% { transform: translateX(100%); }
+    }
+
+    .hint {
+      position: absolute;
+      bottom: 138px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      font-size: 12px;
+      color: #f1dcff;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 10px 14px;
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      animation: pulseHint 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulseHint {
+      0%, 100% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(1.04); }
+    }
+
+    .bottombar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 16px 18px 20px;
+      z-index: 6;
+      background:
+        linear-gradient(180deg, transparent, rgba(0,0,0,0.32) 20%, rgba(0,0,0,0.68));
+    }
+
+    .userrow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .user {
       display: flex;
       align-items: center;
       gap: 10px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(255,255,255,0.04);
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background:
+        linear-gradient(135deg, var(--pink), var(--violet));
+      box-shadow: 0 0 18px rgba(255,92,200,0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .avatar::before {
+      content: "✿";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      color: white;
+    }
+
+    .uname {
+      font-size: 14px;
       font-weight: 700;
     }
 
-    .chat-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: #00ff8c;
-      box-shadow: 0 0 12px #00ff8c;
-      flex: 0 0 auto;
+    .utag {
+      font-size: 12px;
+      color: #d5c7f5;
+      margin-top: 2px;
     }
 
-    .chat-msgs {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    .follow {
+      padding: 10px 15px;
+      border-radius: 999px;
+      border: none;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--pink), var(--violet));
+      box-shadow:
+        0 10px 22px rgba(141, 92, 255, 0.28),
+        0 0 24px rgba(255, 92, 200, 0.2);
+      transition: 0.25s;
     }
 
-    .msg {
-      max-width: 82%;
-      padding: 12px 16px;
-      border-radius: 18px;
-      font-size: 0.96rem;
+    .follow:hover {
+      transform: translateY(-2px) scale(1.03);
+    }
+
+    .desc {
+      font-size: 13px;
+      color: #f4ebff;
       line-height: 1.45;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+      margin-bottom: 12px;
     }
 
-    .msg.bot {
-      background: rgba(255,255,255,0.1);
-      align-self: flex-start;
-      border-bottom-left-radius: 4px;
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
     }
 
-    .msg.user {
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      align-self: flex-end;
-      border-bottom-right-radius: 4px;
-    }
-
-    .chat-input {
+    .left-actions, .right-actions {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 12px 14px;
-      border-top: 1px solid var(--border);
-      background: rgba(255,255,255,0.03);
     }
 
-    #fakeInput {
-      width: 100%;
-      border: none;
-      background: transparent;
-      color: #fff;
-      outline: none;
-      padding: 6px 0;
-      font-size: 1rem;
-    }
-
-    .calc-circle {
-      width: 178px;
-      height: 178px;
-      border-radius: 50%;
-      border: 6px solid var(--primary);
-      display: grid;
-      place-items: center;
-      font-size: 3.6rem;
-      font-weight: 900;
-      margin-bottom: 20px;
-      box-shadow: 0 0 50px rgba(255,0,80,0.26), inset 0 0 28px rgba(255,0,80,0.12);
-      text-shadow: 0 0 16px rgba(255,0,80,0.32);
-      animation: pulseHeart 1.4s infinite;
-    }
-
-    #screen-crash {
-      justify-content: flex-start;
-      align-items: stretch;
-      background: #000;
-      padding-top: 90px;
-      z-index: 30;
-      font-family: 'Courier New', monospace;
-    }
-
-    .terminal {
-      width: 100%;
-      color: #00ff59;
-      line-height: 1.6;
-      font-size: 1rem;
-      white-space: pre-wrap;
-      text-shadow: 0 0 6px rgba(0,255,89,0.34);
-    }
-
-    .alert-box {
-      display: none;
-      margin-top: 28px;
-      padding: 16px;
-      border-radius: 18px;
-      background: rgba(255,0,0,0.16);
-      border: 1px solid rgba(255,0,0,0.5);
-      color: #ff5454;
-      font-weight: 900;
-      text-align: center;
-      box-shadow: 0 0 26px rgba(255,0,0,0.25);
-      animation: flashRed 0.6s infinite;
-    }
-
-    #fixBtn {
-      display: none;
-      margin-top: 16px;
-      background: #00ff76;
-      color: #000;
-      box-shadow: 0 0 18px rgba(0,255,118,0.35);
-    }
-
-    .success-title {
-      color: var(--primary);
-      font-size: 3rem;
-      font-weight: 900;
-      margin: 0 0 8px;
-      text-shadow: 0 0 20px rgba(255,0,80,0.38);
-    }
-
-    .success-subtitle {
-      color: #fff;
-      opacity: 0.92;
-      margin: 0 0 26px;
-      font-size: 1.08rem;
-    }
-
-    .expired-box {
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-      padding: 40px 26px;
-      border-radius: 28px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.03);
+    .icon-btn {
+      min-width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.07);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(12px);
       box-shadow: var(--shadow);
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.25s ease;
     }
 
-    .policy-text {
-      width: 100%;
-      max-width: 420px;
-      flex: 1;
-      overflow-y: auto;
-      padding-right: 4px;
-      color: #ddd;
-      line-height: 1.7;
-      font-size: 0.95rem;
+    .icon-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.12);
     }
 
-    .policy-text h2,
-    .policy-text h3 {
-      color: var(--primary);
+    .counter {
+      font-size: 12px;
+      color: #eadcff;
+      margin-left: -2px;
+      margin-right: 4px;
     }
 
-    .policy-text h3 {
-      margin-top: 20px;
-      margin-bottom: 6px;
-      font-size: 1.05rem;
-    }
-
-    .tiny-fly {
-      width: 54px !important;
-      height: 54px !important;
-      font-size: 0.82rem !important;
-      border-radius: 50% !important;
+    .particle {
       position: absolute;
-      z-index: 20;
-    }
-
-    .pulse-btn {
-      animation: pulseHeart 1s infinite;
-    }
-
-    .quake-active {
-      animation: extremeQuake 0.18s infinite;
-    }
-
-    .red-flash {
-      position: absolute;
-      inset: 0;
-      background: rgba(255,0,0,0.22);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.8);
       pointer-events: none;
-      display: none;
-      z-index: 1200;
-      animation: flashRed 0.34s infinite;
-      box-shadow: inset 0 0 90px rgba(255,0,0,0.6);
+      animation: particleFloat linear forwards;
+      filter: blur(0.5px);
     }
 
-    .hidden {
-      display: none !important;
-    }
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      border: 0;
-    }
-
-    @keyframes pulseHeart {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.08); }
-    }
-
-    @keyframes fall3D {
-      0% {
-        transform: translateY(-120px) rotateX(0deg) rotateY(0deg) scale(0.85);
+    @keyframes particleFloat {
+      from {
         opacity: 0;
+        transform: translateY(0) scale(0.4);
       }
-      8% { opacity: 1; }
-      100% {
-        transform: translateY(115vh) rotateX(360deg) rotateY(180deg) scale(1.18);
+      15% {
+        opacity: 1;
+      }
+      to {
         opacity: 0;
+        transform: translateY(-120px) translateX(var(--drift)) scale(1.4);
       }
     }
 
-    @keyframes extremeQuake {
-      0% { transform: translate(4px, 4px) rotate(0deg); }
-      25% { transform: translate(-4px, -4px) rotate(-1.3deg); }
-      50% { transform: translate(-5px, 4px) rotate(1.2deg); }
-      75% { transform: translate(5px, -4px) rotate(0deg); }
-      100% { transform: translate(-4px, 4px) rotate(1.1deg); }
-    }
+    @media (max-width: 430px) {
+      .wrap {
+        padding: 0;
+      }
 
-    @keyframes flashRed {
-      0%, 100% { opacity: 0; }
-      50% { opacity: 1; }
-    }
+      .phone {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+      }
 
-    @keyframes orbFloat {
-      0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(12px) scale(1.04); }
+      .title {
+        font-size: 31px;
+      }
     }
-
-    @media (max-width: 360px) {
-      .screen { padding: 18px; }
-      .btn-opt { width: 126px; height: 58px; }
-      .brand-title { font-size: 2.6rem; }
-      .gif-container { width: 225px; height: 225px; }
-    }
-  </style></head>
+  </style>
+</head>
 <body>
-  <div id="app" aria-live="polite">
-    <div class="bg-orb"></div>
-    <div class="bg-orb-2"></div>
-    <div id="redFlash" class="red-flash"></div>
-    <div id="toast" class="toast"></div><div id="overlay" class="overlay" aria-hidden="true"></div>
+  <div class="ambient">
+    <div class="blob one"></div>
+    <div class="blob two"></div>
+    <div class="blob three"></div>
+  </div>
 
-<aside id="sidebar" aria-label="Sidebar navigation">
-  <div class="side-brand">Flux<span>Link</span></div>
+  <div class="mouse-glow" id="mouseGlow"></div>
 
-  <div class="side-link" data-nav="home"><i class="fas fa-th-large"></i> Dashboard</div>
-  <div class="side-link" id="openAiLove"><i class="fas fa-magic"></i> AI Love System</div>
-  <div class="side-link" data-nav="privacy"><i class="fas fa-shield-alt"></i> Privacy Policy</div>
+  <div class="wrap">
+    <div class="phone" id="phone">
+      <div class="scene" id="scene">
+        <div class="grid-light"></div>
 
-  <div class="about-box">
-    <div class="dev-info">
-      Powered by <b>Flux AI</b><br>
-      Dev: <b>KAWCHUR</b><br>
-      <span style="font-size:0.75rem;color:#5c5c5c;">© 2026 Flux Brand. All rights reserved.</span>
+        <div class="topbar">
+          <div class="pill">LIVE PREVIEW</div>
+          <div class="pill">✨ Premium Motion</div>
+        </div>
+
+        <div class="title-box">
+          <div class="title">Interactive<br>Flowers</div>
+          <div class="subtitle">Tap anywhere to grow magical flowers</div>
+        </div>
+
+        <div class="code-card card1">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="line full"></div>
+          <div class="line mid"></div>
+          <div class="line full"></div>
+          <div class="line small"></div>
+        </div>
+
+        <div class="code-card card2">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="line mid"></div>
+          <div class="line full"></div>
+          <div class="line small"></div>
+          <div class="line mid"></div>
+        </div>
+
+        <div class="flower-field" id="flowerField"></div>
+
+        <div class="hint">Tap to create flowers 🌸</div>
+      </div>
+
+      <div class="bottombar">
+        <div class="userrow">
+          <div class="user">
+            <div class="avatar"></div>
+            <div>
+              <div class="uname">@yourusername</div>
+              <div class="utag">Creative UI animation demo</div>
+            </div>
+          </div>
+          <button class="follow">Follow</button>
+        </div>
+
+        <div class="desc">
+          Beautiful glowing flower animation with premium dark UI, glassmorphism,
+          floating code cards, and interactive bloom effect.
+        </div>
+
+        <div class="actions">
+          <div class="left-actions">
+            <div class="icon-btn" id="likeBtn">❤</div>
+            <div class="counter" id="likeCount">24.8K</div>
+
+            <div class="icon-btn">💬</div>
+            <div class="counter">1.2K</div>
+
+            <div class="icon-btn">↗</div>
+            <div class="counter">Share</div>
+          </div>
+
+          <div class="right-actions">
+            <div class="icon-btn">🔖</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</aside>
 
-<section id="screen-home" class="screen active">
-  <div class="top-bar">
-    <button class="menu-btn" id="menuBtn" aria-label="Open menu"><i class="fas fa-bars"></i></button>
-  </div>
+  <script>
+    const flowerField = document.getElementById("flowerField");
+    const scene = document.getElementById("scene");
+    const mouseGlow = document.getElementById("mouseGlow");
+    const phone = document.getElementById("phone");
+    const likeBtn = document.getElementById("likeBtn");
+    const likeCount = document.getElementById("likeCount");
 
-  <img src="https://media.tenor.com/2yDAZyl-eXQAAAAC/cute-sad.gif" class="brand-logo" alt="FluxLink logo" />
-  <h1 class="brand-title">Flux<span>Link</span></h1>
-  <p class="brand-subtitle">Fun tap links. Cleaner sharing. Less obvious vibes.</p>
+    let liked = false;
+    let likes = 24800;
 
-  <div class="grid-menu" id="modeGrid">
-    <div class="menu-card" data-mode="runaway"><div class="card-icon"><i class="fas fa-person-running"></i></div><div class="card-title">Runaway</div></div>
-    <div class="menu-card" data-mode="chat"><div class="card-icon"><i class="fas fa-comments"></i></div><div class="card-title">Chat Prank</div></div>
-    <div class="menu-card" data-mode="calc"><div class="card-icon"><i class="fas fa-heart-pulse"></i></div><div class="card-title">Love Calc</div></div>
-    <div class="menu-card" data-mode="sad"><div class="card-icon"><i class="fas fa-face-sad-tear"></i></div><div class="card-title">Emotional</div></div>
-    <div class="menu-card" data-mode="grow"><div class="card-icon"><i class="fas fa-expand-alt"></i></div><div class="card-title">Growing Yes</div></div>
-    <div class="menu-card" data-mode="crash"><div class="card-icon"><i class="fas fa-bug"></i></div><div class="card-title">System Crash</div></div>
-    <div class="menu-card" data-mode="clone"><div class="card-icon"><i class="fas fa-layer-group"></i></div><div class="card-title">Clone Army</div></div>
-    <div class="menu-card" data-mode="swarm"><div class="card-icon"><i class="fas fa-bugs"></i></div><div class="card-title">The Swarm</div></div>
-    <div class="menu-card" data-mode="matrix"><div class="card-icon"><i class="fas fa-cloud-showers-heavy"></i></div><div class="card-title">Matrix Rain</div></div>
-    <div class="menu-card" data-mode="quake"><div class="card-icon"><i class="fas fa-heart-crack"></i></div><div class="card-title">Earthquake</div></div>
-    <div class="menu-card" data-mode="shape"><div class="card-icon"><i class="fas fa-wand-magic-sparkles"></i></div><div class="card-title">Shape-Shifter</div></div>
-  </div>
-</section>
+    function formatLikes(num) {
+      if (num >= 1000) return (num / 1000).toFixed(1).replace(".0", "") + "K";
+      return num.toString();
+    }
 
-<section id="screen-create" class="screen">
-  <div class="panel-wrap">
-    <div class="nav-head">
-      <button class="back-btn" data-nav="home" aria-label="Back"><i class="fas fa-arrow-left"></i></button>
-      <div class="page-title">Setup Link</div>
-    </div>
+    likeBtn.addEventListener("click", () => {
+      liked = !liked;
+      likes += liked ? 1 : -1;
+      likeBtn.style.transform = "scale(1.15)";
+      likeBtn.style.background = liked
+        ? "linear-gradient(135deg, rgba(255,92,200,0.28), rgba(141,92,255,0.25))"
+        : "rgba(255,255,255,0.07)";
+      likeBtn.style.boxShadow = liked
+        ? "0 0 25px rgba(255,92,200,0.35)"
+        : "";
+      likeBtn.textContent = liked ? "💖" : "❤";
+      likeCount.textContent = formatLikes(likes);
+      setTimeout(() => {
+        likeBtn.style.transform = "";
+      }, 180);
+    });
 
-    <p class="helper-text">Choose a prank mode, enter two names, then generate a cleaner shareable link. The payload stays hidden inside the link.</p>
+    document.addEventListener("mousemove", (e) => {
+      mouseGlow.style.left = e.clientX + "px";
+      mouseGlow.style.top = e.clientY + "px";
+    });
 
-    <div class="input-group">
-      <label class="sr-only" for="sName">Your Name</label>
-      <input type="text" id="sName" maxlength="40" placeholder="Your Name" autocomplete="off" />
-      <i class="fas fa-user input-icon"></i>
-    </div>
-
-    <div class="input-group">
-      <label class="sr-only" for="rName">Crush's Name</label>
-      <input type="text" id="rName" maxlength="40" placeholder="Friend's Name" autocomplete="off" />
-      <i class="fas fa-heart input-icon"></i>
-    </div>
-
-    <div class="input-group">
-      <label class="sr-only" for="waNum">WhatsApp Number</label>
-      <input type="tel" id="waNum" maxlength="20" placeholder="WhatsApp Number (optional)" inputmode="tel" autocomplete="off" />
-      <i class="fab fa-whatsapp input-icon"></i>
-    </div>
-
-    <input type="hidden" id="mode" />
-
-    <button class="btn-main" id="generateBtn">Generate Magic Link <i class="fas fa-magic" style="margin-left:6px;"></i></button>
-    <button class="btn-sub hidden" id="copyAgainBtn">Copy Link Again</button>
-
-    <div id="result" class="result-box"></div>
-  </div>
-</section>
-
-<section id="screen-proposal" class="screen">
-  <div class="proposal-shell">
-    <div class="gif-container">
-      <img id="mainImg" src="https://media.tenor.com/2yDAZyl-eXQAAAAC/cute-sad.gif" alt="Cute animation" />
-    </div>
-    <div class="q-text" id="qText">Do you love me?</div>
-
-    <div class="btn-zone" id="btnZone">
-      <button class="btn-opt yes" id="yesBtn">YES ❤️</button>
-      <button class="btn-opt no" id="noBtn">NO 💔</button>
-    </div>
-  </div>
-</section>
-
-<section id="screen-chat" class="screen">
-  <div style="width:100%;max-width:420px;margin-bottom:16px;font-size:1.55rem;font-weight:800;text-align:left;">
-    Chat with <span id="chatPartner" style="color:var(--primary)">Flux</span>
-  </div>
-
-  <div id="chat-ui">
-    <div class="chat-header"><span class="chat-dot"></span> Online</div>
-    <div class="chat-msgs" id="chatHistory">
-      <div class="msg bot">Hi! I have a question for you... 🥺</div>
-    </div>
-    <div class="chat-input">
-      <input id="fakeInput" placeholder="Type your answer..." autocomplete="off" />
-      <i class="fas fa-paper-plane" style="color:var(--primary);font-size:1.2rem;"></i>
-    </div>
-  </div>
-</section>
-
-<section id="screen-calc" class="screen">
-  <div style="font-size:1.75rem;font-weight:800;margin-bottom:26px;text-align:center;">Love Match ❤️</div>
-  <div class="calc-circle">100%</div>
-  <div style="margin-bottom:30px;font-size:1.2rem;color:var(--accent);font-weight:700;">Perfect Match!</div>
-  <button class="btn-main" style="max-width:320px;" id="acceptFateBtn">Accept Fate</button>
-</section>
-
-<section id="screen-crash" class="screen">
-  <div class="terminal" id="termText"></div>
-  <div class="alert-box" id="errBox">⚠️ CRITICAL SYSTEM FAILURE ⚠️</div>
-  <button class="btn-main" id="fixBtn">REPAIR SYSTEM</button>
-</section>
-
-<section id="screen-success" class="screen">
-  <div class="gif-container" style="border-color:rgba(255,0,80,0.3);box-shadow:0 0 46px rgba(255,0,80,0.28);">
-    <img src="https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif" alt="Success animation" />
-  </div>
-  <h2 class="success-title">Yayyy! 🎉</h2>
-  <p class="success-subtitle">Sending lots of love... ❤️</p>
-  <button id="createNewBtn" class="btn-sub" style="max-width:320px;">Create New Proposal</button>
-</section>
-
-<section id="screen-expired" class="screen">
-  <div class="expired-box">
-    <i class="fas fa-heart-crack" style="font-size:4rem;color:var(--primary);margin-bottom:20px;"></i>
-    <h2 style="margin:0 0 10px;font-size:2rem;">Link Inactive</h2>
-    <p style="margin:0;color:#aaa;">This proposal has already been answered on this device.</p>
-  </div>
-</section>
-
-<section id="screen-privacy" class="screen">
-  <div class="nav-head" style="width:100%;max-width:420px;">
-    <button class="back-btn" data-nav="home" aria-label="Back"><i class="fas fa-arrow-left"></i></button>
-    <div class="page-title">Privacy Policy</div>
-  </div>
-  <div class="policy-text">
-    <h2 style="margin-top:0;">FluxLink Privacy</h2>
-    <p>Welcome to <b>FluxLink</b>. This is a client-side prank experience designed for fun.</p>
-
-    <h3><i class="fas fa-database" style="color:var(--accent);"></i> 1. Local Experience</h3>
-    <p>This static demo works in your browser. It does not include a real backend database or server-side tracking system.</p>
-
-    <h3><i class="fas fa-user-secret" style="color:var(--accent);"></i> 2. Link Behavior</h3>
-    <p>If a WhatsApp number is included, the app can open a pre-filled WhatsApp link after acceptance. It does not auto-send messages by itself.</p>
-
-    <h3><i class="fas fa-hand-holding-heart" style="color:var(--accent);"></i> 3. Fair Use</h3>
-    <p>Please use it for harmless fun only. Do not use it to harass, trick, or pressure anyone.</p>
-
-    <div style="text-align:center;margin-top:36px;opacity:0.62;">
-      <i class="fas fa-heart pulse-btn" style="position:relative;display:inline-block;margin-bottom:10px;color:var(--primary);"></i><br>
-      Flux AI Division<br>
-      © 2026 All Rights Reserved
-    </div>
-  </div>
-</section>
-
-  </div>  <script>
-    (() => {
-      'use strict';
-
-      const assets = {
-        ask: 'https://media.tenor.com/2yDAZyl-eXQAAAAC/cute-sad.gif',
-        sad: 'https://media.tenor.com/8FkS0N7fQ2gAAAAC/sad-cry.gif',
-        kiss: 'https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif'
-      };
-
-      const forcedText = 'Yes! I love you so much! Will you marry me? ❤️';
-      const sadTexts = [
-        'Please no! 🥺',
-        'Don\'t break my heart 💔',
-        'I\'m crying... 😭',
-        'You are my world! ❤️',
-        'Okay, last chance...'
-      ];
-
-      const MODES = new Set(['runaway', 'chat', 'calc', 'sad', 'grow', 'crash', 'clone', 'swarm', 'matrix', 'quake', 'shape']);
-
-      const app = document.getElementById('app');
-      const overlay = document.getElementById('overlay');
-      const sidebar = document.getElementById('sidebar');
-      const toast = document.getElementById('toast');
-      const redFlash = document.getElementById('redFlash');
-      const resultBox = document.getElementById('result');
-      const generateBtn = document.getElementById('generateBtn');
-      const copyAgainBtn = document.getElementById('copyAgainBtn');
-      const qText = document.getElementById('qText');
-      const mainImg = document.getElementById('mainImg');
-      const btnZone = document.getElementById('btnZone');
-      const yesBtn = document.getElementById('yesBtn');
-      const noBtn = document.getElementById('noBtn');
-      const fakeInput = document.getElementById('fakeInput');
-      const chatHistory = document.getElementById('chatHistory');
-      const termText = document.getElementById('termText');
-      const errBox = document.getElementById('errBox');
-      const fixBtn = document.getElementById('fixBtn');
-      const createNewBtn = document.getElementById('createNewBtn');
-      const chatPartner = document.getElementById('chatPartner');
-      const acceptFateBtn = document.getElementById('acceptFateBtn');
-
-      const sNameInput = document.getElementById('sName');
-      const rNameInput = document.getElementById('rName');
-      const waNumInput = document.getElementById('waNum');
-      const modeInput = document.getElementById('mode');
-
-      const state = {timeouts: [],
-        matrixInterval: null,
-        crashInterval: null,
-        cloneListenerActive: false,
-        payloadVersion: 'v2'
-      };
-
-      function sanitizeText(value, fallback = '') {
-        if (typeof value !== 'string') return fallback;
-        return value.replace(/[<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, 60) || fallback;
+    document.addEventListener("touchmove", (e) => {
+      if (e.touches[0]) {
+        mouseGlow.style.left = e.touches[0].clientX + "px";
+        mouseGlow.style.top = e.touches[0].clientY + "px";
       }
+    }, { passive: true });
 
-      function sanitizePhone(value) {
-        return String(value || '').replace(/[^\d+]/g, '').slice(0, 20);
-      }
+    function createFlower(xPercent, scale = 1, delay = 0) {
+      const flower = document.createElement("div");
+      flower.className = "flower";
+      flower.style.left = `${xPercent}%`;
+      flower.style.transform += ` scale(${scale})`;
+      flower.style.animationDelay = `${delay}s`;
+      flower.style.animationDuration = `${4 + Math.random() * 3}s`;
 
-      function showToast(message, duration = 2400) {
-        toast.textContent = message;
-        toast.style.display = 'block';
-        clearTimeout(toast._hideTimer);
-        toast._hideTimer = setTimeout(() => {
-          toast.style.display = 'none';
-        }, duration);
-      }
+      flower.innerHTML = `
+        <div class="stem"></div>
+        <div class="leaf left"></div>
+        <div class="leaf right"></div>
+        <div class="petal p1" style="--rot: 0deg;"></div>
+        <div class="petal p2" style="--rot: 45deg;"></div>
+        <div class="petal p3" style="--rot: 90deg;"></div>
+        <div class="petal p4" style="--rot: 135deg;"></div>
+        <div class="petal p5" style="--rot: 180deg;"></div>
+        <div class="petal p6" style="--rot: 225deg;"></div>
+        <div class="petal p7" style="--rot: 270deg;"></div>
+        <div class="petal p8" style="--rot: 315deg;"></div>
+        <div class="center"></div>
+        <div class="spark"></div>
+      `;
 
-      function toggleMenu(force) {
-        const shouldOpen = typeof force === 'boolean' ? force : !sidebar.classList.contains('open');
-        sidebar.classList.toggle('open', shouldOpen);
-        overlay.classList.toggle('active', shouldOpen);
-      }
+      flowerField.appendChild(flower);
 
-      function nav(id) {
-        document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
-        const target = document.getElementById('screen-' + id);
-        if (target) target.classList.add('active');
-        if (id !== 'proposal') cleanupFloatingNoButton();
-      }
-
-      function clearTrackedTimeouts() {
-        state.timeouts.forEach(clearTimeout);
-        state.timeouts = [];
-      }
-
-      function cleanupEffects() {
-        app.classList.remove('quake-active');
-        redFlash.style.display = 'none';
-        clearTrackedTimeouts();
-
-        if (state.matrixInterval) {
-          clearInterval(state.matrixInterval);
-          state.matrixInterval = null;
+      setTimeout(() => {
+        if (flowerField.children.length > 18) {
+          flowerField.removeChild(flowerField.children[0]);
         }
+      }, 9000);
+    }
 
-        if (state.crashInterval) {
-          clearInterval(state.crashInterval);
-          state.crashInterval = null;
-        }
+    function spawnParticle(x, y) {
+      const p = document.createElement("div");
+      p.className = "particle";
+      p.style.left = x + "px";
+      p.style.top = y + "px";
+      p.style.setProperty("--drift", `${(Math.random() - 0.5) * 80}px`);
+      p.style.animationDuration = `${1.8 + Math.random() * 1.5}s`;
+      scene.appendChild(p);
 
-        termText.textContent = '';
-        errBox.style.display = 'none';
-        fixBtn.style.display = 'none';
+      setTimeout(() => p.remove(), 3200);
+    }
 
-        document.querySelectorAll('.extra-btn, .confetti-item').forEach(el => el.remove());
+    function bloomAt(clientX, clientY) {
+      const rect = flowerField.getBoundingClientRect();
+      const x = ((clientX - rect.left) / rect.width) * 100;
+
+      if (x < 2 || x > 98) return;
+
+      createFlower(x, 0.9 + Math.random() * 0.4);
+
+      for (let i = 0; i < 10; i++) {
+        spawnParticle(clientX + (Math.random() - 0.5) * 40, clientY + (Math.random() - 0.5) * 20);
       }
+    }
 
-      function cleanupFloatingNoButton() {
-        if (noBtn.parentNode !== btnZone) {
-          btnZone.appendChild(noBtn);
-        }
-        noBtn.className = 'btn-opt no';
-        noBtn.textContent = 'NO 💔';
-        noBtn.style.cssText = '';
-        noBtn.style.display = '';
-        noBtn.onclick = null;
-        noBtn.onmouseover = null;
-        noBtn.ontouchstart = null;
+    phone.addEventListener("click", (e) => {
+      const bottomLimit = window.innerHeight - 220;
+      if (e.clientY < bottomLimit) {
+        bloomAt(e.clientX, e.clientY);
       }
+    });
 
-      function resetModeState() {
-        cleanupEffects();
-        cleanupFloatingNoButton();
-        state.typeIndex = 0;
-        state.clickCount = 0;
-        fakeInput.value = '';
-        chatHistory.innerHTML = '<div class="msg bot">Hi! I have a question for you... 🥺</div>';
-        mainImg.src = assets.ask;
-        yesBtn.style.transform = '';
-        yesBtn.style.zIndex = '';
-        qText.innerHTML = 'Do you love me?';
+    phone.addEventListener("touchstart", (e) => {
+      const t = e.touches[0];
+      if (!t) return;
+      const bottomLimit = window.innerHeight - 220;
+      if (t.clientY < bottomLimit) {
+        bloomAt(t.clientX, t.clientY);
       }
-
-      function trackTimeout(fn, delay) {
-        const id = setTimeout(fn, delay);
-        state.timeouts.push(id);
-        return id;
-      }
-
-      function getSafePos(elWidth, elHeight) {
-        const rect = app.getBoundingClientRect();
-        const padding = 18;
-        const maxX = Math.max(padding, rect.width - elWidth - padding);
-        const maxY = Math.max(padding, rect.height - elHeight - padding);
-        const x = Math.random() * (maxX - padding) + padding;
-        const y = Math.random() * (maxY - elHeight - padding) + padding;
-        return { x, y };
-      }
-
-      function escapeNoButton() {
-        if (noBtn.parentNode !== app) {
-          app.appendChild(noBtn);
-        }
-        noBtn.style.position = 'absolute';
-        noBtn.style.margin = '0';
-        noBtn.style.zIndex = '1300';
-      }
-
-      function positionNoButton() {
-        const width = noBtn.offsetWidth || 140;
-        const height = noBtn.offsetHeight || 62;
-        const pos = getSafePos(width, height);
-        noBtn.style.left = pos.x + 'px';
-        noBtn.style.top = pos.y + 'px';
-      }
-
-      function addChatMessage(text, type = 'bot') {
-        const msg = document.createElement('div');
-        msg.className = 'msg ' + type;
-        msg.textContent = text;
-        chatHistory.appendChild(msg);
-        chatHistory.scrollTop = chatHistory.scrollHeight;
-      }
-
-      function setup(mode) {
-        if (!MODES.has(mode)) return;
-        resetModeState();
-        state.currentMode = mode;
-        modeInput.value = mode;
-        nav('create');
-      }
-
-      async function copyText(text) {
-        try {
-          if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(text);
-            return true;
-          }
-        } catch (_) {}
-
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
-        let ok = false;
-        try {
-          ok = document.execCommand('copy');
-        } catch (_) {
-          ok = false;
-        }
-        ta.remove();
-        return ok;
-      }
-
-      async function genLink() {
-        const s = sanitizeText(sNameInput.value);
-        const r = sanitizeText(rNameInput.value);
-        const w = sanitizePhone(waNumInput.value);
-        const m = modeInput.value;
-
-        if (!s || !r) {
-          showToast('Please enter both names.');
-          return;
-        }
-
-        if (!MODES.has(m)) {
-          showToast('Please select a valid prank mode first.');
-          return;
-        }
-
-        const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-        const base = window.location.href.split('?')[0].split('#')[0];
-        const payload = {
-          v: state.payloadVersion,
-          s,
-          r,
-          m,
-          w
-        };
-
-        const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
-        const url = new URL(base);
-        url.searchParams.set('id', id);
-        url.hash = 'p=' + encoded;
-
-        state.latestLink = url.toString();
-        const copied = await copyText(state.latestLink);
-        resultBox.style.display = 'block';
-        resultBox.innerHTML = '<b>Mode:</b> ' + m.toUpperCase() + '<br><b>Clean Link:</b> ' + state.latestLink;
-        copyAgainBtn.classList.remove('hidden');
-        showToast(copied ? 'Clean magic link copied.' : 'Link generated. Copy it manually if needed.');
-      }
-
-      function initRunawayMode() {
-        const run = (event) => {
-          if (event) event.preventDefault();
-          escapeNoButton();
-          positionNoButton();
-        };
-        noBtn.onmouseover = run;
-        noBtn.ontouchstart = run;
-      }
-
-      function initGrowMode() {
-        noBtn.onclick = () => {
-          state.clickCount += 1;
-          yesBtn.style.transform = `scale(${1 + state.clickCount * 0.32})`;
-          yesBtn.style.zIndex = '99';
-          if (state.clickCount > 5) {
-            noBtn.style.display = 'none';
-          }
-        };
-      }
-
-      function initSadMode() {
-        noBtn.onclick = () => {
-          qText.textContent = sadTexts[state.clickCount % sadTexts.length];
-          mainImg.src = assets.sad;
-          state.clickCount += 1;
-          escapeNoButton();
-          positionNoButton();
-        };
-      }
-
-      function initCloneMode() {
-        noBtn.onclick = (event) => {
-          event.preventDefault();
-          noBtn.style.opacity = '0';
-          trackTimeout(() => { noBtn.style.display = 'none'; }, 180);
-
-          if (state.cloneListenerActive) return;
-          state.cloneListenerActive = true;
-
-          const onAppClick = (ev) => {
-            if (!document.getElementById('screen-proposal').classList.contains('active')) return;
-            const clone = document.createElement('button');
-            clone.className = 'btn-opt yes pulse-btn extra-btn';
-            clone.textContent = 'YES ❤️';
-
-            const rect = app.getBoundingClientRect();
-            const x = Math.min(Math.max(10, ev.clientX - rect.left - 60), rect.width - 140 - 10);
-            const y = Math.min(Math.max(10, ev.clientY - rect.top - 30), rect.height - 62 - 10);
-            clone.style.position = 'absolute';
-            clone.style.left = x + 'px';
-            clone.style.top = y + 'px';
-            clone.addEventListener('click', sayYes);
-            app.appendChild(clone);
-          };
-
-          app._cloneClickHandler = onAppClick;
-          app.addEventListener('click', onAppClick);
-        };
-      }
-
-      function initSwarmMode() {
-        noBtn.onclick = (event) => {
-          event.preventDefault();
-          noBtn.style.display = 'none';
-
-          for (let i = 0; i < 14; i += 1) {
-            const item = document.createElement('button');
-            item.className = 'btn-opt no tiny-fly extra-btn';
-            item.textContent = 'NO';
-            item.style.position = 'absolute';
-            const first = getSafePos(54, 54);
-            item.style.left = first.x + 'px';
-            item.style.top = first.y + 'px';
-
-            const evade = () => {
-              const pos = getSafePos(54, 54);
-              item.style.left = pos.x + 'px';
-              item.style.top = pos.y + 'px';
-            };
-
-            item.addEventListener('mouseover', evade);
-            item.addEventListener('touchstart', (e) => {
-              e.preventDefault();
-              evade();
-            }, { passive: false });
-
-            app.appendChild(item);
-          }
-        };
-      }
-
-      function initMatrixMode() {
-        noBtn.onclick = (event) => {
-          event.preventDefault();
-          noBtn.style.display = 'none';
-          if (state.matrixInterval) return;
-
-          state.matrixInterval = setInterval(() => {
-            const item = document.createElement('button');
-            item.className = 'btn-opt yes extra-btn';
-            item.textContent = 'YES ❤️';
-            item.style.position = 'absolute';
-            item.style.animation = `fall3D ${1.5 + Math.random() * 1.8}s linear forwards`;
-            const pos = getSafePos(140, 62);
-            item.style.left = pos.x + 'px';
-            item.style.top = '-80px';
-            item.addEventListener('click', sayYes);
-            app.appendChild(item);
-            trackTimeout(() => item.remove(), 3600);
-          }, 220);
-        };
-      }
-
-      function initQuakeMode() {
-        noBtn.onclick = (event) => {
-          event.preventDefault();
-          app.classList.add('quake-active');
-          redFlash.style.display = 'block';
-          qText.innerHTML = 'SYSTEM DAMAGED!<br><span style="font-size:1.2rem;color:#ff5b5b;">Press YES to Repair!</span>';
-          mainImg.src = assets.sad;
-          noBtn.style.display = 'none';
-        };
-      }
-
-      function initShapeMode() {
-        const flip = (event) => {
-          if (event) event.preventDefault();
-          noBtn.style.transform = 'rotateY(90deg)';
-          trackTimeout(() => {
-            noBtn.textContent = 'YES ❤️';
-            noBtn.className = 'btn-opt yes';
-            noBtn.style.transform = 'rotateY(180deg)';
-            trackTimeout(() => {
-              noBtn.onclick = sayYes;
-              noBtn.ontouchstart = sayYes;
-            }, 160);
-          }, 140);
-        };
-
-        noBtn.onmouseover = flip;
-        noBtn.ontouchstart = flip;
-      }
-
-      function initMode(mode) {
-        resetModeState();
-        state.currentMode = mode;
-
-        if (mode === 'runaway') return initRunawayMode();
-        if (mode === 'grow') return initGrowMode();
-        if (mode === 'sad') return initSadMode();
-        if (mode === 'clone') return initCloneMode();
-        if (mode === 'swarm') return initSwarmMode();
-        if (mode === 'matrix') return initMatrixMode();
-        if (mode === 'quake') return initQuakeMode();
-        if (mode === 'shape') return initShapeMode();
-      }
-
-      function handleTyping() {
-        const currentValue = fakeInput.value;
-        if (currentValue.length <= state.typeIndex) {
-          fakeInput.value = forcedText.slice(0, state.typeIndex);
-          return;
-        }
-
-        state.typeIndex += 1;
-        fakeInput.value = forcedText.slice(0, state.typeIndex);
-
-        if (state.typeIndex === 1) {
-          addChatMessage('Wait... why is it typing by itself? 😳', 'bot');
-        }
-
-        if (state.typeIndex >= forcedText.length) {
-          addChatMessage(forcedText, 'user');
-          trackTimeout(() => sayYes(), 700);
-        }
-      }
-
-      function startCrash() {
-        cleanupEffects();
-        nav('crash');
-
-        const lines = [
-          'INITIALIZING REJECTION PROTOCOL...',
-          'ERROR 404: LOVE NOT FOUND...',
-          'OVERRIDING SYSTEM...',
-          'CRITICAL DAMAGE DETECTED...'
-        ];
-
-        let index = 0;
-        state.crashInterval = setInterval(() => {
-          if (index < lines.length) {
-            termText.textContent += (termText.textContent ? '\n' : '') + '> ' + lines[index];
-            index += 1;
-            return;
-          }
-
-          clearInterval(state.crashInterval);
-          state.crashInterval = null;
-          errBox.style.display = 'block';
-          fixBtn.style.display = 'block';
-        }, 760);
-      }
-
-      function confettiBurst() {
-        const emojis = ['❤️', '💖', '✨', '🥰'];
-        for (let i = 0; i < 56; i += 1) {
-          trackTimeout(() => {
-            const el = document.createElement('div');
-            el.className = 'confetti-item';
-            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            el.style.position = 'fixed';
-            el.style.left = Math.random() * 100 + 'vw';
-            el.style.top = '-24px';
-            el.style.fontSize = (16 + Math.random() * 20) + 'px';
-            el.style.zIndex = '4000';
-            el.style.pointerEvents = 'none';
-            el.style.filter = 'drop-shadow(0 0 10px rgba(255,0,80,0.35))';
-            el.style.animation = `fall3D ${2 + Math.random()}s linear forwards`;
-            document.body.appendChild(el);
-            trackTimeout(() => el.remove(), 3200);
-          }, i * 34);
-        }
-      }
-
-      function finalizeLocalLink() {
-        if (!state.linkId) return;
-        localStorage.setItem('flux_' + state.linkId, 'done');
-        createNewBtn.classList.add('hidden');
-      }
-
-      function maybeRedirectToWhatsApp() {
-        if (!state.waNumber) return;
-        const target = `https://wa.me/${encodeURIComponent(state.waNumber)}?text=${encodeURIComponent('Yes! I accepted your proposal! ❤️')}`;
-        trackTimeout(() => {
-          window.location.href = target;
-        }, 1900);
-      }
-
-      function sayYes() {
-        if (app._cloneClickHandler) {
-          app.removeEventListener('click', app._cloneClickHandler);
-          app._cloneClickHandler = null;
-          state.cloneListenerActive = false;
-        }
-
-        cleanupEffects();
-        finalizeLocalLink();
-        nav('success');
-        confettiBurst();
-        maybeRedirectToWhatsApp();
-      }
-
-      function openProposalFromURL() {
-        const params = new URLSearchParams(window.location.search);
-        const hash = window.location.hash.startsWith('#') ? window.location.hash.slice(1) : window.location.hash;
-        const hashParams = new URLSearchParams(hash);
-        const id = sanitizeText(params.get('id') || '');
-        const encodedPayload = hashParams.get('p') || params.get('p') || '';
-
-        if (!id || !encodedPayload) {
-          nav('home');
-          return;
-        }
-
-        let payload;
-        try {
-          payload = JSON.parse(decodeURIComponent(escape(atob(encodedPayload))));
-        } catch (_) {
-          showToast('Invalid or broken link.');
-          nav('home');
-          return;
-        }
-
-        const s = sanitizeText(payload.s || 'Flux');
-        const r = sanitizeText(payload.r || 'You');
-        const m = sanitizeText(payload.m || 'runaway');
-        const w = sanitizePhone(payload.w || '');
-
-        state.linkId = id;
-        state.senderName = s;
-        state.receiverName = r;
-        state.waNumber = w;
-        state.currentMode = MODES.has(m) ? m : 'runaway';
-
-        if (localStorage.getItem('flux_' + id) === 'done') {
-          nav('expired');
-          return;
-        }
-
-        if (state.currentMode === 'chat') {
-          chatPartner.textContent = s;
-          state.typeIndex = 0;
-          nav('chat');
-          return;
-        }
-
-        if (state.currentMode === 'calc') {
-          nav('calc');
-          return;
-        }
-
-        if (state.currentMode === 'crash') {
-          startCrash();
-          return;
-        }
-
-        qText.innerHTML = `Hey <b>${r}</b>,<br>Do you love me?`;
-        nav('proposal');
-        initMode(state.currentMode);
-      }
-
-      function bindEvents() {
-        document.getElementById('menuBtn').addEventListener('click', () => toggleMenu(true));
-        overlay.addEventListener('click', () => toggleMenu(false));
-
-        document.querySelectorAll('[data-nav]').forEach(el => {
-          el.addEventListener('click', () => {
-            toggleMenu(false);
-            nav(el.dataset.nav);
-          });
-        });
-
-        document.getElementById('openAiLove').addEventListener('click', () => {
-          window.open('https://sites.google.com/view/flux-ai-app/home', '_blank', 'noopener');
-        });
-
-        document.querySelectorAll('.menu-card[data-mode]').forEach(card => {
-          card.addEventListener('click', () => setup(card.dataset.mode));
-        });
-
-        generateBtn.addEventListener('click', genLink);
-        copyAgainBtn.addEventListener('click', async () => {
-          if (!state.latestLink) return;
-          const copied = await copyText(state.latestLink);
-          showToast(copied ? 'Copied again.' : 'Copy failed.');
-        });
-
-        yesBtn.addEventListener('click', sayYes);
-        acceptFateBtn.addEventListener('click', sayYes);
-        fixBtn.addEventListener('click', sayYes);
-        createNewBtn.addEventListener('click', () => {
-          window.location.href = window.location.pathname;
-        });
-        fakeInput.addEventListener('input', handleTyping);
-
-        window.addEventListener('beforeunload', cleanupEffects);
-      }
-
-      bindEvents();
-      openProposalFromURL();
-    })();
-  </script></body>
+    }, { passive: true });
+
+    // Initial flowers
+    const initialFlowers = [
+      [14, 0.92, 0],
+      [27, 1.05, 0.15],
+      [41, 0.88, 0.25],
+      [56, 1.12, 0.35],
+      [71, 0.96, 0.45],
+      [84, 1.06, 0.2]
+    ];
+
+    initialFlowers.forEach(([x, scale, delay]) => createFlower(x, scale, delay));
+
+    // Auto particles
+    setInterval(() => {
+      const rect = phone.getBoundingClientRect();
+      const x = rect.left + 70 + Math.random() * (rect.width - 140);
+      const y = rect.top + 260 + Math.random() * 240;
+      spawnParticle(x, y);
+    }, 500);
+  </script>
+</body>
 </html>
