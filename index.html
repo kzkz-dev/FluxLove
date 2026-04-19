@@ -2,92 +2,281 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>FluxLove</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+  <title>FluxLove v4</title>
   <style>
     *{
       margin:0;
       padding:0;
       box-sizing:border-box;
       -webkit-tap-highlight-color:transparent;
-      font-family:Arial, Helvetica, sans-serif;
     }
 
     :root{
-      --bg:#0b0713;
-      --bg2:#130a23;
+      --bg-1:#0a0713;
+      --bg-2:#130a22;
+      --bg-3:#1b1030;
       --card:rgba(255,255,255,0.08);
+      --card-2:rgba(255,255,255,0.05);
       --line:rgba(255,255,255,0.10);
-      --text:#fff;
-      --muted:#cfc6df;
+      --text:#ffffff;
+      --muted:#cec6dd;
+      --muted-2:#a79dbd;
       --pink:#ff4fc3;
-      --pink2:#ff7fda;
+      --pink-2:#ff83dd;
       --violet:#7b5cff;
       --cyan:#2fe6ff;
-      --danger:#ff3d6e;
-      --good:#57f0a3;
+      --green:#58efab;
+      --danger:#ff406f;
+      --warn:#ffb84d;
+      --shadow:0 16px 40px rgba(0,0,0,0.28);
+    }
+
+    body.light{
+      --bg-1:#f4efff;
+      --bg-2:#ede4ff;
+      --bg-3:#fbf9ff;
+      --card:rgba(255,255,255,0.78);
+      --card-2:rgba(255,255,255,0.60);
+      --line:rgba(88,64,140,0.12);
+      --text:#1a1130;
+      --muted:#6c6186;
+      --muted-2:#8b7fa2;
+      --shadow:0 16px 40px rgba(99,72,145,0.12);
     }
 
     html,body{
       width:100%;
       height:100%;
       overflow:hidden;
-      background:
-        radial-gradient(circle at top, rgba(123,92,255,.25), transparent 28%),
-        radial-gradient(circle at 80% 20%, rgba(255,79,195,.16), transparent 24%),
-        linear-gradient(180deg,var(--bg2),var(--bg));
+      font-family:Arial, Helvetica, sans-serif;
       color:var(--text);
+      background:
+        radial-gradient(circle at top center, rgba(123,92,255,0.22), transparent 26%),
+        radial-gradient(circle at 82% 14%, rgba(255,79,195,0.16), transparent 22%),
+        linear-gradient(180deg,var(--bg-3),var(--bg-2) 40%,var(--bg-1));
     }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size:24px 24px;
+      opacity:.30;
+    }
+
+    button,input,textarea{
+      font:inherit;
+    }
+
+    .hidden{display:none !important;}
 
     .app{
       width:100vw;
       height:100vh;
       position:relative;
       overflow:hidden;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-      background-size:24px 24px;
+    }
+
+    .auth-screen{
+      position:absolute;
+      inset:0;
+      z-index:200;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      background:
+        radial-gradient(circle at top center, rgba(123,92,255,0.18), transparent 26%),
+        linear-gradient(180deg, rgba(10,7,19,0.96), rgba(18,11,30,0.98));
+      backdrop-filter:blur(8px);
+    }
+
+    .auth-card{
+      width:100%;
+      max-width:420px;
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:30px;
+      padding:20px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(14px);
+    }
+
+    .auth-brand{
+      text-align:center;
+      margin-bottom:18px;
+    }
+
+    .auth-logo{
+      width:74px;
+      height:74px;
+      margin:0 auto 12px;
+      border-radius:24px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:34px;
+      color:#fff;
+      background:linear-gradient(135deg,var(--pink),var(--violet));
+      box-shadow:0 16px 28px rgba(255,79,195,0.28);
+    }
+
+    .auth-brand h1{
+      font-size:30px;
+      font-weight:900;
+      margin-bottom:6px;
+    }
+
+    .auth-brand p{
+      font-size:14px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .auth-tabs{
+      display:flex;
+      gap:10px;
+      margin-bottom:16px;
+    }
+
+    .auth-tab{
+      flex:1;
+      min-height:46px;
+      border:none;
+      border-radius:16px;
+      background:rgba(255,255,255,0.06);
+      color:var(--text);
+      border:1px solid var(--line);
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .auth-tab.active{
+      background:linear-gradient(135deg,var(--pink),var(--violet));
+      color:#fff;
+      border:none;
+    }
+
+    .form-group{
+      margin-bottom:12px;
+    }
+
+    .form-label{
+      display:block;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:7px;
+    }
+
+    .text-input,.text-area{
+      width:100%;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,0.06);
+      color:var(--text);
+      outline:none;
+      padding:0 14px;
+    }
+
+    .text-input{
+      min-height:48px;
+    }
+
+    .text-area{
+      min-height:96px;
+      resize:none;
+      padding:12px 14px;
+    }
+
+    .primary-btn,.secondary-btn,.danger-btn,.mini-btn{
+      border:none;
+      cursor:pointer;
+      font-weight:800;
+    }
+
+    .primary-btn{
+      width:100%;
+      min-height:48px;
+      border-radius:16px;
+      background:linear-gradient(135deg,var(--pink),var(--violet));
+      color:#fff;
+      box-shadow:0 12px 24px rgba(255,79,195,0.24);
+    }
+
+    .secondary-btn{
+      min-height:44px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.06);
+      color:var(--text);
+      border:1px solid var(--line);
+      padding:0 14px;
+    }
+
+    .danger-btn{
+      min-height:44px;
+      border-radius:14px;
+      background:var(--danger);
+      color:#fff;
+      padding:0 14px;
+    }
+
+    .auth-note{
+      margin-top:12px;
+      text-align:center;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.5;
     }
 
     .topbar{
-      height:74px;
-      padding:16px 16px 10px;
+      height:78px;
       display:flex;
       align-items:center;
       justify-content:space-between;
+      padding:16px 16px 10px;
       position:relative;
-      z-index:5;
+      z-index:10;
     }
 
     .brand{
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:12px;
+      min-width:0;
     }
 
-    .logo{
-      width:42px;
-      height:42px;
-      border-radius:14px;
+    .brand-logo{
+      width:46px;
+      height:46px;
+      border-radius:16px;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:22px;
       background:linear-gradient(135deg,var(--pink),var(--violet));
-      box-shadow:0 8px 24px rgba(255,79,195,.35);
+      color:#fff;
+      font-size:22px;
+      box-shadow:0 12px 28px rgba(255,79,195,0.30);
+      flex-shrink:0;
     }
 
-    .brand h1{
+    .brand-text h1{
       font-size:22px;
       font-weight:900;
-      letter-spacing:.2px;
+      line-height:1;
     }
 
-    .brand p{
+    .brand-text p{
+      margin-top:4px;
       font-size:12px;
       color:var(--muted);
-      margin-top:2px;
     }
 
     .top-actions{
@@ -95,22 +284,33 @@
       gap:10px;
     }
 
-    .icon-btn{
+    .glass-btn{
       width:42px;
       height:42px;
-      border:none;
       border-radius:14px;
-      background:var(--card);
-      color:#fff;
-      font-size:18px;
       border:1px solid var(--line);
+      background:var(--card);
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      box-shadow:var(--shadow);
+      cursor:pointer;
+    }
+
+    .main{
+      position:absolute;
+      inset:78px 0 74px 0;
+      overflow:hidden;
     }
 
     .screen{
       position:absolute;
-      inset:74px 0 72px 0;
-      overflow:auto;
-      padding:14px;
+      inset:0;
+      overflow-y:auto;
+      overflow-x:hidden;
+      padding:14px 14px 24px;
       display:none;
     }
 
@@ -118,117 +318,132 @@
       display:block;
     }
 
-    .hero-card{
-      background:linear-gradient(135deg, rgba(255,79,195,.18), rgba(47,230,255,.10));
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:18px;
-      box-shadow:0 14px 40px rgba(0,0,0,.25);
-      margin-bottom:14px;
-    }
-
-    .hero-card h2{
-      font-size:28px;
-      line-height:1;
-      margin-bottom:10px;
-    }
-
-    .hero-card p{
-      font-size:14px;
-      color:#efe9fb;
-      line-height:1.45;
-    }
-
-    .card{
+    .panel{
       background:var(--card);
       border:1px solid var(--line);
-      border-radius:22px;
+      border-radius:26px;
       padding:14px;
       margin-bottom:14px;
-      backdrop-filter:blur(8px);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
     }
 
-    .section-title{
+    .panel-header{
       display:flex;
       align-items:center;
       justify-content:space-between;
+      gap:10px;
       margin-bottom:12px;
     }
 
-    .section-title h3{
+    .panel-title h3{
       font-size:18px;
-    }
-
-    .muted{
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .upload-box{
-      border:1.5px dashed rgba(255,255,255,.18);
-      border-radius:20px;
-      padding:18px;
-      text-align:center;
-      background:rgba(255,255,255,.03);
-    }
-
-    .upload-box label{
-      display:block;
-      padding:18px 12px;
-      border-radius:18px;
-      background:linear-gradient(135deg,var(--pink),var(--violet));
       font-weight:800;
-      cursor:pointer;
-      box-shadow:0 10px 24px rgba(255,79,195,.25);
     }
 
-    .upload-box input{
-      display:none;
-    }
-
-    .preview-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-
-    .video-card{
-      background:rgba(255,255,255,.05);
-      border:1px solid var(--line);
-      border-radius:18px;
-      overflow:hidden;
-    }
-
-    .video-card video{
-      width:100%;
-      height:170px;
-      object-fit:cover;
-      display:block;
-      background:#000;
-    }
-
-    .video-meta{
-      padding:10px;
-    }
-
-    .video-meta h4{
-      font-size:14px;
-      margin-bottom:4px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    .video-meta p{
+    .panel-title p{
       font-size:12px;
       color:var(--muted);
+      margin-top:3px;
+    }
+
+    .badge{
+      padding:8px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.06);
+      border:1px solid var(--line);
+      font-size:12px;
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      border-radius:28px;
+      padding:20px;
+      margin-bottom:14px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.09), transparent 20%),
+        linear-gradient(135deg, rgba(255,79,195,0.20), rgba(47,230,255,0.08), rgba(123,92,255,0.18));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+    }
+
+    .hero h2{
+      font-size:31px;
+      font-weight:900;
+      line-height:.96;
+      margin-bottom:10px;
+    }
+
+    .hero p{
+      font-size:14px;
+      line-height:1.5;
+      color:var(--text);
+      opacity:.95;
+      max-width:92%;
+    }
+
+    .hero-tags{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    .tag{
+      padding:9px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.10);
+    }
+
+    .quick-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+    }
+
+    .quick-item{
+      background:var(--card-2);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:12px 8px;
+      text-align:center;
+    }
+
+    .quick-icon{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      margin:0 auto 8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg, rgba(255,79,195,0.20), rgba(123,92,255,0.20));
+      color:#fff;
+      font-size:20px;
+    }
+
+    .quick-item h4{
+      font-size:13px;
+      margin-bottom:4px;
+    }
+
+    .quick-item p{
+      font-size:11px;
+      color:var(--muted-2);
+      line-height:1.35;
     }
 
     .story-row{
       display:flex;
       gap:12px;
-      overflow:auto;
-      padding-bottom:4px;
+      overflow-x:auto;
+      padding-bottom:2px;
     }
 
     .story{
@@ -236,7 +451,7 @@
       text-align:center;
     }
 
-    .story .ring{
+    .story-ring{
       width:64px;
       height:64px;
       margin:0 auto 8px;
@@ -245,22 +460,246 @@
       background:linear-gradient(135deg,var(--pink),var(--cyan),var(--violet));
     }
 
-    .story .inner{
+    .story-inner{
       width:100%;
       height:100%;
       border-radius:50%;
+      background:#151022;
       display:flex;
       align-items:center;
       justify-content:center;
-      background:#141020;
       font-size:26px;
+      color:#fff;
+    }
+
+    body.light .story-inner{
+      background:#f4edff;
+      color:#6c3fe6;
     }
 
     .story span{
       font-size:12px;
       color:var(--muted);
-      display:block;
       white-space:nowrap;
+    }
+
+    .upload-area{
+      border:1.5px dashed rgba(255,255,255,0.18);
+      border-radius:22px;
+      padding:16px;
+      background:rgba(255,255,255,0.03);
+      text-align:center;
+    }
+
+    .upload-area input{
+      display:none;
+    }
+
+    .upload-cta{
+      display:block;
+      width:100%;
+      min-height:48px;
+      border-radius:16px;
+      background:linear-gradient(135deg,var(--pink),var(--violet));
+      color:#fff;
+      font-weight:900;
+      border:none;
+      cursor:pointer;
+      padding:14px 12px;
+      box-shadow:0 12px 24px rgba(255,79,195,0.24);
+    }
+
+    .upload-help{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.45;
+    }
+
+    .preview-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .media-card{
+      background:rgba(255,255,255,0.05);
+      border:1px solid var(--line);
+      border-radius:20px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .media-card video,.media-card img{
+      width:100%;
+      height:170px;
+      object-fit:cover;
+      background:#000;
+      display:block;
+    }
+
+    .media-meta{
+      padding:10px;
+    }
+
+    .media-title-input{
+      width:100%;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,0.06);
+      color:var(--text);
+      border-radius:12px;
+      padding:10px 12px;
+      outline:none;
+      margin-bottom:8px;
+    }
+
+    .media-meta p{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:10px;
+    }
+
+    .media-actions{
+      display:flex;
+      gap:8px;
+    }
+
+    .mini-btn{
+      flex:1;
+      min-height:38px;
+      border-radius:12px;
+      font-size:12px;
+    }
+
+    .mini-save{
+      background:rgba(88,239,171,0.14);
+      color:var(--green);
+      border:1px solid rgba(88,239,171,0.24);
+    }
+
+    .mini-delete{
+      background:rgba(255,64,111,0.12);
+      color:#ff7a9d;
+      border:1px solid rgba(255,64,111,0.24);
+    }
+
+    .empty{
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+      padding:18px 10px;
+      background:rgba(255,255,255,0.03);
+      border:1px dashed rgba(255,255,255,0.12);
+      border-radius:18px;
+    }
+
+    .composer-row{
+      display:flex;
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .composer-row .secondary-btn,
+    .composer-row .primary-btn{
+      flex:1;
+      width:auto;
+    }
+
+    .feed-list{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .post-card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:26px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+
+    .post-top{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:14px 14px 10px;
+    }
+
+    .avatar{
+      width:46px;
+      height:46px;
+      border-radius:16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,var(--pink),var(--violet));
+      color:#fff;
+      flex-shrink:0;
+      font-size:22px;
+      box-shadow:0 8px 20px rgba(255,79,195,0.20);
+    }
+
+    .post-user{
+      min-width:0;
+      flex:1;
+    }
+
+    .post-user h4{
+      font-size:15px;
+      margin-bottom:3px;
+    }
+
+    .post-user p{
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .post-body{
+      padding:0 14px 12px;
+    }
+
+    .post-caption{
+      font-size:14px;
+      line-height:1.5;
+      margin-bottom:12px;
+      white-space:pre-wrap;
+    }
+
+    .post-media{
+      width:100%;
+      border-radius:18px;
+      overflow:hidden;
+      background:#000;
+      margin-bottom:12px;
+    }
+
+    .post-media img,.post-media video{
+      width:100%;
+      max-height:420px;
+      object-fit:cover;
+      display:block;
+    }
+
+    .post-actions{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+    }
+
+    .post-action{
+      flex:1;
+      min-height:42px;
+      border:none;
+      border-radius:14px;
+      background:rgba(255,255,255,0.06);
+      color:var(--text);
+      border:1px solid var(--line);
+      font-size:13px;
+      font-weight:800;
+      cursor:pointer;
     }
 
     .chat-list{
@@ -273,23 +712,11 @@
       display:flex;
       align-items:center;
       gap:12px;
-      padding:12px;
-      border-radius:18px;
-      background:rgba(255,255,255,.04);
+      background:rgba(255,255,255,0.04);
       border:1px solid var(--line);
+      border-radius:18px;
+      padding:12px;
       cursor:pointer;
-    }
-
-    .avatar{
-      width:48px;
-      height:48px;
-      border-radius:16px;
-      background:linear-gradient(135deg,var(--pink),var(--violet));
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:22px;
-      flex-shrink:0;
     }
 
     .chat-main{
@@ -303,49 +730,42 @@
     }
 
     .chat-main p{
-      font-size:13px;
       color:var(--muted);
+      font-size:13px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
     }
 
-    .tiny{
+    .chat-meta{
+      text-align:right;
+      flex-shrink:0;
+    }
+
+    .chat-meta .time{
       font-size:11px;
-      color:var(--muted);
+      color:var(--muted-2);
+      margin-bottom:6px;
     }
 
-    .composer{
-      display:flex;
-      gap:10px;
-      margin-top:12px;
-    }
-
-    .composer input{
-      flex:1;
-      height:48px;
-      border:none;
-      outline:none;
-      border-radius:16px;
-      padding:0 14px;
-      color:#fff;
-      background:rgba(255,255,255,.06);
-      border:1px solid var(--line);
-    }
-
-    .send-btn{
-      min-width:56px;
-      border:none;
-      border-radius:16px;
+    .chat-meta .count{
+      min-width:22px;
+      height:22px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
       background:linear-gradient(135deg,var(--pink),var(--violet));
       color:#fff;
+      font-size:11px;
       font-weight:800;
+      padding:0 6px;
     }
 
     .messages-panel{
       display:none;
       flex-direction:column;
-      height:100%;
+      height:calc(100vh - 78px - 74px - 28px);
     }
 
     .messages-panel.active{
@@ -359,58 +779,153 @@
       margin-bottom:12px;
     }
 
-    .back-btn,.call-btn{
+    .circle-btn{
       width:42px;
       height:42px;
-      border:none;
       border-radius:14px;
-      background:var(--card);
       border:1px solid var(--line);
-      color:#fff;
+      background:var(--card);
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      justify-content:center;
       font-size:18px;
+      cursor:pointer;
     }
 
     .chat-name{
+      min-width:0;
       flex:1;
     }
 
     .chat-name h4{
       font-size:16px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
 
     .chat-name p{
+      margin-top:3px;
       font-size:12px;
       color:var(--muted);
-      margin-top:2px;
+    }
+
+    .message-tools{
+      display:flex;
+      gap:8px;
+      margin-bottom:10px;
+    }
+
+    .tool-btn{
+      flex:1;
+      min-height:40px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,0.05);
+      color:var(--text);
+      cursor:pointer;
+      font-size:12px;
+      font-weight:800;
     }
 
     .message-area{
       flex:1;
-      overflow:auto;
+      overflow-y:auto;
       display:flex;
       flex-direction:column;
       gap:10px;
-      padding-right:2px;
+      padding-bottom:10px;
     }
 
     .msg{
       max-width:78%;
       padding:11px 13px;
-      border-radius:16px;
+      border-radius:18px;
       font-size:14px;
-      line-height:1.4;
-      word-wrap:break-word;
+      line-height:1.45;
+      word-break:break-word;
     }
 
     .msg.you{
       align-self:flex-end;
       background:linear-gradient(135deg,var(--pink),var(--violet));
+      color:#fff;
+      border-bottom-right-radius:6px;
     }
 
     .msg.other{
       align-self:flex-start;
-      background:rgba(255,255,255,.08);
+      background:rgba(255,255,255,0.08);
       border:1px solid var(--line);
+      border-bottom-left-radius:6px;
+    }
+
+    .composer{
+      display:flex;
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .composer input{
+      flex:1;
+      min-height:48px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,0.06);
+      color:var(--text);
+      padding:0 14px;
+      outline:none;
+    }
+
+    .send-btn{
+      min-width:58px;
+      border:none;
+      border-radius:16px;
+      background:linear-gradient(135deg,var(--pink),var(--violet));
+      color:#fff;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .notif-list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .notif-item{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      background:rgba(255,255,255,0.04);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:12px;
+    }
+
+    .notif-ico{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg, rgba(255,79,195,0.20), rgba(123,92,255,0.20));
+      color:#fff;
+      font-size:18px;
+      flex-shrink:0;
+    }
+
+    .notif-text h4{
+      font-size:14px;
+      margin-bottom:4px;
+    }
+
+    .notif-text p{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.45;
     }
 
     .profile-card{
@@ -418,28 +933,40 @@
       padding:22px 16px;
     }
 
-    .profile-big{
-      width:86px;
-      height:86px;
+    .profile-logo{
+      width:92px;
+      height:92px;
       margin:0 auto 12px;
-      border-radius:24px;
-      background:linear-gradient(135deg,var(--pink),var(--violet));
+      border-radius:26px;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:38px;
-      box-shadow:0 12px 28px rgba(255,79,195,.28);
+      background:linear-gradient(135deg,var(--pink),var(--violet));
+      color:#fff;
+      font-size:40px;
+      box-shadow:0 14px 28px rgba(255,79,195,0.24);
+    }
+
+    .profile-card h2{
+      font-size:24px;
+      margin-bottom:6px;
+    }
+
+    .profile-card p{
+      font-size:14px;
+      color:var(--muted);
+      line-height:1.45;
     }
 
     .stats{
       display:grid;
-      grid-template-columns:repeat(3,1fr);
+      grid-template-columns:repeat(4,1fr);
       gap:10px;
-      margin-top:14px;
+      margin-top:16px;
     }
 
     .stat{
-      background:rgba(255,255,255,.05);
+      background:rgba(255,255,255,0.05);
       border:1px solid var(--line);
       border-radius:18px;
       padding:14px 8px;
@@ -455,63 +982,110 @@
       color:var(--muted);
     }
 
-    .nav{
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:0;
-      height:72px;
-      background:rgba(8,6,14,.92);
-      border-top:1px solid rgba(255,255,255,.08);
+    .switch-row{
       display:flex;
       align-items:center;
-      justify-content:space-around;
-      z-index:10;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 0;
+      border-bottom:1px solid rgba(255,255,255,0.06);
     }
 
-    .nav-btn{
-      flex:1;
-      height:100%;
-      background:none;
-      border:none;
-      color:#cfc6df;
+    .switch-row:last-child{
+      border-bottom:none;
+    }
+
+    .switch-text h4{
+      font-size:15px;
+      margin-bottom:3px;
+    }
+
+    .switch-text p{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.4;
+    }
+
+    .switch{
+      position:relative;
+      width:52px;
+      height:30px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.14);
+      border:1px solid var(--line);
+      cursor:pointer;
+      flex-shrink:0;
+    }
+
+    .switch::after{
+      content:"";
+      position:absolute;
+      top:3px;
+      left:3px;
+      width:22px;
+      height:22px;
+      border-radius:50%;
+      background:#fff;
+      transition:.2s ease;
+    }
+
+    .switch.active{
+      background:linear-gradient(135deg,var(--pink),var(--violet));
+    }
+
+    .switch.active::after{
+      left:25px;
+    }
+
+    .menu-list{
       display:flex;
       flex-direction:column;
+      gap:10px;
+    }
+
+    .menu-item{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      background:rgba(255,255,255,0.04);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:13px 12px;
+    }
+
+    .menu-ico{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:flex;
       align-items:center;
       justify-content:center;
-      gap:4px;
+      background:rgba(255,255,255,0.06);
+      font-size:18px;
+      flex-shrink:0;
+    }
+
+    .menu-text h4{
+      font-size:15px;
+      margin-bottom:3px;
+    }
+
+    .menu-text p{
       font-size:12px;
-      font-weight:700;
-    }
-
-    .nav-btn span:first-child{
-      font-size:20px;
-    }
-
-    .nav-btn.active{
-      color:#fff;
-    }
-
-    .center-create{
-      width:54px;
-      height:38px;
-      border:none;
-      border-radius:14px;
-      background:linear-gradient(90deg,var(--cyan) 0 20%, #fff 20% 80%, var(--pink) 80% 100%);
-      color:#000;
-      font-size:24px;
-      font-weight:900;
-      box-shadow:0 10px 24px rgba(0,0,0,.28);
+      color:var(--muted);
+      line-height:1.4;
     }
 
     .call-modal{
       position:fixed;
       inset:0;
-      background:linear-gradient(180deg, rgba(10,8,18,.95), rgba(18,12,28,.98));
-      z-index:50;
+      z-index:100;
       display:none;
       flex-direction:column;
       padding:18px;
+      background:
+        radial-gradient(circle at top center, rgba(123,92,255,0.14), transparent 30%),
+        linear-gradient(180deg, rgba(10,7,18,0.98), rgba(20,12,31,0.98));
     }
 
     .call-modal.active{
@@ -522,38 +1096,52 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
-      margin-bottom:18px;
+      margin-bottom:16px;
+    }
+
+    .call-top .status{
+      font-size:12px;
+      color:#d9d0ee;
     }
 
     .call-user{
       text-align:center;
       margin-bottom:14px;
+      color:#fff;
     }
 
-    .call-user .profile-big{
-      margin-bottom:10px;
+    .call-avatar{
+      width:92px;
+      height:92px;
+      margin:0 auto 12px;
+      border-radius:28px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,var(--pink),var(--violet));
+      color:#fff;
+      font-size:40px;
+      box-shadow:0 16px 30px rgba(255,79,195,0.24);
     }
 
     .call-user h3{
-      font-size:22px;
-      margin-bottom:6px;
+      font-size:23px;
+      margin-bottom:5px;
     }
 
     .call-user p{
-      color:var(--muted);
       font-size:14px;
+      color:#d9d0ee;
     }
 
     .call-video{
       flex:1;
-      border-radius:26px;
-      overflow:hidden;
-      background:#000;
-      border:1px solid var(--line);
-      display:flex;
-      align-items:center;
-      justify-content:center;
       position:relative;
+      overflow:hidden;
+      border-radius:28px;
+      background:#000;
+      border:1px solid rgba(255,255,255,0.10);
+      box-shadow:var(--shadow);
     }
 
     .call-video video{
@@ -564,21 +1152,29 @@
     }
 
     .call-placeholder{
-      color:#bbb2cf;
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       text-align:center;
+      color:#d9d0ee;
+      font-size:15px;
+      line-height:1.6;
       padding:20px;
-      line-height:1.5;
     }
 
-    .mini-badge{
+    .cam-badge{
       position:absolute;
       top:12px;
       right:12px;
-      background:rgba(0,0,0,.4);
-      border:1px solid rgba(255,255,255,.12);
       padding:8px 10px;
       border-radius:999px;
+      background:rgba(0,0,0,0.42);
+      border:1px solid rgba(255,255,255,0.12);
       font-size:12px;
+      z-index:2;
+      color:#fff;
     }
 
     .call-actions{
@@ -586,17 +1182,23 @@
       justify-content:center;
       gap:16px;
       padding-top:16px;
+      flex-wrap:wrap;
     }
 
     .call-action{
       width:58px;
       height:58px;
-      border:none;
       border-radius:50%;
-      font-size:22px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(255,255,255,0.10);
       color:#fff;
-      background:rgba(255,255,255,.10);
-      border:1px solid var(--line);
+      font-size:22px;
+      cursor:pointer;
+    }
+
+    .call-action.active{
+      background:linear-gradient(135deg,var(--pink),var(--violet));
+      border:none;
     }
 
     .call-action.end{
@@ -604,380 +1206,1183 @@
       border:none;
     }
 
-    .empty{
-      text-align:center;
+    .bottom-nav{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      height:74px;
+      background:rgba(9,7,15,0.94);
+      border-top:1px solid rgba(255,255,255,0.08);
+      display:flex;
+      align-items:center;
+      justify-content:space-around;
+      z-index:20;
+      backdrop-filter:blur(10px);
+    }
+
+    body.light .bottom-nav{
+      background:rgba(255,255,255,0.92);
+    }
+
+    .nav-btn{
+      flex:1;
+      height:100%;
+      border:none;
+      background:none;
       color:var(--muted);
-      padding:16px 8px;
-      font-size:14px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:5px;
+      font-size:11px;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .nav-btn .ico{
+      font-size:20px;
+      line-height:1;
+    }
+
+    .nav-btn.active{
+      color:var(--text);
+    }
+
+    .center-btn{
+      width:56px;
+      height:40px;
+      border:none;
+      border-radius:14px;
+      background:linear-gradient(90deg,var(--cyan) 0 20%, #fff 20% 80%, var(--pink) 80% 100%);
+      color:#000;
+      font-size:24px;
+      font-weight:900;
+      box-shadow:0 12px 26px rgba(0,0,0,0.28);
+      cursor:pointer;
+      flex-shrink:0;
+    }
+
+    @media (max-width:390px){
+      .quick-grid{grid-template-columns:repeat(2,1fr);}
+      .preview-grid{grid-template-columns:1fr;}
+      .stats{grid-template-columns:repeat(2,1fr);}
+      .hero h2{font-size:28px;}
     }
   </style>
 </head>
 <body>
   <div class="app">
+    <div class="auth-screen" id="authScreen">
+      <div class="auth-card">
+        <div class="auth-brand">
+          <div class="auth-logo">💖</div>
+          <h1>FluxLove</h1>
+          <p>Login / signup UI সহ full branded demo</p>
+        </div>
+
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="loginTab">Login</button>
+          <button class="auth-tab" id="signupTab">Sign Up</button>
+        </div>
+
+        <div id="loginForm">
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="text-input" id="loginEmail" type="email" placeholder="Enter email" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input class="text-input" id="loginPassword" type="password" placeholder="Enter password" />
+          </div>
+          <button class="primary-btn" id="loginBtn">Enter FluxLove</button>
+        </div>
+
+        <div id="signupForm" class="hidden">
+          <div class="form-group">
+            <label class="form-label">Profile Name</label>
+            <input class="text-input" id="signupName" type="text" placeholder="Enter profile name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="text-input" id="signupEmail" type="email" placeholder="Enter email" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input class="text-input" id="signupPassword" type="password" placeholder="Create password" />
+          </div>
+          <button class="primary-btn" id="signupBtn">Create Demo Account</button>
+        </div>
+
+        <div class="auth-note">
+          এটা front-end demo login। পরে Firebase Auth add করলে real auth হবে।
+        </div>
+      </div>
+    </div>
+
     <div class="topbar">
       <div class="brand">
-        <div class="logo">💖</div>
-        <div>
-          <h1>FluxLove</h1>
-          <p>Upload • Chat • Call</p>
+        <div class="brand-logo">💖</div>
+        <div class="brand-text">
+          <h1 id="brandNameTop">FluxLove</h1>
+          <p id="brandSubText">Upload • Feed • Message • Call</p>
         </div>
       </div>
+
       <div class="top-actions">
-        <button class="icon-btn" id="openUploadTop">＋</button>
-        <button class="icon-btn">🔔</button>
+        <button class="glass-btn" id="themeToggleBtn">🌙</button>
+        <button class="glass-btn" id="openSettingsBtn">⚙</button>
       </div>
     </div>
 
-    <div class="screen active" id="homeScreen">
-      <div class="hero-card">
-        <h2>FluxLove</h2>
-        <p>নিজের app style-এ video upload, message, আর call system-এর demo। সবকিছু mobile friendly করে বানানো হয়েছে।</p>
-      </div>
-
-      <div class="card">
-        <div class="section-title">
-          <h3>Stories</h3>
-          <span class="muted">Live vibe</span>
-        </div>
-        <div class="story-row">
-          <div class="story"><div class="ring"><div class="inner">💖</div></div><span>You</span></div>
-          <div class="story"><div class="ring"><div class="inner">✨</div></div><span>Nova</span></div>
-          <div class="story"><div class="ring"><div class="inner">🌸</div></div><span>Luna</span></div>
-          <div class="story"><div class="ring"><div class="inner">⚡</div></div><span>Flux</span></div>
-          <div class="story"><div class="ring"><div class="inner">🎥</div></div><span>Reel</span></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="section-title">
-          <h3>Recent Uploads</h3>
-          <span class="muted" id="videoCount">0 videos</span>
-        </div>
-        <div class="preview-grid" id="videoGrid">
-          <div class="empty" style="grid-column:1/-1;">এখনও কোনো video upload করা হয়নি</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="screen" id="uploadScreen">
-      <div class="card">
-        <div class="section-title">
-          <h3>Upload Video</h3>
-          <span class="muted">Local preview</span>
-        </div>
-        <div class="upload-box">
-          <label for="videoInput">🎬 Choose video from device</label>
-          <input type="file" id="videoInput" accept="video/*" multiple />
-          <p class="muted" style="margin-top:12px;">ভিডিও select করলেই নিচে preview card add হবে</p>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="section-title">
-          <h3>Your Uploaded Videos</h3>
-          <span class="muted">Preview gallery</span>
-        </div>
-        <div class="preview-grid" id="uploadPreviewGrid">
-          <div class="empty" style="grid-column:1/-1;">কোনো video নেই</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="screen" id="chatScreen">
-      <div class="card" id="chatListWrap">
-        <div class="section-title">
-          <h3>Messages</h3>
-          <span class="muted">Tap a chat</span>
-        </div>
-        <div class="chat-list" id="chatList"></div>
-      </div>
-
-      <div class="messages-panel" id="messagesPanel">
-        <div class="chat-header">
-          <button class="back-btn" id="backToChats">←</button>
-          <div class="chat-name">
-            <h4 id="chatTitle">Nova</h4>
-            <p>online</p>
-          </div>
-          <button class="call-btn" id="startCallBtn">📹</button>
-        </div>
-
-        <div class="message-area" id="messageArea"></div>
-
-        <div class="composer">
-          <input type="text" id="messageInput" placeholder="Type a message..." />
-          <button class="send-btn" id="sendMessageBtn">Send</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="screen" id="profileScreen">
-      <div class="card profile-card">
-        <div class="profile-big">💖</div>
-        <h2>FluxLove User</h2>
-        <p class="muted" style="margin-top:6px;">Original branded UI demo</p>
-
-        <div class="stats">
-          <div class="stat">
-            <h5 id="statVideos">0</h5>
-            <p>Videos</p>
-          </div>
-          <div class="stat">
-            <h5 id="statMessages">0</h5>
-            <p>Messages</p>
-          </div>
-          <div class="stat">
-            <h5>1</h5>
-            <p>Profile</p>
+    <div class="main">
+      <section class="screen active" id="homeScreen">
+        <div class="hero">
+          <h2 id="heroTitle">FluxLove<br>Studio</h2>
+          <p>এখন login UI, post create, image/video upload, reels-style feed, notifications, settings — সব added আছে।</p>
+          <div class="hero-tags">
+            <div class="tag">Login UI</div>
+            <div class="tag">Feed</div>
+            <div class="tag">Notifications</div>
           </div>
         </div>
-      </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h3>Quick Actions</h3>
+              <p>সব main feature এক জায়গায়</p>
+            </div>
+            <div class="badge" id="quickUserBadge">FluxLove</div>
+          </div>
+
+          <div class="quick-grid">
+            <div class="quick-item">
+              <div class="quick-icon">➕</div>
+              <h4>Create</h4>
+              <p>নতুন post</p>
+            </div>
+            <div class="quick-item">
+              <div class="quick-icon">🎞</div>
+              <h4>Feed</h4>
+              <p>reels vibe</p>
+            </div>
+            <div class="quick-item">
+              <div class="quick-icon">💬</div>
+              <h4>Chat</h4>
+              <p>message demo</p>
+            </div>
+            <div class="quick-item">
+              <div class="quick-icon">🔔</div>
+              <h4>Alerts</h4>
+              <p>notification</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h3>Stories</h3>
+              <p>brand vibe preview</p>
+            </div>
+            <div class="badge">Live</div>
+          </div>
+
+          <div class="story-row">
+            <div class="story"><div class="story-ring"><div class="story-inner">💖</div></div><span>You</span></div>
+            <div class="story"><div class="story-ring"><div class="story-inner">✨</div></div><span>Nova</span></div>
+            <div class="story"><div class="story-ring"><div class="story-inner">🌸</div></div><span>Luna</span></div>
+            <div class="story"><div class="story-ring"><div class="story-inner">⚡</div></div><span>Flux</span></div>
+            <div class="story"><div class="story-ring"><div class="story-inner">🎥</div></div><span>Studio</span></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h3>Recent Media</h3>
+              <p>uploaded image/video preview</p>
+            </div>
+            <div class="badge" id="homeMediaCount">0 items</div>
+          </div>
+          <div class="preview-grid" id="homeMediaGrid">
+            <div class="empty" style="grid-column:1 / -1;">এখনও কোনো media add করা হয়নি</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="createScreen">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h3>Create Post</h3>
+              <p>caption + image/video upload</p>
+            </div>
+            <div class="badge">Studio</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Caption</label>
+            <textarea class="text-area" id="postCaptionInput" placeholder="Write a post caption..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Media Title</label>
+            <input class="text-input" id="postTitleInput" type="text" placeholder="Enter media title" />
+          </div>
+
+          <div class="panel" style="padding:12px; margin-bottom:12px;">
+            <label class="upload-cta" for="mediaInput">🖼 / 🎬 Choose image or video</label>
+            <input id="mediaInput" type="file" accept="image/*,video/*" />
+            <div class="upload-help">একবারে একটা media select করো। তারপর post create করো।</div>
+          </div>
+
+          <div id="selectedPreviewWrap" class="hidden">
+            <div class="panel" style="padding:12px;">
+              <div class="panel-header" style="margin-bottom:10px;">
+                <div class="panel-title">
+                  <h3>Selected Preview</h3>
+                  <p>ready to post</p>
+                </div>
+              </div>
+              <div id="selectedPreviewBox"></div>
+            </div>
+          </div>
+
+          <div class="composer-row">
+            <button class="secondary-btn" id="clearCreateBtn">Clear</button>
+            <button class="primary-btn" id="publishPostBtn">Publish Post</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h3>Uploaded Media</h3>
+              <p>title edit + delete supported</p>
+            </div>
+            <div class="badge" id="createMediaCount">0 items</div>
+          </div>
+          <div class="preview-grid" id="createMediaGrid">
+            <div class="empty" style="grid-column:1 / -1;">কোনো media নেই</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="feedScreen">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h3>Flux Feed</h3>
+              <p>reels-style branded feed</p>
+            </div>
+            <div class="badge" id="feedPostCount">0 posts</div>
+          </div>
+        </div>
+
+        <div class="feed-list" id="feedList">
+          <div class="empty">এখনও কোনো post publish করা হয়নি</div>
+        </div>
+      </section>
+
+      <section class="screen" id="messagesScreen">
+        <div class="panel" id="chatListPanel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h3>Messages</h3>
+              <p>tap a chat to open</p>
+            </div>
+            <div class="badge">Local</div>
+          </div>
+          <div class="chat-list" id="chatList"></div>
+        </div>
+
+        <div class="messages-panel" id="messagesPanel">
+          <div class="chat-header">
+            <button class="circle-btn" id="backToChatsBtn">←</button>
+            <div class="chat-name">
+              <h4 id="activeChatName">Nova</h4>
+              <p>online</p>
+            </div>
+            <button class="circle-btn" id="openCallBtn">📹</button>
+          </div>
+
+          <div class="message-tools">
+            <button class="tool-btn" id="addDemoReplyBtn">Quick Reply</button>
+            <button class="tool-btn" id="clearChatBtn">Clear Chat</button>
+          </div>
+
+          <div class="message-area" id="messageArea"></div>
+
+          <div class="composer">
+            <input id="messageInput" type="text" placeholder="Type a message..." />
+            <button class="send-btn" id="sendMessageBtn">Send</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="notificationsScreen">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h3>Notifications</h3>
+              <p>activity overview</p>
+            </div>
+            <div class="badge" id="notifCount">0 alerts</div>
+          </div>
+          <div class="notif-list" id="notifList"></div>
+        </div>
+      </section>
+
+      <section class="screen" id="profileScreen">
+        <div class="panel profile-card">
+          <div class="profile-logo">💖</div>
+          <h2 id="profileNameHeading">FluxLove User</h2>
+          <p>নিজের brand identity দিয়ে polished demo. profile, theme, feed, media, notifications — সব local state-এ চলছে.</p>
+
+          <div class="stats">
+            <div class="stat"><h5 id="statPosts">0</h5><p>Posts</p></div>
+            <div class="stat"><h5 id="statMedia">0</h5><p>Media</p></div>
+            <div class="stat"><h5 id="statMessages">0</h5><p>Messages</p></div>
+            <div class="stat"><h5 id="statChats">0</h5><p>Chats</p></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h3>Profile Settings</h3>
+              <p>saved automatically</p>
+            </div>
+            <div class="badge">v4</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Profile Name</label>
+            <input class="text-input" id="profileNameInput" type="text" placeholder="Enter profile name" />
+          </div>
+
+          <button class="primary-btn" id="saveProfileBtn">Save Profile Name</button>
+        </div>
+      </section>
+
+      <section class="screen" id="settingsScreen">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h3>App Settings</h3>
+              <p>quick toggles</p>
+            </div>
+            <div class="badge">Local</div>
+          </div>
+
+          <div class="switch-row">
+            <div class="switch-text">
+              <h4>Light Theme</h4>
+              <p>app-এর full light mode on/off</p>
+            </div>
+            <div class="switch" id="themeSwitch"></div>
+          </div>
+
+          <div class="switch-row">
+            <div class="switch-text">
+              <h4>Auto Reply</h4>
+              <p>message send করলে demo reply আসবে</p>
+            </div>
+            <div class="switch active" id="autoReplySwitch"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h3>Session</h3>
+              <p>demo controls</p>
+            </div>
+            <div class="badge">Auth</div>
+          </div>
+
+          <div class="composer-row">
+            <button class="secondary-btn" id="goProfileBtn">Open Profile</button>
+            <button class="danger-btn" id="logoutBtn">Logout</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h3>More</h3>
+              <p>future upgrade placeholders</p>
+            </div>
+            <div class="badge">Soon</div>
+          </div>
+
+          <div class="menu-list">
+            <div class="menu-item">
+              <div class="menu-ico">☁</div>
+              <div class="menu-text">
+                <h4>Cloud Sync</h4>
+                <p>Firebase add করলে auth, posts, chat সব sync হবে</p>
+              </div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-ico">🔒</div>
+              <div class="menu-text">
+                <h4>Privacy</h4>
+                <p>feed visibility, call rules, media access পরে add করা যাবে</p>
+              </div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-ico">🧠</div>
+              <div class="menu-text">
+                <h4>Smart Suggestions</h4>
+                <p>AI caption, smart reply, auto tags পরে add করা যাবে</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
 
-    <div class="nav">
-      <button class="nav-btn active" data-screen="homeScreen"><span>⌂</span><span>Home</span></button>
-      <button class="nav-btn" data-screen="uploadScreen"><span>🎬</span><span>Upload</span></button>
-      <button class="center-create" id="centerCreate">+</button>
-      <button class="nav-btn" data-screen="chatScreen"><span>💬</span><span>Messages</span></button>
-      <button class="nav-btn" data-screen="profileScreen"><span>👤</span><span>Profile</span></button>
-    </div>
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-screen="homeScreen"><span class="ico">⌂</span><span>Home</span></button>
+      <button class="nav-btn" data-screen="createScreen"><span class="ico">➕</span><span>Create</span></button>
+      <button class="center-btn" id="centerFeedBtn">▶</button>
+      <button class="nav-btn" data-screen="messagesScreen"><span class="ico">💬</span><span>Messages</span></button>
+      <button class="nav-btn" data-screen="notificationsScreen"><span class="ico">🔔</span><span>Alerts</span></button>
+      <button class="nav-btn" data-screen="profileScreen"><span class="ico">👤</span><span>Profile</span></button>
+    </nav>
   </div>
 
   <div class="call-modal" id="callModal">
     <div class="call-top">
-      <button class="back-btn" id="closeCallBtn">←</button>
-      <div class="tiny">FluxLove Call</div>
-      <div style="width:42px;"></div>
+      <button class="circle-btn" id="closeCallBtn">←</button>
+      <div class="status">FluxLove Call</div>
+      <div style="width:42px"></div>
     </div>
 
     <div class="call-user">
-      <div class="profile-big">📹</div>
+      <div class="call-avatar">📹</div>
       <h3 id="callUserName">Nova</h3>
-      <p>Connecting...</p>
+      <p id="callStatusText">Connecting...</p>
     </div>
 
     <div class="call-video">
-      <div class="mini-badge">Camera Preview</div>
+      <div class="cam-badge">Camera Preview</div>
       <video id="localVideo" autoplay playsinline muted></video>
       <div class="call-placeholder" id="callPlaceholder">
-        Camera permission দিলে এখানে live preview show করবে.<br>
+        Camera permission দিলে এখানে live preview show করবে.<br />
         Permission না দিলে এটা demo screen হিসেবেই থাকবে।
       </div>
     </div>
 
     <div class="call-actions">
-      <button class="call-action">🎤</button>
-      <button class="call-action">🔄</button>
+      <button class="call-action active" id="muteBtn">🎤</button>
+      <button class="call-action active" id="cameraBtn">📷</button>
+      <button class="call-action" id="speakerBtn">🔊</button>
       <button class="call-action end" id="endCallBtn">📞</button>
     </div>
   </div>
 
   <script>
-    const screens = document.querySelectorAll('.screen');
-    const navBtns = document.querySelectorAll('.nav-btn');
-    const centerCreate = document.getElementById('centerCreate');
-    const openUploadTop = document.getElementById('openUploadTop');
-
-    const videoInput = document.getElementById('videoInput');
-    const videoGrid = document.getElementById('videoGrid');
-    const uploadPreviewGrid = document.getElementById('uploadPreviewGrid');
-    const videoCount = document.getElementById('videoCount');
-    const statVideos = document.getElementById('statVideos');
-    const statMessages = document.getElementById('statMessages');
-
-    const chatList = document.getElementById('chatList');
-    const chatListWrap = document.getElementById('chatListWrap');
-    const messagesPanel = document.getElementById('messagesPanel');
-    const backToChats = document.getElementById('backToChats');
-    const chatTitle = document.getElementById('chatTitle');
-    const messageArea = document.getElementById('messageArea');
-    const messageInput = document.getElementById('messageInput');
-    const sendMessageBtn = document.getElementById('sendMessageBtn');
-
-    const startCallBtn = document.getElementById('startCallBtn');
-    const callModal = document.getElementById('callModal');
-    const closeCallBtn = document.getElementById('closeCallBtn');
-    const endCallBtn = document.getElementById('endCallBtn');
-    const callUserName = document.getElementById('callUserName');
-    const localVideo = document.getElementById('localVideo');
-    const callPlaceholder = document.getElementById('callPlaceholder');
-
-    let uploadedVideos = [];
-    let currentChat = 'Nova';
-    let localStream = null;
+    const STORAGE_KEYS = {
+      AUTH: "fluxlove_auth_v4",
+      PROFILE_NAME: "fluxlove_profile_name_v4",
+      THEME: "fluxlove_theme_v4",
+      AUTO_REPLY: "fluxlove_auto_reply_v4",
+      CHATS: "fluxlove_chats_v4",
+      POSTS: "fluxlove_posts_v4",
+      NOTIFS: "fluxlove_notifs_v4",
+      MEDIA_TITLES: "fluxlove_media_titles_v4"
+    };
 
     const defaultChats = {
       Nova: [
-        { from: 'other', text: 'Hey, FluxLove UI looks cool ✨' },
-        { from: 'you', text: 'Thanks 😎' }
+        { from: "other", text: "Hey, FluxLove UI looks cool ✨" },
+        { from: "you", text: "Thanks 💖" }
       ],
       Luna: [
-        { from: 'other', text: 'ভিডিও upload system add করছো?' },
-        { from: 'you', text: 'হ্যাঁ, demo version ready.' }
+        { from: "other", text: "Feed ready?" },
+        { from: "you", text: "Yep, demo working." }
       ],
       FluxBot: [
-        { from: 'other', text: 'Welcome to FluxLove 💖' }
+        { from: "other", text: "Welcome to FluxLove 💖" }
       ]
     };
 
-    let chats = JSON.parse(localStorage.getItem('fluxlove_chats') || 'null') || defaultChats;
+    const defaultNotifs = [
+      { icon: "💖", title: "Welcome", text: "FluxLove v4 demo ready." },
+      { icon: "✨", title: "New UI", text: "Create, feed, notifications, settings added." }
+    ];
 
-    function saveChats() {
-      localStorage.setItem('fluxlove_chats', JSON.stringify(chats));
+    const authScreen = document.getElementById("authScreen");
+    const loginTab = document.getElementById("loginTab");
+    const signupTab = document.getElementById("signupTab");
+    const loginForm = document.getElementById("loginForm");
+    const signupForm = document.getElementById("signupForm");
+    const loginBtn = document.getElementById("loginBtn");
+    const signupBtn = document.getElementById("signupBtn");
+
+    const loginEmail = document.getElementById("loginEmail");
+    const loginPassword = document.getElementById("loginPassword");
+    const signupName = document.getElementById("signupName");
+    const signupEmail = document.getElementById("signupEmail");
+    const signupPassword = document.getElementById("signupPassword");
+
+    const navButtons = document.querySelectorAll(".nav-btn");
+    const screens = document.querySelectorAll(".screen");
+    const centerFeedBtn = document.getElementById("centerFeedBtn");
+    const themeToggleBtn = document.getElementById("themeToggleBtn");
+    const openSettingsBtn = document.getElementById("openSettingsBtn");
+    const themeSwitch = document.getElementById("themeSwitch");
+    const autoReplySwitch = document.getElementById("autoReplySwitch");
+    const goProfileBtn = document.getElementById("goProfileBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    const brandNameTop = document.getElementById("brandNameTop");
+    const heroTitle = document.getElementById("heroTitle");
+    const quickUserBadge = document.getElementById("quickUserBadge");
+    const profileNameHeading = document.getElementById("profileNameHeading");
+    const profileNameInput = document.getElementById("profileNameInput");
+    const saveProfileBtn = document.getElementById("saveProfileBtn");
+
+    const mediaInput = document.getElementById("mediaInput");
+    const postCaptionInput = document.getElementById("postCaptionInput");
+    const postTitleInput = document.getElementById("postTitleInput");
+    const selectedPreviewWrap = document.getElementById("selectedPreviewWrap");
+    const selectedPreviewBox = document.getElementById("selectedPreviewBox");
+    const publishPostBtn = document.getElementById("publishPostBtn");
+    const clearCreateBtn = document.getElementById("clearCreateBtn");
+
+    const homeMediaGrid = document.getElementById("homeMediaGrid");
+    const createMediaGrid = document.getElementById("createMediaGrid");
+    const homeMediaCount = document.getElementById("homeMediaCount");
+    const createMediaCount = document.getElementById("createMediaCount");
+    const feedList = document.getElementById("feedList");
+    const feedPostCount = document.getElementById("feedPostCount");
+
+    const chatList = document.getElementById("chatList");
+    const chatListPanel = document.getElementById("chatListPanel");
+    const messagesPanel = document.getElementById("messagesPanel");
+    const backToChatsBtn = document.getElementById("backToChatsBtn");
+    const activeChatName = document.getElementById("activeChatName");
+    const callUserName = document.getElementById("callUserName");
+    const messageArea = document.getElementById("messageArea");
+    const messageInput = document.getElementById("messageInput");
+    const sendMessageBtn = document.getElementById("sendMessageBtn");
+    const openCallBtn = document.getElementById("openCallBtn");
+    const addDemoReplyBtn = document.getElementById("addDemoReplyBtn");
+    const clearChatBtn = document.getElementById("clearChatBtn");
+
+    const notifList = document.getElementById("notifList");
+    const notifCount = document.getElementById("notifCount");
+
+    const statPosts = document.getElementById("statPosts");
+    const statMedia = document.getElementById("statMedia");
+    const statMessages = document.getElementById("statMessages");
+    const statChats = document.getElementById("statChats");
+
+    const callModal = document.getElementById("callModal");
+    const closeCallBtn = document.getElementById("closeCallBtn");
+    const endCallBtn = document.getElementById("endCallBtn");
+    const localVideo = document.getElementById("localVideo");
+    const callPlaceholder = document.getElementById("callPlaceholder");
+    const callStatusText = document.getElementById("callStatusText");
+    const muteBtn = document.getElementById("muteBtn");
+    const cameraBtn = document.getElementById("cameraBtn");
+    const speakerBtn = document.getElementById("speakerBtn");
+
+    let isAuthenticated = localStorage.getItem(STORAGE_KEYS.AUTH) === "true";
+    let profileName = localStorage.getItem(STORAGE_KEYS.PROFILE_NAME) || "FluxLove User";
+    let theme = localStorage.getItem(STORAGE_KEYS.THEME) || "dark";
+    let autoReply = localStorage.getItem(STORAGE_KEYS.AUTO_REPLY);
+    autoReply = autoReply === null ? true : autoReply === "true";
+
+    let chats = JSON.parse(localStorage.getItem(STORAGE_KEYS.CHATS) || "null") || defaultChats;
+    let posts = JSON.parse(localStorage.getItem(STORAGE_KEYS.POSTS) || "[]");
+    let notifications = JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTIFS) || "null") || defaultNotifs;
+    let savedMediaTitles = JSON.parse(localStorage.getItem(STORAGE_KEYS.MEDIA_TITLES) || "{}");
+
+    let uploadedMedia = [];
+    let selectedMedia = null;
+    let currentChat = "Nova";
+    let localStream = null;
+    let isMuted = false;
+    let isCameraOn = true;
+    let isSpeakerOn = false;
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
     }
 
-    function switchScreen(id) {
-      screens.forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      navBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.screen === id));
+    function saveState() {
+      localStorage.setItem(STORAGE_KEYS.PROFILE_NAME, profileName);
+      localStorage.setItem(STORAGE_KEYS.THEME, theme);
+      localStorage.setItem(STORAGE_KEYS.AUTO_REPLY, String(autoReply));
+      localStorage.setItem(STORAGE_KEYS.CHATS, JSON.stringify(chats));
+      localStorage.setItem(STORAGE_KEYS.POSTS, JSON.stringify(posts));
+      localStorage.setItem(STORAGE_KEYS.NOTIFS, JSON.stringify(notifications));
+      localStorage.setItem(STORAGE_KEYS.MEDIA_TITLES, JSON.stringify(savedMediaTitles));
     }
 
-    navBtns.forEach(btn => {
-      btn.addEventListener('click', () => switchScreen(btn.dataset.screen));
+    function switchAuthTab(type) {
+      const login = type === "login";
+      loginTab.classList.toggle("active", login);
+      signupTab.classList.toggle("active", !login);
+      loginForm.classList.toggle("hidden", !login);
+      signupForm.classList.toggle("hidden", login);
+    }
+
+    loginTab.addEventListener("click", () => switchAuthTab("login"));
+    signupTab.addEventListener("click", () => switchAuthTab("signup"));
+
+    function openApp() {
+      authScreen.classList.add("hidden");
+    }
+
+    function closeAppToAuth() {
+      authScreen.classList.remove("hidden");
+    }
+
+    loginBtn.addEventListener("click", () => {
+      if (!loginEmail.value.trim() || !loginPassword.value.trim()) return;
+      isAuthenticated = true;
+      localStorage.setItem(STORAGE_KEYS.AUTH, "true");
+      openApp();
     });
 
-    centerCreate.addEventListener('click', () => switchScreen('uploadScreen'));
-    openUploadTop.addEventListener('click', () => switchScreen('uploadScreen'));
+    signupBtn.addEventListener("click", () => {
+      if (!signupName.value.trim() || !signupEmail.value.trim() || !signupPassword.value.trim()) return;
+      profileName = signupName.value.trim();
+      localStorage.setItem(STORAGE_KEYS.AUTH, "true");
+      localStorage.setItem(STORAGE_KEYS.PROFILE_NAME, profileName);
+      updateProfileUI();
+      isAuthenticated = true;
+      openApp();
+    });
 
-    function createVideoCard(src, name) {
-      const card = document.createElement('div');
-      card.className = 'video-card';
+    function switchScreen(screenId) {
+      screens.forEach((screen) => {
+        screen.classList.toggle("active", screen.id === screenId);
+      });
+
+      navButtons.forEach((button) => {
+        button.classList.toggle("active", button.dataset.screen === screenId);
+      });
+    }
+
+    navButtons.forEach((button) => {
+      button.addEventListener("click", () => switchScreen(button.dataset.screen));
+    });
+
+    centerFeedBtn.addEventListener("click", () => switchScreen("feedScreen"));
+    openSettingsBtn.addEventListener("click", () => switchScreen("settingsScreen"));
+    goProfileBtn.addEventListener("click", () => switchScreen("profileScreen"));
+
+    logoutBtn.addEventListener("click", () => {
+      localStorage.setItem(STORAGE_KEYS.AUTH, "false");
+      isAuthenticated = false;
+      closeAppToAuth();
+    });
+
+    function updateProfileUI() {
+      brandNameTop.textContent = profileName;
+      quickUserBadge.textContent = profileName;
+      profileNameHeading.textContent = profileName;
+      profileNameInput.value = profileName;
+      heroTitle.innerHTML = `${escapeHtml(profileName)}<br>Studio`;
+    }
+
+    saveProfileBtn.addEventListener("click", () => {
+      const value = profileNameInput.value.trim();
+      profileName = value || "FluxLove User";
+      updateProfileUI();
+      saveState();
+    });
+
+    function applyTheme() {
+      document.body.classList.toggle("light", theme === "light");
+      themeToggleBtn.textContent = theme === "light" ? "☀" : "🌙";
+      themeSwitch.classList.toggle("active", theme === "light");
+      saveState();
+    }
+
+    function toggleTheme() {
+      theme = theme === "light" ? "dark" : "light";
+      applyTheme();
+    }
+
+    themeToggleBtn.addEventListener("click", toggleTheme);
+    themeSwitch.addEventListener("click", toggleTheme);
+
+    function applyAutoReplyUI() {
+      autoReplySwitch.classList.toggle("active", autoReply);
+      saveState();
+    }
+
+    autoReplySwitch.addEventListener("click", () => {
+      autoReply = !autoReply;
+      applyAutoReplyUI();
+    });
+
+    function renderSelectedPreview() {
+      if (!selectedMedia) {
+        selectedPreviewWrap.classList.add("hidden");
+        selectedPreviewBox.innerHTML = "";
+        return;
+      }
+
+      selectedPreviewWrap.classList.remove("hidden");
+      if (selectedMedia.type.startsWith("image/")) {
+        selectedPreviewBox.innerHTML = `<img src="${selectedMedia.src}" style="width:100%; border-radius:18px; display:block;" />`;
+      } else {
+        selectedPreviewBox.innerHTML = `<video src="${selectedMedia.src}" controls playsinline style="width:100%; border-radius:18px; display:block; background:#000;"></video>`;
+      }
+    }
+
+    mediaInput.addEventListener("change", (event) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      selectedMedia = {
+        file,
+        src: URL.createObjectURL(file),
+        type: file.type,
+        title: postTitleInput.value.trim() || file.name,
+        originalName: file.name,
+        id: `${file.name}_${file.size}_${file.lastModified}`
+      };
+
+      postTitleInput.value = selectedMedia.title;
+      renderSelectedPreview();
+      mediaInput.value = "";
+    });
+
+    clearCreateBtn.addEventListener("click", () => {
+      selectedMedia = null;
+      postCaptionInput.value = "";
+      postTitleInput.value = "";
+      renderSelectedPreview();
+    });
+
+    function createMediaCard(media, index) {
+      const isImage = media.type.startsWith("image/");
+      const mediaEl = isImage
+        ? `<img src="${media.src}" alt="">`
+        : `<video src="${media.src}" controls playsinline preload="metadata"></video>`;
+
+      const card = document.createElement("div");
+      card.className = "media-card";
       card.innerHTML = `
-        <video src="${src}" controls playsinline></video>
-        <div class="video-meta">
-          <h4>${name}</h4>
-          <p>FluxLove upload preview</p>
+        ${mediaEl}
+        <div class="media-meta">
+          <input class="media-title-input" type="text" value="${escapeHtml(media.title)}" data-index="${index}" />
+          <p>${isImage ? "Image preview" : "Video preview"}</p>
+          <div class="media-actions">
+            <button class="mini-btn mini-save" data-save-index="${index}">Save</button>
+            <button class="mini-btn mini-delete" data-delete-index="${index}">Delete</button>
+          </div>
         </div>
       `;
       return card;
     }
 
-    function renderVideos() {
-      videoGrid.innerHTML = '';
-      uploadPreviewGrid.innerHTML = '';
-
-      if (!uploadedVideos.length) {
-        videoGrid.innerHTML = '<div class="empty" style="grid-column:1/-1;">এখনও কোনো video upload করা হয়নি</div>';
-        uploadPreviewGrid.innerHTML = '<div class="empty" style="grid-column:1/-1;">কোনো video নেই</div>';
-      } else {
-        uploadedVideos.forEach(v => {
-          videoGrid.appendChild(createVideoCard(v.src, v.name));
-          uploadPreviewGrid.appendChild(createVideoCard(v.src, v.name));
+    function attachMediaActions(container) {
+      container.querySelectorAll(".media-title-input").forEach((input) => {
+        input.addEventListener("input", (e) => {
+          const idx = Number(e.target.dataset.index);
+          if (uploadedMedia[idx]) uploadedMedia[idx].title = e.target.value;
         });
-      }
+      });
 
-      videoCount.textContent = `${uploadedVideos.length} videos`;
-      statVideos.textContent = uploadedVideos.length;
+      container.querySelectorAll("[data-save-index]").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const idx = Number(e.target.dataset.saveIndex);
+          const media = uploadedMedia[idx];
+          if (!media) return;
+          savedMediaTitles[media.id] = media.title || media.originalName;
+          saveState();
+          renderMediaGrids();
+        });
+      });
+
+      container.querySelectorAll("[data-delete-index]").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const idx = Number(e.target.dataset.deleteIndex);
+          const media = uploadedMedia[idx];
+          if (!media) return;
+          delete savedMediaTitles[media.id];
+          uploadedMedia.splice(idx, 1);
+          posts = posts.filter((p) => p.mediaId !== media.id);
+          addNotification("🗑", "Media removed", "A media item was deleted.");
+          saveState();
+          renderAll();
+        });
+      });
     }
 
-    videoInput.addEventListener('change', e => {
-      const files = Array.from(e.target.files || []);
-      files.forEach(file => {
-        const src = URL.createObjectURL(file);
-        uploadedVideos.unshift({ src, name: file.name });
+    function renderMediaGrids() {
+      homeMediaGrid.innerHTML = "";
+      createMediaGrid.innerHTML = "";
+
+      if (!uploadedMedia.length) {
+        homeMediaGrid.innerHTML = '<div class="empty" style="grid-column:1 / -1;">এখনও কোনো media add করা হয়নি</div>';
+        createMediaGrid.innerHTML = '<div class="empty" style="grid-column:1 / -1;">কোনো media নেই</div>';
+      } else {
+        uploadedMedia.forEach((media, index) => {
+          homeMediaGrid.appendChild(createMediaCard(media, index));
+          createMediaGrid.appendChild(createMediaCard(media, index));
+        });
+
+        attachMediaActions(homeMediaGrid);
+        attachMediaActions(createMediaGrid);
+      }
+
+      homeMediaCount.textContent = `${uploadedMedia.length} items`;
+      createMediaCount.textContent = `${uploadedMedia.length} items`;
+      statMedia.textContent = String(uploadedMedia.length);
+    }
+
+    function addNotification(icon, title, text) {
+      notifications.unshift({ icon, title, text });
+      notifications = notifications.slice(0, 20);
+      saveState();
+      renderNotifications();
+    }
+
+    publishPostBtn.addEventListener("click", () => {
+      const caption = postCaptionInput.value.trim();
+      const title = postTitleInput.value.trim();
+
+      if (!caption && !selectedMedia) return;
+
+      let mediaId = null;
+      let mediaRef = null;
+
+      if (selectedMedia) {
+        const existingIndex = uploadedMedia.findIndex((m) => m.id === selectedMedia.id);
+        if (existingIndex === -1) {
+          selectedMedia.title = title || selectedMedia.title || selectedMedia.originalName;
+          savedMediaTitles[selectedMedia.id] = selectedMedia.title;
+          uploadedMedia.unshift(selectedMedia);
+          mediaRef = selectedMedia;
+        } else {
+          uploadedMedia[existingIndex].title = title || uploadedMedia[existingIndex].title;
+          mediaRef = uploadedMedia[existingIndex];
+        }
+        mediaId = mediaRef.id;
+      }
+
+      posts.unshift({
+        id: `post_${Date.now()}`,
+        user: profileName,
+        caption: caption || "New post ✨",
+        mediaId,
+        mediaType: mediaRef ? mediaRef.type : "",
+        mediaSrc: mediaRef ? mediaRef.src : "",
+        mediaTitle: mediaRef ? mediaRef.title : "",
+        likes: Math.floor(Math.random() * 200) + 1,
+        comments: Math.floor(Math.random() * 40) + 1
       });
-      renderVideos();
-      switchScreen('homeScreen');
+
+      addNotification("📢", "Post published", "Your new post is now visible in feed.");
+      postCaptionInput.value = "";
+      postTitleInput.value = "";
+      selectedMedia = null;
+      renderSelectedPreview();
+      saveState();
+      renderAll();
+      switchScreen("feedScreen");
     });
 
+    function renderFeed() {
+      feedList.innerHTML = "";
+      feedPostCount.textContent = `${posts.length} posts`;
+      statPosts.textContent = String(posts.length);
+
+      if (!posts.length) {
+        feedList.innerHTML = '<div class="empty">এখনও কোনো post publish করা হয়নি</div>';
+        return;
+      }
+
+      posts.forEach((post, index) => {
+        const card = document.createElement("div");
+        card.className = "post-card";
+
+        let mediaHtml = "";
+        if (post.mediaSrc) {
+          mediaHtml = post.mediaType.startsWith("image/")
+            ? `<div class="post-media"><img src="${post.mediaSrc}" alt=""></div>`
+            : `<div class="post-media"><video src="${post.mediaSrc}" controls playsinline preload="metadata"></video></div>`;
+        }
+
+        card.innerHTML = `
+          <div class="post-top">
+            <div class="avatar">💖</div>
+            <div class="post-user">
+              <h4>${escapeHtml(post.user)}</h4>
+              <p>${escapeHtml(post.mediaTitle || "FluxLove Post")}</p>
+            </div>
+          </div>
+          <div class="post-body">
+            <div class="post-caption">${escapeHtml(post.caption)}</div>
+            ${mediaHtml}
+            <div class="post-actions">
+              <button class="post-action" data-like-index="${index}">💖 ${post.likes}</button>
+              <button class="post-action" data-comment-index="${index}">💬 ${post.comments}</button>
+              <button class="post-action" data-share-index="${index}">↗ Share</button>
+            </div>
+          </div>
+        `;
+        feedList.appendChild(card);
+      });
+
+      feedList.querySelectorAll("[data-like-index]").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const idx = Number(e.target.dataset.likeIndex);
+          posts[idx].likes += 1;
+          addNotification("💖", "Post liked", "A feed post got new love.");
+          saveState();
+          renderFeed();
+        });
+      });
+
+      feedList.querySelectorAll("[data-comment-index]").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const idx = Number(e.target.dataset.commentIndex);
+          posts[idx].comments += 1;
+          addNotification("💬", "New comment", "A feed post received a comment.");
+          saveState();
+          renderFeed();
+        });
+      });
+
+      feedList.querySelectorAll("[data-share-index]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          addNotification("↗", "Post shared", "A feed post was shared.");
+        });
+      });
+    }
+
+    function renderNotifications() {
+      notifList.innerHTML = "";
+      notifCount.textContent = `${notifications.length} alerts`;
+
+      notifications.forEach((n) => {
+        const item = document.createElement("div");
+        item.className = "notif-item";
+        item.innerHTML = `
+          <div class="notif-ico">${escapeHtml(n.icon)}</div>
+          <div class="notif-text">
+            <h4>${escapeHtml(n.title)}</h4>
+            <p>${escapeHtml(n.text)}</p>
+          </div>
+        `;
+        notifList.appendChild(item);
+      });
+    }
+
     function renderChatList() {
-      chatList.innerHTML = '';
-      Object.keys(chats).forEach(name => {
-        const last = chats[name][chats[name].length - 1]?.text || 'No messages';
-        const item = document.createElement('div');
-        item.className = 'chat-item';
+      chatList.innerHTML = "";
+
+      Object.keys(chats).forEach((name) => {
+        const history = chats[name];
+        const last = history[history.length - 1]?.text || "No messages";
+        const item = document.createElement("div");
+        item.className = "chat-item";
         item.innerHTML = `
           <div class="avatar">💬</div>
           <div class="chat-main">
-            <h4>${name}</h4>
-            <p>${last}</p>
+            <h4>${escapeHtml(name)}</h4>
+            <p>${escapeHtml(last)}</p>
           </div>
-          <div class="tiny">${chats[name].length}</div>
+          <div class="chat-meta">
+            <div class="time">now</div>
+            <div class="count">${history.length}</div>
+          </div>
         `;
-        item.addEventListener('click', () => openChat(name));
+        item.addEventListener("click", () => openChat(name));
         chatList.appendChild(item);
       });
 
-      const totalMessages = Object.values(chats).reduce((a, b) => a + b.length, 0);
-      statMessages.textContent = totalMessages;
+      const totalMessages = Object.values(chats).reduce((sum, arr) => sum + arr.length, 0);
+      statMessages.textContent = String(totalMessages);
+      statChats.textContent = String(Object.keys(chats).length);
+      saveState();
     }
 
     function openChat(name) {
       currentChat = name;
-      chatTitle.textContent = name;
+      activeChatName.textContent = name;
       callUserName.textContent = name;
-      chatListWrap.style.display = 'none';
-      messagesPanel.classList.add('active');
+      chatListPanel.style.display = "none";
+      messagesPanel.classList.add("active");
       renderMessages();
     }
 
     function renderMessages() {
-      messageArea.innerHTML = '';
-      (chats[currentChat] || []).forEach(msg => {
-        const div = document.createElement('div');
-        div.className = `msg ${msg.from}`;
-        div.textContent = msg.text;
-        messageArea.appendChild(div);
+      messageArea.innerHTML = "";
+
+      (chats[currentChat] || []).forEach((message) => {
+        const bubble = document.createElement("div");
+        bubble.className = `msg ${message.from}`;
+        bubble.textContent = message.text;
+        messageArea.appendChild(bubble);
       });
+
       messageArea.scrollTop = messageArea.scrollHeight;
       renderChatList();
-      saveChats();
     }
 
-    backToChats.addEventListener('click', () => {
-      messagesPanel.classList.remove('active');
-      chatListWrap.style.display = 'block';
+    backToChatsBtn.addEventListener("click", () => {
+      messagesPanel.classList.remove("active");
+      chatListPanel.style.display = "block";
     });
 
-    function sendMessage() {
-      const text = messageInput.value.trim();
+    function sendMessage(customText = null) {
+      const text = (customText ?? messageInput.value).trim();
       if (!text) return;
+
       if (!chats[currentChat]) chats[currentChat] = [];
-      chats[currentChat].push({ from: 'you', text });
-      messageInput.value = '';
+      chats[currentChat].push({ from: "you", text });
+
+      if (!customText) messageInput.value = "";
       renderMessages();
 
-      setTimeout(() => {
-        chats[currentChat].push({ from: 'other', text: 'Got it 💖' });
-        renderMessages();
-      }, 700);
+      if (autoReply) {
+        setTimeout(() => {
+          chats[currentChat].push({ from: "other", text: "Got it 💖" });
+          renderMessages();
+        }, 700);
+      }
     }
 
-    sendMessageBtn.addEventListener('click', sendMessage);
-    messageInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') sendMessage();
+    sendMessageBtn.addEventListener("click", () => sendMessage());
+    messageInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    addDemoReplyBtn.addEventListener("click", () => sendMessage("Hey! This is a quick reply ✨"));
+    clearChatBtn.addEventListener("click", () => {
+      chats[currentChat] = [];
+      renderMessages();
     });
 
     async function startCall() {
-      callModal.classList.add('active');
+      callModal.classList.add("active");
+      callStatusText.textContent = "Connecting...";
+      resetCallButtons();
+
       try {
         localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         localVideo.srcObject = localStream;
-        localVideo.style.display = 'block';
-        callPlaceholder.style.display = 'none';
-      } catch (err) {
-        localVideo.style.display = 'none';
-        callPlaceholder.style.display = 'block';
+        localVideo.style.display = "block";
+        callPlaceholder.style.display = "none";
+        callStatusText.textContent = "Connected";
+      } catch (error) {
+        localVideo.style.display = "none";
+        callPlaceholder.style.display = "flex";
+        callStatusText.textContent = "Permission blocked";
       }
     }
 
     function stopCall() {
-      callModal.classList.remove('active');
+      callModal.classList.remove("active");
       if (localStream) {
-        localStream.getTracks().forEach(track => track.stop());
+        localStream.getTracks().forEach((track) => track.stop());
         localStream = null;
       }
       localVideo.srcObject = null;
-      localVideo.style.display = 'none';
-      callPlaceholder.style.display = 'block';
+      localVideo.style.display = "none";
+      callPlaceholder.style.display = "flex";
+      callStatusText.textContent = "Connecting...";
+      resetCallButtons();
     }
 
-    startCallBtn.addEventListener('click', startCall);
-    closeCallBtn.addEventListener('click', stopCall);
-    endCallBtn.addEventListener('click', stopCall);
+    function resetCallButtons() {
+      isMuted = false;
+      isCameraOn = true;
+      isSpeakerOn = false;
 
-    renderVideos();
-    renderChatList();
+      muteBtn.classList.add("active");
+      cameraBtn.classList.add("active");
+      speakerBtn.classList.remove("active");
+
+      muteBtn.textContent = "🎤";
+      cameraBtn.textContent = "📷";
+      speakerBtn.textContent = "🔊";
+    }
+
+    openCallBtn.addEventListener("click", startCall);
+    closeCallBtn.addEventListener("click", stopCall);
+    endCallBtn.addEventListener("click", stopCall);
+
+    muteBtn.addEventListener("click", () => {
+      isMuted = !isMuted;
+      muteBtn.classList.toggle("active", !isMuted);
+      muteBtn.textContent = isMuted ? "🔇" : "🎤";
+      if (localStream) localStream.getAudioTracks().forEach((t) => (t.enabled = !isMuted));
+    });
+
+    cameraBtn.addEventListener("click", () => {
+      isCameraOn = !isCameraOn;
+      cameraBtn.classList.toggle("active", isCameraOn);
+      cameraBtn.textContent = isCameraOn ? "📷" : "🚫";
+      if (localStream) localStream.getVideoTracks().forEach((t) => (t.enabled = isCameraOn));
+    });
+
+    speakerBtn.addEventListener("click", () => {
+      isSpeakerOn = !isSpeakerOn;
+      speakerBtn.classList.toggle("active", isSpeakerOn);
+      speakerBtn.textContent = isSpeakerOn ? "📢" : "🔊";
+    });
+
+    function renderAll() {
+      renderSelectedPreview();
+      renderMediaGrids();
+      renderFeed();
+      renderNotifications();
+      renderChatList();
+      saveState();
+    }
+
+    function bootSavedMediaFromPosts() {
+      const mediaMap = new Map();
+
+      posts.forEach((post) => {
+        if (post.mediaId && post.mediaSrc && !mediaMap.has(post.mediaId)) {
+          mediaMap.set(post.mediaId, {
+            id: post.mediaId,
+            src: post.mediaSrc,
+            type: post.mediaType,
+            title: savedMediaTitles[post.mediaId] || post.mediaTitle || "Media",
+            originalName: post.mediaTitle || "Media"
+          });
+        }
+      });
+
+      uploadedMedia = Array.from(mediaMap.values());
+    }
+
+    updateProfileUI();
+    applyTheme();
+    applyAutoReplyUI();
+    bootSavedMediaFromPosts();
+    renderAll();
+
+    if (isAuthenticated) {
+      openApp();
+    } else {
+      closeAppToAuth();
+      switchAuthTab("login");
+    }
   </script>
 </body>
 </html>
