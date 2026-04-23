@@ -8,1243 +8,1249 @@
   />
   <title>FluxLove</title>
   <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      -webkit-tap-highlight-color:transparent;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    :root{
-      --bg-1:#05070d;
-      --bg-2:#0a1020;
-      --bg-3:#0b0d16;
-      --card:rgba(255,255,255,0.07);
-      --card-2:rgba(255,255,255,0.045);
-      --line:rgba(255,255,255,0.10);
-      --text:#ffffff;
-      --muted:#c9c4d8;
-      --muted-2:#9c97ad;
-      --pink:#ff2f74;
-      --pink-2:#ff4f90;
-      --cyan:#85f5ff;
-      --cyan-2:#65dff1;
-      --danger:#ff4d70;
-      --success:#52efb2;
-      --shadow:0 20px 45px rgba(0,0,0,0.32);
+    :root {
+      --bg-1: #04070d;
+      --bg-2: #09101d;
+      --bg-3: #0c111c;
+      --panel: rgba(255, 255, 255, 0.07);
+      --panel-2: rgba(255, 255, 255, 0.05);
+      --line: rgba(255, 255, 255, 0.09);
+      --text: #ffffff;
+      --muted: #bfc4d2;
+      --muted-2: #8891a8;
+      --pink: #ff2f74;
+      --pink-2: #ff5c95;
+      --cyan: #87f3ff;
+      --cyan-2: #67dff1;
+      --danger: #ff5b7e;
+      --success: #55e9b0;
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 18px;
+      --radius-sm: 14px;
     }
 
-    body.light{
-      --bg-1:#eef7fb;
-      --bg-2:#f6f2ff;
-      --bg-3:#ffffff;
-      --card:rgba(255,255,255,0.78);
-      --card-2:rgba(255,255,255,0.62);
-      --line:rgba(55,72,110,0.10);
-      --text:#101623;
-      --muted:#647089;
-      --muted-2:#8692aa;
-      --shadow:0 18px 40px rgba(62,84,128,0.12);
+    body.light {
+      --bg-1: #eef6fb;
+      --bg-2: #f4f0ff;
+      --bg-3: #ffffff;
+      --panel: rgba(255, 255, 255, 0.84);
+      --panel-2: rgba(255, 255, 255, 0.64);
+      --line: rgba(58, 71, 99, 0.09);
+      --text: #111827;
+      --muted: #6a748a;
+      --muted-2: #8a93a8;
+      --shadow: 0 16px 34px rgba(44, 66, 104, 0.12);
     }
 
-    html,body{
-      width:100%;
-      height:100%;
-      overflow:hidden;
-      font-family:Arial, Helvetica, sans-serif;
-      color:var(--text);
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
       background:
-        radial-gradient(circle at 50% 0%, rgba(95,240,255,.12), transparent 22%),
-        radial-gradient(circle at 30% 18%, rgba(255,47,116,.13), transparent 26%),
-        linear-gradient(180deg,var(--bg-2),var(--bg-3) 45%,var(--bg-1));
+        radial-gradient(circle at 50% 0%, rgba(103, 223, 241, 0.10), transparent 18%),
+        radial-gradient(circle at 25% 18%, rgba(255, 47, 116, 0.12), transparent 24%),
+        linear-gradient(180deg, var(--bg-2), var(--bg-3) 42%, var(--bg-1));
     }
 
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
       background-image:
-        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
-      background-size:24px 24px;
-      opacity:.35;
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 24px 24px;
+      opacity: 0.32;
     }
 
-    button,input,textarea{
-      font:inherit;
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
     }
 
-    .hidden{display:none !important;}
-
-    .app{
-      width:100vw;
-      height:100vh;
-      position:relative;
-      overflow:hidden;
+    .hidden {
+      display: none !important;
     }
 
-    .auth-screen{
-      position:absolute;
-      inset:0;
-      z-index:500;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
+    .app {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .auth-screen {
+      position: absolute;
+      inset: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
       background:
-        radial-gradient(circle at 50% 0%, rgba(95,240,255,.10), transparent 20%),
-        radial-gradient(circle at 50% 30%, rgba(255,47,116,.12), transparent 28%),
-        linear-gradient(180deg, rgba(5,7,13,.96), rgba(10,12,20,.98));
-      backdrop-filter:blur(10px);
+        radial-gradient(circle at 50% 0%, rgba(103, 223, 241, 0.10), transparent 18%),
+        radial-gradient(circle at 50% 30%, rgba(255, 47, 116, 0.12), transparent 28%),
+        linear-gradient(180deg, rgba(4, 7, 13, 0.96), rgba(10, 12, 20, 0.98));
+      backdrop-filter: blur(10px);
     }
 
-    .auth-card{
-      width:100%;
-      max-width:430px;
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:30px;
-      padding:20px;
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(14px);
+    .auth-card {
+      width: 100%;
+      max-width: 430px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
     }
 
-    .auth-brand{
-      text-align:center;
-      margin-bottom:18px;
+    .brand-lockup {
+      text-align: center;
+      margin-bottom: 18px;
     }
 
-    .logo-box{
-      width:82px;
-      height:82px;
-      margin:0 auto 12px;
-      border-radius:24px;
+    .logo-shell {
+      width: 84px;
+      height: 84px;
+      margin: 0 auto 14px;
+      border-radius: 24px;
       background:
-        radial-gradient(circle at 50% 40%, rgba(74,239,255,.10), transparent 55%),
-        linear-gradient(180deg,#05070d,#090d18);
-      display:flex;
-      align-items:center;
-      justify-content:center;
+        radial-gradient(circle at 50% 35%, rgba(103, 223, 241, 0.12), transparent 54%),
+        linear-gradient(180deg, #03060b, #09101b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       box-shadow:
-        0 0 0 1px rgba(255,255,255,.06),
-        0 15px 35px rgba(0,0,0,.30);
-      overflow:hidden;
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 14px 30px rgba(0, 0, 0, 0.28);
+      overflow: hidden;
     }
 
-    .flux-logo{
-      width:64px;
-      height:64px;
-      display:block;
-      filter: drop-shadow(0 0 10px rgba(255,47,116,.28)) drop-shadow(0 0 10px rgba(133,245,255,.20));
+    .flux-logo {
+      width: 66px;
+      height: 66px;
+      display: block;
+      filter:
+        drop-shadow(0 0 10px rgba(255, 47, 116, 0.28))
+        drop-shadow(0 0 10px rgba(135, 243, 255, 0.20));
     }
 
-    .auth-brand h1{
-      font-size:30px;
-      font-weight:900;
-      letter-spacing:.2px;
-      margin-bottom:6px;
+    .brand-lockup h1 {
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: 0.2px;
+      margin-bottom: 6px;
     }
 
-    .auth-brand p{
-      font-size:14px;
-      color:var(--muted);
-      line-height:1.5;
+    .brand-lockup p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
     }
 
-    .auth-tabs{
-      display:flex;
-      gap:10px;
-      margin-bottom:16px;
+    .auth-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
     }
 
-    .auth-tab{
-      flex:1;
-      min-height:46px;
-      border:none;
-      border-radius:16px;
-      background:rgba(255,255,255,0.06);
-      color:var(--text);
-      border:1px solid var(--line);
-      font-weight:800;
-      cursor:pointer;
+    .auth-tab {
+      flex: 1;
+      min-height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-weight: 800;
+      cursor: pointer;
     }
 
-    .auth-tab.active{
-      background:linear-gradient(135deg,var(--pink),#ff5b96);
-      color:#fff;
-      border:none;
-      box-shadow:0 12px 22px rgba(255,47,116,.22);
+    .auth-tab.active {
+      border: none;
+      color: #fff;
+      background: linear-gradient(135deg, var(--pink), var(--pink-2));
+      box-shadow: 0 12px 22px rgba(255, 47, 116, 0.22);
     }
 
-    .form-group{
-      margin-bottom:12px;
+    .form-group {
+      margin-bottom: 12px;
     }
 
-    .form-label{
-      display:block;
-      font-size:13px;
-      font-weight:700;
-      margin-bottom:7px;
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 7px;
     }
 
-    .text-input,.text-area{
-      width:100%;
-      border-radius:16px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,0.06);
-      color:var(--text);
-      outline:none;
+    .text-input,
+    .text-area,
+    .select-input {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      outline: none;
     }
 
-    .text-input{
-      min-height:48px;
-      padding:0 14px;
+    .text-input,
+    .select-input {
+      min-height: 48px;
+      padding: 0 14px;
     }
 
-    .text-area{
-      min-height:110px;
-      resize:none;
-      padding:12px 14px;
+    .text-area {
+      min-height: 112px;
+      resize: none;
+      padding: 12px 14px;
     }
 
-    .primary-btn,.secondary-btn,.danger-btn,.tool-btn,.send-btn,.mini-btn{
-      border:none;
-      cursor:pointer;
-      font-weight:800;
+    .primary-btn,
+    .secondary-btn,
+    .danger-btn,
+    .post-btn,
+    .tool-btn,
+    .send-btn,
+    .icon-btn {
+      border: none;
+      cursor: pointer;
+      font-weight: 800;
     }
 
-    .primary-btn{
-      width:100%;
-      min-height:48px;
-      border-radius:16px;
-      background:linear-gradient(135deg,var(--pink),#ff5d96);
-      color:#fff;
-      box-shadow:0 12px 24px rgba(255,47,116,.24);
+    .primary-btn {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 16px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--pink), var(--pink-2));
+      box-shadow: 0 12px 24px rgba(255, 47, 116, 0.24);
     }
 
-    .secondary-btn{
-      min-height:44px;
-      border-radius:14px;
-      background:rgba(255,255,255,0.06);
-      color:var(--text);
-      border:1px solid var(--line);
-      padding:0 14px;
+    .secondary-btn {
+      min-height: 44px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      border: 1px solid var(--line);
+      padding: 0 14px;
     }
 
-    .danger-btn{
-      min-height:44px;
-      border-radius:14px;
-      background:var(--danger);
-      color:#fff;
-      padding:0 14px;
+    .danger-btn {
+      min-height: 44px;
+      border-radius: 14px;
+      background: var(--danger);
+      color: #fff;
+      padding: 0 14px;
     }
 
-    .auth-note{
-      margin-top:12px;
-      text-align:center;
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.5;
+    .notice {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255, 91, 126, 0.10);
+      border: 1px solid rgba(255, 91, 126, 0.20);
+      color: #ff9bb1;
+      font-size: 12px;
+      line-height: 1.45;
     }
 
-    .topbar{
-      height:78px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:16px 16px 10px;
-      position:relative;
-      z-index:10;
+    .auth-footnote {
+      margin-top: 12px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
     }
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      min-width:0;
+    .topbar {
+      height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 16px 10px;
+      position: relative;
+      z-index: 10;
     }
 
-    .brand-logo{
-      width:46px;
-      height:46px;
-      border-radius:16px;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
       background:
-        radial-gradient(circle at 50% 40%, rgba(74,239,255,.10), transparent 55%),
-        linear-gradient(180deg,#05070d,#090d18);
-      display:flex;
-      align-items:center;
-      justify-content:center;
+        radial-gradient(circle at 50% 35%, rgba(103, 223, 241, 0.12), transparent 54%),
+        linear-gradient(180deg, #03060b, #09101b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       box-shadow:
-        0 0 0 1px rgba(255,255,255,.05),
-        0 12px 28px rgba(0,0,0,.24);
-      flex-shrink:0;
-      overflow:hidden;
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 12px 24px rgba(0, 0, 0, 0.24);
+      overflow: hidden;
+      flex-shrink: 0;
     }
 
-    .brand-logo .flux-logo{
-      width:34px;
-      height:34px;
+    .brand-logo .flux-logo {
+      width: 34px;
+      height: 34px;
     }
 
-    .brand-text h1{
-      font-size:22px;
-      font-weight:900;
-      line-height:1;
-      letter-spacing:.2px;
+    .brand-text {
+      min-width: 0;
     }
 
-    .brand-text p{
-      margin-top:4px;
-      font-size:12px;
-      color:var(--muted);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+    .brand-text h1 {
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: 0.2px;
     }
 
-    .top-actions{
-      display:flex;
-      gap:10px;
+    .brand-text p {
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .glass-btn{
-      width:42px;
-      height:42px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:var(--card);
-      color:var(--text);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:18px;
-      box-shadow:var(--shadow);
-      cursor:pointer;
-      backdrop-filter:blur(8px);
+    .top-actions {
+      display: flex;
+      gap: 10px;
     }
 
-    .main{
-      position:absolute;
-      inset:78px 0 74px 0;
-      overflow:hidden;
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
     }
 
-    .screen{
-      position:absolute;
-      inset:0;
-      overflow-y:auto;
-      overflow-x:hidden;
-      padding:14px 14px 24px;
-      display:none;
+    .main {
+      position: absolute;
+      inset: 78px 0 78px 0;
+      overflow: hidden;
     }
 
-    .screen.active{
-      display:block;
+    .screen {
+      position: absolute;
+      inset: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 14px 14px 24px;
+      display: none;
     }
 
-    .panel{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:26px;
-      padding:14px;
-      margin-bottom:14px;
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(10px);
+    .screen.active {
+      display: block;
     }
 
-    .panel-header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:12px;
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
     }
 
-    .panel-title h3{
-      font-size:18px;
-      font-weight:800;
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
     }
 
-    .panel-title p{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:3px;
+    .panel-title h3 {
+      font-size: 18px;
+      font-weight: 800;
     }
 
-    .badge{
-      padding:8px 10px;
-      border-radius:999px;
-      background:rgba(255,255,255,0.06);
-      border:1px solid var(--line);
-      font-size:12px;
-      font-weight:700;
-      white-space:nowrap;
+    .panel-title p {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 3px;
     }
 
-    .hero{
-      position:relative;
-      overflow:hidden;
-      border-radius:28px;
-      padding:20px;
-      margin-bottom:14px;
+    .pill {
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--line);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      padding: 20px;
+      margin-bottom: 14px;
       background:
-        radial-gradient(circle at 70% 20%, rgba(133,245,255,.18), transparent 25%),
-        radial-gradient(circle at 18% 26%, rgba(255,47,116,.18), transparent 24%),
-        linear-gradient(135deg, rgba(255,47,116,.17), rgba(133,245,255,.06), rgba(12,14,26,.18));
-      border:1px solid var(--line);
-      box-shadow:var(--shadow);
+        radial-gradient(circle at 74% 22%, rgba(103, 223, 241, 0.18), transparent 24%),
+        radial-gradient(circle at 18% 30%, rgba(255, 47, 116, 0.18), transparent 24%),
+        linear-gradient(135deg, rgba(255, 47, 116, 0.16), rgba(103, 223, 241, 0.06), rgba(12, 16, 29, 0.18));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
     }
 
-    .hero h2{
-      font-size:31px;
-      font-weight:900;
-      line-height:.96;
-      margin-bottom:10px;
-      letter-spacing:-.4px;
+    .hero h2 {
+      font-size: 31px;
+      font-weight: 900;
+      line-height: 0.96;
+      letter-spacing: -0.4px;
+      margin-bottom: 10px;
     }
 
-    .hero p{
-      font-size:14px;
-      line-height:1.5;
-      color:var(--text);
-      opacity:.95;
-      max-width:92%;
+    .hero p {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text);
+      opacity: 0.95;
+      max-width: 92%;
     }
 
-    .hero-tags{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top:14px;
+    .hero-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
     }
 
-    .tag{
-      padding:9px 12px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:800;
-      background:rgba(255,255,255,0.08);
-      border:1px solid rgba(255,255,255,0.10);
+    .tag {
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.10);
     }
 
-    .quick-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:10px;
+    .shortcut-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
     }
 
-    .quick-item{
-      background:var(--card-2);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:12px 8px;
-      text-align:center;
+    .shortcut {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 12px 8px;
+      text-align: center;
     }
 
-    .quick-icon{
-      width:42px;
-      height:42px;
-      border-radius:14px;
-      margin:0 auto 8px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:linear-gradient(135deg, rgba(255,47,116,.22), rgba(133,245,255,.18));
-      color:#fff;
-      font-size:20px;
-      box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+    .shortcut-ico {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      margin: 0 auto 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 20px;
+      background: linear-gradient(135deg, rgba(255, 47, 116, 0.22), rgba(103, 223, 241, 0.18));
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
     }
 
-    .quick-item h4{
-      font-size:13px;
-      margin-bottom:4px;
+    .shortcut h4 {
+      font-size: 13px;
+      margin-bottom: 4px;
     }
 
-    .quick-item p{
-      font-size:11px;
-      color:var(--muted-2);
-      line-height:1.35;
+    .shortcut p {
+      font-size: 11px;
+      color: var(--muted-2);
+      line-height: 1.35;
     }
 
-    .story-row{
-      display:flex;
-      gap:12px;
-      overflow-x:auto;
-      padding-bottom:2px;
+    .story-row {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 2px;
     }
 
-    .story{
-      min-width:72px;
-      text-align:center;
+    .story {
+      min-width: 72px;
+      text-align: center;
     }
 
-    .story-ring{
-      width:64px;
-      height:64px;
-      margin:0 auto 8px;
-      padding:2px;
-      border-radius:50%;
-      background:linear-gradient(135deg,var(--pink),var(--cyan),var(--pink-2));
+    .story-ring {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 8px;
+      padding: 2px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink), var(--cyan), var(--pink-2));
     }
 
-    .story-inner{
-      width:100%;
-      height:100%;
-      border-radius:50%;
-      background:#0b0f18;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:26px;
-      color:#fff;
+    .story-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #0b0f18;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      color: #fff;
     }
 
-    body.light .story-inner{
-      background:#f4f8ff;
-      color:#0f1930;
+    body.light .story-inner {
+      background: #f5f8ff;
+      color: #111827;
     }
 
-    .story span{
-      font-size:12px;
-      color:var(--muted);
-      white-space:nowrap;
+    .story span {
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
     }
 
-    .disabled-upload{
-      border:1.5px dashed rgba(255,255,255,0.18);
-      border-radius:22px;
-      padding:16px;
-      background:rgba(255,255,255,0.03);
-      text-align:center;
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      padding: 18px 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
     }
 
-    .upload-cta{
-      display:block;
-      width:100%;
-      min-height:48px;
-      border-radius:16px;
-      background:linear-gradient(135deg,var(--pink),#ff5d96);
-      color:#fff;
-      font-weight:900;
-      border:none;
-      padding:14px 12px;
-      box-shadow:0 12px 24px rgba(255,47,116,.24);
-    }
-
-    .upload-help{
-      margin-top:10px;
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.45;
-    }
-
-    .empty{
-      text-align:center;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.5;
-      padding:18px 10px;
-      background:rgba(255,255,255,0.03);
-      border:1px dashed rgba(255,255,255,0.12);
-      border-radius:18px;
-    }
-
-    .composer-row{
-      display:flex;
-      gap:10px;
-      margin-top:10px;
+    .composer-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
     }
 
     .composer-row .secondary-btn,
-    .composer-row .primary-btn{
-      flex:1;
-      width:auto;
+    .composer-row .primary-btn {
+      flex: 1;
+      width: auto;
     }
 
-    .feed-list{
-      display:flex;
-      flex-direction:column;
-      gap:14px;
+    .feed-list,
+    .channel-list,
+    .reel-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
     }
 
-    .post-card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:26px;
-      overflow:hidden;
-      box-shadow:var(--shadow);
+    .post-card,
+    .channel-card,
+    .reel-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
     }
 
-    .post-top{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding:14px 14px 10px;
+    .post-top,
+    .channel-top,
+    .reel-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 14px 10px;
     }
 
-    .avatar{
-      width:46px;
-      height:46px;
-      border-radius:16px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+    .avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background:
-        radial-gradient(circle at 50% 40%, rgba(74,239,255,.10), transparent 55%),
-        linear-gradient(180deg,#05070d,#090d18);
-      color:#fff;
-      flex-shrink:0;
+        radial-gradient(circle at 50% 35%, rgba(103, 223, 241, 0.12), transparent 54%),
+        linear-gradient(180deg, #03060b, #09101b);
       box-shadow:
-        0 0 0 1px rgba(255,255,255,.05),
-        0 10px 20px rgba(0,0,0,.24);
-      overflow:hidden;
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 10px 20px rgba(0, 0, 0, 0.24);
+      overflow: hidden;
+      flex-shrink: 0;
     }
 
-    .avatar .flux-logo{
-      width:26px;
-      height:26px;
+    .avatar .flux-logo {
+      width: 26px;
+      height: 26px;
     }
 
-    .post-user{
-      min-width:0;
-      flex:1;
+    .post-user,
+    .channel-user,
+    .reel-user {
+      min-width: 0;
+      flex: 1;
     }
 
-    .post-user h4{
-      font-size:15px;
-      margin-bottom:3px;
+    .post-user h4,
+    .channel-user h4,
+    .reel-user h4 {
+      font-size: 15px;
+      margin-bottom: 3px;
     }
 
-    .post-user p{
-      font-size:12px;
-      color:var(--muted);
+    .post-user p,
+    .channel-user p,
+    .reel-user p {
+      font-size: 12px;
+      color: var(--muted);
     }
 
-    .post-body{
-      padding:0 14px 12px;
+    .post-body,
+    .channel-body,
+    .reel-body {
+      padding: 0 14px 12px;
     }
 
-    .post-caption{
-      font-size:14px;
-      line-height:1.5;
-      margin-bottom:12px;
-      white-space:pre-wrap;
+    .post-caption,
+    .channel-caption,
+    .reel-caption {
+      font-size: 14px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      margin-bottom: 12px;
     }
 
-    .post-actions{
-      display:flex;
-      justify-content:space-between;
-      gap:8px;
+    .post-actions,
+    .channel-actions {
+      display: flex;
+      gap: 8px;
     }
 
-    .post-action{
-      flex:1;
-      min-height:42px;
-      border:none;
-      border-radius:14px;
-      background:rgba(255,255,255,0.06);
-      color:var(--text);
-      border:1px solid var(--line);
-      font-size:13px;
-      font-weight:800;
-      cursor:pointer;
+    .post-btn {
+      flex: 1;
+      min-height: 42px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      border: 1px solid var(--line);
+      font-size: 13px;
     }
 
-    .chat-list{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
+    .channel-name {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255, 47, 116, 0.10);
+      border: 1px solid rgba(255, 47, 116, 0.18);
+      color: #ff97b4;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 12px;
     }
 
-    .chat-item{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      background:rgba(255,255,255,0.04);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:12px;
-      cursor:pointer;
-    }
-
-    .chat-main{
-      min-width:0;
-      flex:1;
-    }
-
-    .chat-main h4{
-      font-size:15px;
-      margin-bottom:4px;
-    }
-
-    .chat-main p{
-      color:var(--muted);
-      font-size:13px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    .chat-meta{
-      text-align:right;
-      flex-shrink:0;
-    }
-
-    .chat-meta .time{
-      font-size:11px;
-      color:var(--muted-2);
-      margin-bottom:6px;
-    }
-
-    .chat-meta .count{
-      min-width:22px;
-      height:22px;
-      border-radius:999px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      background:linear-gradient(135deg,var(--pink),#ff5d96);
-      color:#fff;
-      font-size:11px;
-      font-weight:800;
-      padding:0 6px;
-    }
-
-    .messages-panel{
-      display:none;
-      flex-direction:column;
-      height:calc(100vh - 78px - 74px - 28px);
-    }
-
-    .messages-panel.active{
-      display:flex;
-    }
-
-    .chat-header{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin-bottom:12px;
-    }
-
-    .circle-btn{
-      width:42px;
-      height:42px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:var(--card);
-      color:var(--text);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:18px;
-      cursor:pointer;
-    }
-
-    .chat-name{
-      min-width:0;
-      flex:1;
-    }
-
-    .chat-name h4{
-      font-size:16px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    .chat-name p{
-      margin-top:3px;
-      font-size:12px;
-      color:var(--muted);
-    }
-
-    .message-tools{
-      display:flex;
-      gap:8px;
-      margin-bottom:10px;
-    }
-
-    .tool-btn{
-      flex:1;
-      min-height:40px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,0.05);
-      color:var(--text);
-      font-size:12px;
-    }
-
-    .message-area{
-      flex:1;
-      overflow-y:auto;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      padding-bottom:10px;
-    }
-
-    .msg{
-      max-width:78%;
-      padding:11px 13px;
-      border-radius:18px;
-      font-size:14px;
-      line-height:1.45;
-      word-break:break-word;
-    }
-
-    .msg.you{
-      align-self:flex-end;
-      background:linear-gradient(135deg,var(--pink),#ff5d96);
-      color:#fff;
-      border-bottom-right-radius:6px;
-    }
-
-    .msg.other{
-      align-self:flex-start;
-      background:rgba(255,255,255,0.08);
-      border:1px solid var(--line);
-      border-bottom-left-radius:6px;
-    }
-
-    .composer{
-      display:flex;
-      gap:10px;
-      margin-top:10px;
-    }
-
-    .composer input{
-      flex:1;
-      min-height:48px;
-      border-radius:16px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,0.06);
-      color:var(--text);
-      padding:0 14px;
-      outline:none;
-    }
-
-    .send-btn{
-      min-width:58px;
-      border-radius:16px;
-      background:linear-gradient(135deg,var(--pink),#ff5d96);
-      color:#fff;
-    }
-
-    .notif-list{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
-    .notif-item{
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-      background:rgba(255,255,255,0.04);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:12px;
-    }
-
-    .notif-ico{
-      width:42px;
-      height:42px;
-      border-radius:14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:linear-gradient(135deg, rgba(255,47,116,.20), rgba(133,245,255,.18));
-      color:#fff;
-      font-size:18px;
-      flex-shrink:0;
-    }
-
-    .notif-text h4{
-      font-size:14px;
-      margin-bottom:4px;
-    }
-
-    .notif-text p{
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.45;
-    }
-
-    .profile-card{
-      text-align:center;
-      padding:22px 16px;
-    }
-
-    .profile-logo{
-      width:92px;
-      height:92px;
-      margin:0 auto 12px;
-      border-radius:26px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+    .reel-poster {
+      min-height: 260px;
+      border-radius: 18px;
       background:
-        radial-gradient(circle at 50% 40%, rgba(74,239,255,.10), transparent 55%),
-        linear-gradient(180deg,#05070d,#090d18);
+        radial-gradient(circle at 70% 18%, rgba(103, 223, 241, 0.20), transparent 24%),
+        radial-gradient(circle at 22% 80%, rgba(255, 47, 116, 0.22), transparent 28%),
+        linear-gradient(180deg, #0a1322, #0b0f18);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 12px;
+    }
+
+    .reel-title {
+      font-size: 20px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .reel-meta {
+      font-size: 12px;
+      color: #d6def4;
+      margin-bottom: 10px;
+    }
+
+    .reel-line {
+      width: 72px;
+      height: 5px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--pink), var(--cyan));
+    }
+
+    .chat-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .chat-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 12px;
+      cursor: pointer;
+    }
+
+    .chat-main {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .chat-main h4 {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .chat-main p {
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chat-meta {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .chat-meta .time {
+      font-size: 11px;
+      color: var(--muted-2);
+      margin-bottom: 6px;
+    }
+
+    .chat-meta .count {
+      min-width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--pink), var(--pink-2));
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 0 6px;
+    }
+
+    .messages-panel {
+      display: none;
+      flex-direction: column;
+      height: calc(100vh - 78px - 78px - 28px);
+    }
+
+    .messages-panel.active {
+      display: flex;
+    }
+
+    .chat-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .circle-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .chat-name {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .chat-name h4 {
+      font-size: 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chat-name p {
+      margin-top: 3px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .message-tools {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .tool-btn {
+      flex: 1;
+      min-height: 40px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      font-size: 12px;
+    }
+
+    .message-area {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-bottom: 10px;
+    }
+
+    .msg {
+      max-width: 78%;
+      padding: 11px 13px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.48;
+      word-break: break-word;
+    }
+
+    .msg.you {
+      align-self: flex-end;
+      background: linear-gradient(135deg, var(--pink), var(--pink-2));
+      color: #fff;
+      border-bottom-right-radius: 6px;
+    }
+
+    .msg.other {
+      align-self: flex-start;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--line);
+      border-bottom-left-radius: 6px;
+    }
+
+    .composer {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .composer input {
+      flex: 1;
+      min-height: 48px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      padding: 0 14px;
+      outline: none;
+    }
+
+    .send-btn {
+      min-width: 58px;
+      border-radius: 16px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--pink), var(--pink-2));
+    }
+
+    .notif-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .notif-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 12px;
+    }
+
+    .notif-ico {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(255, 47, 116, 0.20), rgba(103, 223, 241, 0.18));
+      color: #fff;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .notif-text h4 {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .notif-text p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .profile-card {
+      text-align: center;
+      padding: 22px 16px;
+    }
+
+    .profile-logo {
+      width: 92px;
+      height: 92px;
+      margin: 0 auto 12px;
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(103, 223, 241, 0.12), transparent 54%),
+        linear-gradient(180deg, #03060b, #09101b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       box-shadow:
-        0 0 0 1px rgba(255,255,255,.05),
-        0 18px 32px rgba(0,0,0,.24);
-      overflow:hidden;
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 18px 32px rgba(0, 0, 0, 0.24);
+      overflow: hidden;
+      margin-bottom: 12px;
     }
 
-    .profile-logo .flux-logo{
-      width:54px;
-      height:54px;
+    .profile-logo .flux-logo {
+      width: 54px;
+      height: 54px;
     }
 
-    .profile-card h2{
-      font-size:24px;
-      margin-bottom:6px;
+    .profile-card h2 {
+      font-size: 24px;
+      margin-bottom: 6px;
     }
 
-    .profile-card p{
-      font-size:14px;
-      color:var(--muted);
-      line-height:1.45;
+    .profile-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.45;
     }
 
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:10px;
-      margin-top:16px;
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 16px;
     }
 
-    .stat{
-      background:rgba(255,255,255,0.05);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:14px 8px;
+    .stat {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px 8px;
     }
 
-    .stat h5{
-      font-size:18px;
-      margin-bottom:4px;
+    .stat h5 {
+      font-size: 18px;
+      margin-bottom: 4px;
     }
 
-    .stat p{
-      font-size:12px;
-      color:var(--muted);
+    .stat p {
+      font-size: 12px;
+      color: var(--muted);
     }
 
-    .switch-row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:12px 0;
-      border-bottom:1px solid rgba(255,255,255,0.06);
+    .switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
-    .switch-row:last-child{
-      border-bottom:none;
+    .switch-row:last-child {
+      border-bottom: none;
     }
 
-    .switch-text h4{
-      font-size:15px;
-      margin-bottom:3px;
+    .switch-text h4 {
+      font-size: 15px;
+      margin-bottom: 3px;
     }
 
-    .switch-text p{
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.4;
+    .switch-text p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
     }
 
-    .switch{
-      position:relative;
-      width:52px;
-      height:30px;
-      border-radius:999px;
-      background:rgba(255,255,255,0.14);
-      border:1px solid var(--line);
-      cursor:pointer;
-      flex-shrink:0;
+    .switch {
+      position: relative;
+      width: 52px;
+      height: 30px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid var(--line);
+      cursor: pointer;
+      flex-shrink: 0;
     }
 
-    .switch::after{
-      content:"";
-      position:absolute;
-      top:3px;
-      left:3px;
-      width:22px;
-      height:22px;
-      border-radius:50%;
-      background:#fff;
-      transition:.2s ease;
+    .switch::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #fff;
+      transition: 0.2s ease;
     }
 
-    .switch.active{
-      background:linear-gradient(135deg,var(--pink),#ff5d96);
+    .switch.active {
+      background: linear-gradient(135deg, var(--pink), var(--pink-2));
     }
 
-    .switch.active::after{
-      left:25px;
+    .switch.active::after {
+      left: 25px;
     }
 
-    .menu-list{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
-    .menu-item{
-      display:flex;
-      gap:12px;
-      align-items:center;
-      background:rgba(255,255,255,0.04);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:13px 12px;
-    }
-
-    .menu-ico{
-      width:42px;
-      height:42px;
-      border-radius:14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:rgba(255,255,255,0.06);
-      font-size:18px;
-      flex-shrink:0;
-      color:#fff;
-    }
-
-    body.light .menu-ico{
-      color:var(--text);
-    }
-
-    .menu-text h4{
-      font-size:15px;
-      margin-bottom:3px;
-    }
-
-    .menu-text p{
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.4;
-    }
-
-    .call-modal{
-      position:fixed;
-      inset:0;
-      z-index:100;
-      display:none;
-      flex-direction:column;
-      padding:18px;
+    .call-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      flex-direction: column;
+      padding: 18px;
       background:
-        radial-gradient(circle at 50% 0%, rgba(95,240,255,.10), transparent 20%),
-        radial-gradient(circle at 50% 30%, rgba(255,47,116,.12), transparent 28%),
-        linear-gradient(180deg, rgba(5,7,13,.98), rgba(10,12,20,.98));
+        radial-gradient(circle at 50% 0%, rgba(103, 223, 241, 0.10), transparent 18%),
+        radial-gradient(circle at 50% 30%, rgba(255, 47, 116, 0.12), transparent 28%),
+        linear-gradient(180deg, rgba(4, 7, 13, 0.98), rgba(10, 12, 20, 0.98));
     }
 
-    .call-modal.active{
-      display:flex;
+    .call-modal.active {
+      display: flex;
     }
 
-    .call-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:16px;
+    .call-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
     }
 
-    .call-top .status{
-      font-size:12px;
-      color:#d9d0ee;
+    .call-top .status {
+      font-size: 12px;
+      color: #d9dff2;
     }
 
-    .call-user{
-      text-align:center;
-      margin-bottom:14px;
-      color:#fff;
+    .call-user {
+      text-align: center;
+      margin-bottom: 14px;
+      color: #fff;
     }
 
-    .call-avatar{
-      width:92px;
-      height:92px;
-      margin:0 auto 12px;
-      border-radius:28px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+    .call-avatar {
+      width: 92px;
+      height: 92px;
+      margin: 0 auto 12px;
+      border-radius: 28px;
       background:
-        radial-gradient(circle at 50% 40%, rgba(74,239,255,.10), transparent 55%),
-        linear-gradient(180deg,#05070d,#090d18);
+        radial-gradient(circle at 50% 35%, rgba(103, 223, 241, 0.12), transparent 54%),
+        linear-gradient(180deg, #03060b, #09101b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       box-shadow:
-        0 0 0 1px rgba(255,255,255,.05),
-        0 18px 32px rgba(0,0,0,.24);
-      overflow:hidden;
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 18px 32px rgba(0, 0, 0, 0.24);
+      overflow: hidden;
     }
 
-    .call-avatar .flux-logo{
-      width:54px;
-      height:54px;
+    .call-avatar .flux-logo {
+      width: 54px;
+      height: 54px;
     }
 
-    .call-user h3{
-      font-size:23px;
-      margin-bottom:5px;
+    .call-user h3 {
+      font-size: 23px;
+      margin-bottom: 5px;
     }
 
-    .call-user p{
-      font-size:14px;
-      color:#d9d0ee;
+    .call-user p {
+      font-size: 14px;
+      color: #d9dff2;
     }
 
-    .call-video{
-      flex:1;
-      position:relative;
-      overflow:hidden;
-      border-radius:28px;
-      background:#000;
-      border:1px solid rgba(255,255,255,0.10);
-      box-shadow:var(--shadow);
+    .call-video {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      box-shadow: var(--shadow);
     }
 
-    .call-video video{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:none;
+    .call-video video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
     }
 
-    .call-placeholder{
-      position:absolute;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      color:#d9d0ee;
-      font-size:15px;
-      line-height:1.6;
-      padding:20px;
+    .call-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #d9dff2;
+      font-size: 15px;
+      line-height: 1.6;
+      padding: 20px;
     }
 
-    .cam-badge{
-      position:absolute;
-      top:12px;
-      right:12px;
-      padding:8px 10px;
-      border-radius:999px;
-      background:rgba(0,0,0,0.42);
-      border:1px solid rgba(255,255,255,0.12);
-      font-size:12px;
-      z-index:2;
-      color:#fff;
+    .cam-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.42);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 12px;
+      z-index: 2;
+      color: #fff;
     }
 
-    .call-actions{
-      display:flex;
-      justify-content:center;
-      gap:16px;
-      padding-top:16px;
-      flex-wrap:wrap;
+    .call-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      padding-top: 16px;
+      flex-wrap: wrap;
     }
 
-    .call-action{
-      width:58px;
-      height:58px;
-      border-radius:50%;
-      border:1px solid rgba(255,255,255,0.12);
-      background:rgba(255,255,255,0.10);
-      color:#fff;
-      font-size:22px;
-      cursor:pointer;
+    .call-action {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.10);
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
     }
 
-    .call-action.active{
-      background:linear-gradient(135deg,var(--pink),#ff5d96);
-      border:none;
+    .call-action.active {
+      border: none;
+      background: linear-gradient(135deg, var(--pink), var(--pink-2));
     }
 
-    .call-action.end{
-      background:var(--danger);
-      border:none;
+    .call-action.end {
+      border: none;
+      background: var(--danger);
     }
 
-    .bottom-nav{
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:0;
-      height:74px;
-      background:rgba(9,10,18,0.94);
-      border-top:1px solid rgba(255,255,255,0.08);
-      display:flex;
-      align-items:center;
-      justify-content:space-around;
-      z-index:20;
-      backdrop-filter:blur(10px);
+    .bottom-nav {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 78px;
+      background: rgba(9, 10, 18, 0.94);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      z-index: 20;
+      backdrop-filter: blur(10px);
     }
 
-    body.light .bottom-nav{
-      background:rgba(255,255,255,0.92);
+    body.light .bottom-nav {
+      background: rgba(255, 255, 255, 0.92);
     }
 
-    .nav-btn{
-      flex:1;
-      height:100%;
-      border:none;
-      background:none;
-      color:var(--muted);
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:5px;
-      font-size:11px;
-      font-weight:800;
-      cursor:pointer;
+    .nav-btn {
+      flex: 1;
+      height: 100%;
+      border: none;
+      background: none;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
     }
 
-    .nav-btn .ico{
-      font-size:20px;
-      line-height:1;
+    .nav-btn .ico {
+      font-size: 20px;
+      line-height: 1;
     }
 
-    .nav-btn.active{
-      color:var(--text);
+    .nav-btn.active {
+      color: var(--text);
     }
 
-    .center-btn{
-      width:56px;
-      height:40px;
-      border:none;
-      border-radius:14px;
-      background:linear-gradient(90deg,var(--cyan) 0 20%, #fff 20% 80%, var(--pink) 80% 100%);
-      color:#000;
-      font-size:24px;
-      font-weight:900;
-      box-shadow:0 12px 26px rgba(0,0,0,0.28);
-      cursor:pointer;
-      flex-shrink:0;
-    }
+    @media (max-width: 390px) {
+      .shortcut-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
 
-    .error-note{
-      margin-top:10px;
-      padding:10px 12px;
-      border-radius:14px;
-      background:rgba(255,77,112,.10);
-      border:1px solid rgba(255,77,112,.22);
-      color:#ff8ba4;
-      font-size:12px;
-      line-height:1.45;
-    }
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
 
-    @media (max-width:390px){
-      .quick-grid{grid-template-columns:repeat(2,1fr);}
-      .stats{grid-template-columns:repeat(2,1fr);}
-      .hero h2{font-size:28px;}
+      .hero h2 {
+        font-size: 28px;
+      }
     }
   </style>
 </head>
@@ -1252,18 +1258,18 @@
   <div class="app">
     <div class="auth-screen" id="authScreen">
       <div class="auth-card">
-        <div class="auth-brand">
-          <div class="logo-box">
+        <div class="brand-lockup">
+          <div class="logo-shell">
             <svg class="flux-logo" viewBox="0 0 100 100" aria-hidden="true">
               <path d="M28 22 C14 33, 14 58, 34 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
               <path d="M72 22 C86 33, 86 58, 66 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
               <path d="M49 20 C39 13, 31 16, 28 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
               <path d="M51 20 C61 13, 69 16, 72 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
-              <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#85f5ff" stroke="#85f5ff" stroke-linejoin="round"/>
+              <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#87f3ff" stroke="#87f3ff" stroke-linejoin="round"/>
             </svg>
           </div>
           <h1>FluxLove</h1>
-          <p>Neon heart + lightning branded app</p>
+          <p>One app vibe for feed, reels, channels, chat, and creator studio.</p>
         </div>
 
         <div class="auth-tabs">
@@ -1281,7 +1287,7 @@
             <input class="text-input" id="loginPassword" type="password" placeholder="Enter password" />
           </div>
           <button class="primary-btn" id="loginBtn">Enter FluxLove</button>
-          <div class="error-note hidden" id="loginError"></div>
+          <div class="notice hidden" id="loginError"></div>
         </div>
 
         <div id="signupForm" class="hidden">
@@ -1298,12 +1304,12 @@
             <input class="text-input" id="signupPassword" type="password" placeholder="Create password" />
           </div>
           <button class="primary-btn" id="signupBtn">Create Account</button>
-          <div class="error-note hidden" id="signupError"></div>
+          <div class="notice hidden" id="signupError"></div>
         </div>
 
-        <div class="auth-note">
-          Auth + Posts + Messages are live with Firebase.<br>
-          Media upload পরে Storage add করলে চালু হবে।
+        <div class="auth-footnote">
+          Raw Firebase errors are hidden now.<br />
+          Media upload stays off until Storage is enabled.
         </div>
       </div>
     </div>
@@ -1316,62 +1322,65 @@
             <path d="M72 22 C86 33, 86 58, 66 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
             <path d="M49 20 C39 13, 31 16, 28 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
             <path d="M51 20 C61 13, 69 16, 72 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
-            <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#85f5ff" stroke="#85f5ff" stroke-linejoin="round"/>
+            <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#87f3ff" stroke="#87f3ff" stroke-linejoin="round"/>
           </svg>
         </div>
         <div class="brand-text">
           <h1 id="brandNameTop">FluxLove</h1>
-          <p>Neon Social • Auth • Feed • Chat</p>
+          <p>Feed • Reels • Channels • Chats • Studio</p>
         </div>
       </div>
 
       <div class="top-actions">
-        <button class="glass-btn" id="themeToggleBtn">🌙</button>
-        <button class="glass-btn" id="openSettingsBtn">⚙</button>
+        <button class="icon-btn" id="themeToggleBtn">🌙</button>
+        <button class="icon-btn" id="openProfileBtn">👤</button>
       </div>
     </div>
 
     <div class="main">
       <section class="screen active" id="homeScreen">
         <div class="hero">
-          <h2 id="heroTitle">FluxLove<br>Studio</h2>
-          <p>তোমার logo style অনুযায়ী neon heart + cyan lightning vibe-এ full app UI বানানো হয়েছে। এখন text posts, auth, messages live.</p>
+          <h2 id="heroTitle">FluxLove<br />Studio</h2>
+          <p>
+            Premium neon UI matched to your logo. Feed, reels, channels, chats,
+            profile, and creator studio are all in one app layout.
+          </p>
           <div class="hero-tags">
-            <div class="tag">Neon Branding</div>
+            <div class="tag">Logo Matched</div>
             <div class="tag">Firebase Auth</div>
-            <div class="tag">Firestore Live</div>
+            <div class="tag">Realtime Feed</div>
           </div>
         </div>
 
         <div class="panel">
           <div class="panel-header">
             <div class="panel-title">
-              <h3>Quick Actions</h3>
-              <p>সব main feature এক জায়গায়</p>
+              <h3>Quick Access</h3>
+              <p>Everything in one place</p>
             </div>
-            <div class="badge" id="quickUserBadge">FluxLove</div>
+            <div class="pill" id="quickUserBadge">FluxLove</div>
           </div>
 
-          <div class="quick-grid">
-            <div class="quick-item">
-              <div class="quick-icon">➕</div>
-              <h4>Create</h4>
-              <p>new text post</p>
-            </div>
-            <div class="quick-item">
-              <div class="quick-icon">⚡</div>
+          <div class="shortcut-row">
+            <div class="shortcut">
+              <div class="shortcut-ico">📰</div>
               <h4>Feed</h4>
-              <p>live stream</p>
+              <p>Facebook style posts</p>
             </div>
-            <div class="quick-item">
-              <div class="quick-icon">💬</div>
-              <h4>Chat</h4>
-              <p>firebase chat</p>
+            <div class="shortcut">
+              <div class="shortcut-ico">🎬</div>
+              <h4>Reels</h4>
+              <p>Short-form vibe</p>
             </div>
-            <div class="quick-item">
-              <div class="quick-icon">🔔</div>
-              <h4>Alerts</h4>
-              <p>activity log</p>
+            <div class="shortcut">
+              <div class="shortcut-ico">📣</div>
+              <h4>Channels</h4>
+              <p>Telegram style drops</p>
+            </div>
+            <div class="shortcut">
+              <div class="shortcut-ico">💬</div>
+              <h4>Chats</h4>
+              <p>Direct messaging</p>
             </div>
           </div>
         </div>
@@ -1380,110 +1389,76 @@
           <div class="panel-header">
             <div class="panel-title">
               <h3>Stories</h3>
-              <p>FluxLove vibe preview</p>
+              <p>Social app mood preview</p>
             </div>
-            <div class="badge">Live</div>
+            <div class="pill">Live</div>
           </div>
 
           <div class="story-row">
             <div class="story"><div class="story-ring"><div class="story-inner">💖</div></div><span>You</span></div>
             <div class="story"><div class="story-ring"><div class="story-inner">⚡</div></div><span>Nova</span></div>
-            <div class="story"><div class="story-ring"><div class="story-inner">💬</div></div><span>Luna</span></div>
-            <div class="story"><div class="story-ring"><div class="story-inner">✨</div></div><span>Flux</span></div>
-            <div class="story"><div class="story-ring"><div class="story-inner">🔔</div></div><span>Alerts</span></div>
+            <div class="story"><div class="story-ring"><div class="story-inner">📣</div></div><span>Channel</span></div>
+            <div class="story"><div class="story-ring"><div class="story-inner">🎬</div></div><span>Reel</span></div>
+            <div class="story"><div class="story-ring"><div class="story-inner">💬</div></div><span>Chat</span></div>
           </div>
         </div>
 
         <div class="panel">
           <div class="panel-header">
             <div class="panel-title">
-              <h3>Media Status</h3>
-              <p>text-post mode right now</p>
+              <h3>Live Feed</h3>
+              <p>Latest public posts</p>
             </div>
-            <div class="badge" id="homeMediaCount">0 items</div>
+            <div class="pill" id="homePostCount">0 posts</div>
           </div>
-          <div class="empty" id="homeMediaGrid">
-            Storage এখন off, তাই media upload disabled.
+          <div class="feed-list" id="homeFeedList">
+            <div class="empty">No posts yet.</div>
           </div>
         </div>
       </section>
 
-      <section class="screen" id="createScreen">
+      <section class="screen" id="reelsScreen">
         <div class="panel">
           <div class="panel-header">
             <div class="panel-title">
-              <h3>Create Post</h3>
-              <p>caption-based post publishing</p>
+              <h3>Reels</h3>
+              <p>Vertical content vibe</p>
             </div>
-            <div class="badge">Studio</div>
+            <div class="pill" id="reelsCount">0 reels</div>
           </div>
-
-          <div class="form-group">
-            <label class="form-label">Post Title</label>
-            <input class="text-input" id="postTitleInput" type="text" placeholder="Enter post title" />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Caption</label>
-            <textarea class="text-area" id="postCaptionInput" placeholder="Write your post..."></textarea>
-          </div>
-
-          <div class="disabled-upload" style="margin-bottom:12px;">
-            <div class="upload-cta" style="opacity:.72; pointer-events:none;">
-              Text posts only for now
-            </div>
-            <div class="upload-help">
-              Firebase Storage পরে add করলে image/video upload চালু হবে।
-            </div>
-          </div>
-
-          <div class="composer-row">
-            <button class="secondary-btn" id="clearCreateBtn">Clear</button>
-            <button class="primary-btn" id="publishPostBtn">Publish Post</button>
-          </div>
-
-          <div class="error-note hidden" id="postError"></div>
         </div>
 
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">
-              <h3>Media Upload</h3>
-              <p>disabled right now</p>
-            </div>
-            <div class="badge" id="createMediaCount">0 items</div>
-          </div>
-          <div class="empty" id="createMediaGrid">
-            কোনো media নেই। Storage add করলে এই section active হবে।
-          </div>
+        <div class="reel-list" id="reelsList">
+          <div class="empty">No reels yet.</div>
         </div>
       </section>
 
-      <section class="screen" id="feedScreen">
+      <section class="screen" id="channelsScreen">
         <div class="panel">
           <div class="panel-header">
             <div class="panel-title">
-              <h3>Flux Feed</h3>
-              <p>neon branded live posts</p>
+              <h3>Channels</h3>
+              <p>Broadcast style updates</p>
             </div>
-            <div class="badge" id="feedPostCount">0 posts</div>
+            <div class="pill" id="channelsCount">0 updates</div>
           </div>
         </div>
 
-        <div class="feed-list" id="feedList">
-          <div class="empty">এখনও কোনো post publish করা হয়নি</div>
+        <div class="channel-list" id="channelsList">
+          <div class="empty">No channel updates yet.</div>
         </div>
       </section>
 
-      <section class="screen" id="messagesScreen">
+      <section class="screen" id="chatsScreen">
         <div class="panel" id="chatListPanel">
           <div class="panel-header">
             <div class="panel-title">
-              <h3>Messages</h3>
-              <p>tap a chat to open</p>
+              <h3>Chats</h3>
+              <p>Open a conversation</p>
             </div>
-            <div class="badge">Live</div>
+            <div class="pill">Live</div>
           </div>
+
           <div class="chat-list" id="chatList"></div>
         </div>
 
@@ -1492,14 +1467,14 @@
             <button class="circle-btn" id="backToChatsBtn">←</button>
             <div class="chat-name">
               <h4 id="activeChatName">Nova</h4>
-              <p>online</p>
+              <p>Direct message</p>
             </div>
             <button class="circle-btn" id="openCallBtn">📹</button>
           </div>
 
           <div class="message-tools">
-            <button class="tool-btn" id="addDemoReplyBtn">Quick Reply</button>
-            <button class="tool-btn" id="clearChatBtn">Clear Chat</button>
+            <button class="tool-btn" id="quickReplyBtn">Quick Reply</button>
+            <button class="tool-btn" id="clearChatBtn">Clear Later</button>
           </div>
 
           <div class="message-area" id="messageArea"></div>
@@ -1509,20 +1484,57 @@
             <button class="send-btn" id="sendMessageBtn">Send</button>
           </div>
 
-          <div class="error-note hidden" id="messageError"></div>
+          <div class="notice hidden" id="messageError"></div>
         </div>
       </section>
 
-      <section class="screen" id="notificationsScreen">
+      <section class="screen" id="studioScreen">
         <div class="panel">
           <div class="panel-header">
             <div class="panel-title">
-              <h3>Notifications</h3>
-              <p>activity overview</p>
+              <h3>Creator Studio</h3>
+              <p>Create feed posts, reels, or channel drops</p>
             </div>
-            <div class="badge" id="notifCount">0 alerts</div>
+            <div class="pill">Live</div>
           </div>
-          <div class="notif-list" id="notifList"></div>
+
+          <div class="form-group">
+            <label class="form-label">Content Type</label>
+            <select class="select-input" id="contentTypeInput">
+              <option value="post">Feed Post</option>
+              <option value="reel">Reel</option>
+              <option value="channel">Channel Update</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Title</label>
+            <input class="text-input" id="postTitleInput" type="text" placeholder="Enter a title" />
+          </div>
+
+          <div class="form-group hidden" id="channelNameWrap">
+            <label class="form-label">Channel Name</label>
+            <input class="text-input" id="channelNameInput" type="text" placeholder="Enter channel name" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Caption</label>
+            <textarea class="text-area" id="postCaptionInput" placeholder="Write your content..."></textarea>
+          </div>
+
+          <div class="panel" style="padding:12px; margin-bottom:12px;">
+            <div class="empty">
+              Media upload is off right now.<br />
+              Turn on Storage later for photos and videos.
+            </div>
+          </div>
+
+          <div class="composer-row">
+            <button class="secondary-btn" id="clearStudioBtn">Clear</button>
+            <button class="primary-btn" id="publishPostBtn">Publish</button>
+          </div>
+
+          <div class="notice hidden" id="studioError"></div>
         </div>
       </section>
 
@@ -1534,17 +1546,17 @@
               <path d="M72 22 C86 33, 86 58, 66 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
               <path d="M49 20 C39 13, 31 16, 28 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
               <path d="M51 20 C61 13, 69 16, 72 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
-              <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#85f5ff" stroke="#85f5ff" stroke-linejoin="round"/>
+              <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#87f3ff" stroke="#87f3ff" stroke-linejoin="round"/>
             </svg>
           </div>
           <h2 id="profileNameHeading">FluxLove User</h2>
-          <p>তোমার logo mood maintain করে app polish করা হয়েছে। profile, theme, posts, messages সব sync-ready.</p>
+          <p>Clean English UI, logo-matched neon design, and a super-app style layout.</p>
 
           <div class="stats">
-            <div class="stat"><h5 id="statPosts">0</h5><p>Posts</p></div>
-            <div class="stat"><h5 id="statMedia">0</h5><p>Media</p></div>
-            <div class="stat"><h5 id="statMessages">0</h5><p>Msgs</p></div>
-            <div class="stat"><h5 id="statChats">0</h5><p>Chats</p></div>
+            <div class="stat"><h5 id="statPosts">0</h5><p>Feed</p></div>
+            <div class="stat"><h5 id="statReels">0</h5><p>Reels</p></div>
+            <div class="stat"><h5 id="statChannels">0</h5><p>Channels</p></div>
+            <div class="stat"><h5 id="statChats">3</h5><p>Chats</p></div>
           </div>
         </div>
 
@@ -1552,9 +1564,9 @@
           <div class="panel-header">
             <div class="panel-title">
               <h3>Profile Settings</h3>
-              <p>saved to Firestore</p>
+              <p>Saved to Firestore</p>
             </div>
-            <div class="badge">Live</div>
+            <div class="pill">Live</div>
           </div>
 
           <div class="form-group">
@@ -1562,25 +1574,23 @@
             <input class="text-input" id="profileNameInput" type="text" placeholder="Enter profile name" />
           </div>
 
-          <button class="primary-btn" id="saveProfileBtn">Save Profile Name</button>
-          <div class="error-note hidden" id="profileError"></div>
+          <button class="primary-btn" id="saveProfileBtn">Save Profile</button>
+          <div class="notice hidden" id="profileError"></div>
         </div>
-      </section>
 
-      <section class="screen" id="settingsScreen">
         <div class="panel">
           <div class="panel-header">
             <div class="panel-title">
-              <h3>App Settings</h3>
-              <p>quick toggles</p>
+              <h3>App Preferences</h3>
+              <p>Local UI toggles</p>
             </div>
-            <div class="badge">Local</div>
+            <div class="pill">Local</div>
           </div>
 
           <div class="switch-row">
             <div class="switch-text">
               <h4>Light Theme</h4>
-              <p>full light mode on/off</p>
+              <p>Switch the full app appearance.</p>
             </div>
             <div class="switch" id="themeSwitch"></div>
           </div>
@@ -1588,58 +1598,16 @@
           <div class="switch-row">
             <div class="switch-text">
               <h4>Auto Reply</h4>
-              <p>message send করলে demo reply আসবে</p>
+              <p>Demo reply for the built-in chat contacts.</p>
             </div>
             <div class="switch active" id="autoReplySwitch"></div>
           </div>
         </div>
 
         <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">
-              <h3>Session</h3>
-              <p>auth controls</p>
-            </div>
-            <div class="badge">Auth</div>
-          </div>
-
           <div class="composer-row">
-            <button class="secondary-btn" id="goProfileBtn">Open Profile</button>
+            <button class="secondary-btn" id="goHomeBtn">Open Home</button>
             <button class="danger-btn" id="logoutBtn">Logout</button>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">
-              <h3>More</h3>
-              <p>future upgrade placeholders</p>
-            </div>
-            <div class="badge">Soon</div>
-          </div>
-
-          <div class="menu-list">
-            <div class="menu-item">
-              <div class="menu-ico">☁</div>
-              <div class="menu-text">
-                <h4>Storage Upgrade</h4>
-                <p>Blaze plan নিলে media upload live করা যাবে</p>
-              </div>
-            </div>
-            <div class="menu-item">
-              <div class="menu-ico">🔒</div>
-              <div class="menu-text">
-                <h4>Privacy Rules</h4>
-                <p>পরে আরো strict rules add করা যাবে</p>
-              </div>
-            </div>
-            <div class="menu-item">
-              <div class="menu-ico">⚡</div>
-              <div class="menu-text">
-                <h4>Realtime Features</h4>
-                <p>likes, comments, typing indicator পরে add হবে</p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -1647,10 +1615,10 @@
 
     <nav class="bottom-nav">
       <button class="nav-btn active" data-screen="homeScreen"><span class="ico">⌂</span><span>Home</span></button>
-      <button class="nav-btn" data-screen="createScreen"><span class="ico">➕</span><span>Create</span></button>
-      <button class="center-btn" id="centerFeedBtn">⚡</button>
-      <button class="nav-btn" data-screen="messagesScreen"><span class="ico">💬</span><span>Messages</span></button>
-      <button class="nav-btn" data-screen="notificationsScreen"><span class="ico">🔔</span><span>Alerts</span></button>
+      <button class="nav-btn" data-screen="reelsScreen"><span class="ico">🎬</span><span>Reels</span></button>
+      <button class="nav-btn" data-screen="channelsScreen"><span class="ico">📣</span><span>Channels</span></button>
+      <button class="nav-btn" data-screen="chatsScreen"><span class="ico">💬</span><span>Chats</span></button>
+      <button class="nav-btn" data-screen="studioScreen"><span class="ico">⚡</span><span>Studio</span></button>
       <button class="nav-btn" data-screen="profileScreen"><span class="ico">👤</span><span>Profile</span></button>
     </nav>
   </div>
@@ -1669,7 +1637,7 @@
           <path d="M72 22 C86 33, 86 58, 66 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
           <path d="M49 20 C39 13, 31 16, 28 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
           <path d="M51 20 C61 13, 69 16, 72 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
-          <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#85f5ff" stroke="#85f5ff" stroke-linejoin="round"/>
+          <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#87f3ff" stroke="#87f3ff" stroke-linejoin="round"/>
         </svg>
       </div>
       <h3 id="callUserName">Nova</h3>
@@ -1680,8 +1648,8 @@
       <div class="cam-badge">Camera Preview</div>
       <video id="localVideo" autoplay playsinline muted></video>
       <div class="call-placeholder" id="callPlaceholder">
-        Camera permission দিলে এখানে live preview show করবে.<br />
-        এটা এখন call demo screen।
+        Camera preview only.<br />
+        Full realtime calling comes later.
       </div>
     </div>
 
@@ -1728,11 +1696,6 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    const defaultNotifs = [
-      { icon: "💖", title: "Welcome", text: "FluxLove is connected." },
-      { icon: "⚡", title: "Neon Theme", text: "Logo-based FluxLove design is live." }
-    ];
-
     const authScreen = document.getElementById("authScreen");
     const loginTab = document.getElementById("loginTab");
     const signupTab = document.getElementById("signupTab");
@@ -1751,13 +1714,12 @@
 
     const navButtons = document.querySelectorAll(".nav-btn");
     const screens = document.querySelectorAll(".screen");
-    const centerFeedBtn = document.getElementById("centerFeedBtn");
+    const openProfileBtn = document.getElementById("openProfileBtn");
+    const goHomeBtn = document.getElementById("goHomeBtn");
+
     const themeToggleBtn = document.getElementById("themeToggleBtn");
-    const openSettingsBtn = document.getElementById("openSettingsBtn");
     const themeSwitch = document.getElementById("themeSwitch");
     const autoReplySwitch = document.getElementById("autoReplySwitch");
-    const goProfileBtn = document.getElementById("goProfileBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
 
     const brandNameTop = document.getElementById("brandNameTop");
     const heroTitle = document.getElementById("heroTitle");
@@ -1767,16 +1729,21 @@
     const saveProfileBtn = document.getElementById("saveProfileBtn");
     const profileError = document.getElementById("profileError");
 
-    const postCaptionInput = document.getElementById("postCaptionInput");
+    const contentTypeInput = document.getElementById("contentTypeInput");
     const postTitleInput = document.getElementById("postTitleInput");
+    const channelNameWrap = document.getElementById("channelNameWrap");
+    const channelNameInput = document.getElementById("channelNameInput");
+    const postCaptionInput = document.getElementById("postCaptionInput");
+    const clearStudioBtn = document.getElementById("clearStudioBtn");
     const publishPostBtn = document.getElementById("publishPostBtn");
-    const clearCreateBtn = document.getElementById("clearCreateBtn");
-    const postError = document.getElementById("postError");
+    const studioError = document.getElementById("studioError");
 
-    const homeMediaCount = document.getElementById("homeMediaCount");
-    const createMediaCount = document.getElementById("createMediaCount");
-    const feedList = document.getElementById("feedList");
-    const feedPostCount = document.getElementById("feedPostCount");
+    const homePostCount = document.getElementById("homePostCount");
+    const homeFeedList = document.getElementById("homeFeedList");
+    const reelsCount = document.getElementById("reelsCount");
+    const reelsList = document.getElementById("reelsList");
+    const channelsCount = document.getElementById("channelsCount");
+    const channelsList = document.getElementById("channelsList");
 
     const chatList = document.getElementById("chatList");
     const chatListPanel = document.getElementById("chatListPanel");
@@ -1784,22 +1751,24 @@
     const backToChatsBtn = document.getElementById("backToChatsBtn");
     const activeChatName = document.getElementById("activeChatName");
     const callUserName = document.getElementById("callUserName");
+    const quickReplyBtn = document.getElementById("quickReplyBtn");
+    const clearChatBtn = document.getElementById("clearChatBtn");
     const messageArea = document.getElementById("messageArea");
     const messageInput = document.getElementById("messageInput");
     const sendMessageBtn = document.getElementById("sendMessageBtn");
-    const openCallBtn = document.getElementById("openCallBtn");
-    const addDemoReplyBtn = document.getElementById("addDemoReplyBtn");
-    const clearChatBtn = document.getElementById("clearChatBtn");
     const messageError = document.getElementById("messageError");
 
     const notifList = document.getElementById("notifList");
     const notifCount = document.getElementById("notifCount");
 
     const statPosts = document.getElementById("statPosts");
-    const statMedia = document.getElementById("statMedia");
-    const statMessages = document.getElementById("statMessages");
+    const statReels = document.getElementById("statReels");
+    const statChannels = document.getElementById("statChannels");
     const statChats = document.getElementById("statChats");
 
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    const openCallBtn = document.getElementById("openCallBtn");
     const callModal = document.getElementById("callModal");
     const closeCallBtn = document.getElementById("closeCallBtn");
     const endCallBtn = document.getElementById("endCallBtn");
@@ -1810,23 +1779,30 @@
     const cameraBtn = document.getElementById("cameraBtn");
     const speakerBtn = document.getElementById("speakerBtn");
 
+    const defaultNotifications = [
+      { icon: "💖", title: "Welcome", text: "FluxLove is connected." },
+      { icon: "⚡", title: "UI Ready", text: "Super-app style layout is active." }
+    ];
+
+    const builtInChats = ["Nova", "Luna", "FluxBot"];
+
     let theme = localStorage.getItem("fluxlove_theme") || "dark";
     let autoReply = localStorage.getItem("fluxlove_auto_reply");
     autoReply = autoReply === null ? true : autoReply === "true";
 
-    let notifications = [...defaultNotifs];
-    let posts = [];
     let currentUser = null;
     let currentProfileName = "FluxLove User";
     let currentChat = "Nova";
+    let notifications = [...defaultNotifications];
+    let posts = [];
+
+    let unsubscribePosts = null;
+    let unsubscribeMessages = null;
+
     let localStream = null;
     let isMuted = false;
     let isCameraOn = true;
     let isSpeakerOn = false;
-    let unsubscribePosts = null;
-    let unsubscribeMessages = null;
-
-    const chatUsers = ["Nova", "Luna", "FluxBot"];
 
     function escapeHtml(text) {
       return String(text)
@@ -1837,61 +1813,78 @@
         .replaceAll("'", "&#039;");
     }
 
-    function showError(el, text) {
-      if (!text) {
-        el.classList.add("hidden");
+    function showNotice(el, message = "") {
+      if (!message) {
         el.textContent = "";
+        el.classList.add("hidden");
         return;
       }
-      el.textContent = text;
+      el.textContent = message;
       el.classList.remove("hidden");
     }
 
+    function friendlyAuthError(code, mode) {
+      const map = {
+        "auth/invalid-email": "Use a valid email address.",
+        "auth/missing-password": "Enter your password.",
+        "auth/weak-password": "Password must be at least 6 characters.",
+        "auth/email-already-in-use": "This email already has an account. Use Login.",
+        "auth/network-request-failed": "Network issue. Check your internet and try again."
+      };
+
+      if (code === "auth/invalid-credential") {
+        return mode === "login"
+          ? "Wrong email/password, or this account was not created yet. Use Sign Up first."
+          : "These details could not be used. Try again.";
+      }
+
+      return map[code] || "Something went wrong. Try again.";
+    }
+
     function switchAuthTab(type) {
-      const login = type === "login";
-      loginTab.classList.toggle("active", login);
-      signupTab.classList.toggle("active", !login);
-      loginForm.classList.toggle("hidden", !login);
-      signupForm.classList.toggle("hidden", login);
-      showError(loginError, "");
-      showError(signupError, "");
+      const isLogin = type === "login";
+      loginTab.classList.toggle("active", isLogin);
+      signupTab.classList.toggle("active", !isLogin);
+      loginForm.classList.toggle("hidden", !isLogin);
+      signupForm.classList.toggle("hidden", isLogin);
+      showNotice(loginError, "");
+      showNotice(signupError, "");
     }
 
     loginTab.addEventListener("click", () => switchAuthTab("login"));
     signupTab.addEventListener("click", () => switchAuthTab("signup"));
-
-    function openApp() {
-      authScreen.classList.add("hidden");
-    }
-
-    function closeAppToAuth() {
-      authScreen.classList.remove("hidden");
-    }
 
     function switchScreen(screenId) {
       screens.forEach((screen) => {
         screen.classList.toggle("active", screen.id === screenId);
       });
 
-      navButtons.forEach((button) => {
-        button.classList.toggle("active", button.dataset.screen === screenId);
+      navButtons.forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.screen === screenId);
       });
     }
 
-    navButtons.forEach((button) => {
-      button.addEventListener("click", () => switchScreen(button.dataset.screen));
+    navButtons.forEach((btn) => {
+      btn.addEventListener("click", () => switchScreen(btn.dataset.screen));
     });
 
-    centerFeedBtn.addEventListener("click", () => switchScreen("feedScreen"));
-    openSettingsBtn.addEventListener("click", () => switchScreen("settingsScreen"));
-    goProfileBtn.addEventListener("click", () => switchScreen("profileScreen"));
+    openProfileBtn.addEventListener("click", () => switchScreen("profileScreen"));
+    goHomeBtn.addEventListener("click", () => switchScreen("homeScreen"));
+
+    function openApp() {
+      authScreen.classList.add("hidden");
+    }
+
+    function closeApp() {
+      authScreen.classList.remove("hidden");
+    }
 
     function updateProfileUI() {
       brandNameTop.textContent = currentProfileName;
       quickUserBadge.textContent = currentProfileName;
       profileNameHeading.textContent = currentProfileName;
       profileNameInput.value = currentProfileName;
-      heroTitle.innerHTML = `${escapeHtml(currentProfileName)}<br>Studio`;
+      heroTitle.innerHTML = `${escapeHtml(currentProfileName)}<br />Studio`;
     }
 
     function applyTheme() {
@@ -1929,37 +1922,44 @@
       notifList.innerHTML = "";
       notifCount.textContent = `${notifications.length} alerts`;
 
-      notifications.forEach((n) => {
-        const item = document.createElement("div");
-        item.className = "notif-item";
-        item.innerHTML = `
-          <div class="notif-ico">${escapeHtml(n.icon)}</div>
+      notifications.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "notif-item";
+        row.innerHTML = `
+          <div class="notif-ico">${escapeHtml(item.icon)}</div>
           <div class="notif-text">
-            <h4>${escapeHtml(n.title)}</h4>
-            <p>${escapeHtml(n.text)}</p>
+            <h4>${escapeHtml(item.title)}</h4>
+            <p>${escapeHtml(item.text)}</p>
           </div>
         `;
-        notifList.appendChild(item);
+        notifList.appendChild(row);
       });
     }
 
-    function renderMediaStatus() {
-      homeMediaCount.textContent = "0 items";
-      createMediaCount.textContent = "0 items";
-      statMedia.textContent = "0";
+    function renderStats() {
+      const feedPosts = posts.filter((p) => p.kind === "post").length;
+      const reels = posts.filter((p) => p.kind === "reel").length;
+      const channels = posts.filter((p) => p.kind === "channel").length;
+
+      statPosts.textContent = String(feedPosts);
+      statReels.textContent = String(reels);
+      statChannels.textContent = String(channels);
+      statChats.textContent = String(builtInChats.length);
+      homePostCount.textContent = `${feedPosts} posts`;
+      reelsCount.textContent = `${reels} reels`;
+      channelsCount.textContent = `${channels} updates`;
     }
 
-    function renderFeed() {
-      feedList.innerHTML = "";
-      feedPostCount.textContent = `${posts.length} posts`;
-      statPosts.textContent = String(posts.length);
+    function renderHomeFeed() {
+      const feedPosts = posts.filter((p) => p.kind === "post");
+      homeFeedList.innerHTML = "";
 
-      if (!posts.length) {
-        feedList.innerHTML = '<div class="empty">এখনও কোনো post publish করা হয়নি</div>';
+      if (!feedPosts.length) {
+        homeFeedList.innerHTML = '<div class="empty">No feed posts yet.</div>';
         return;
       }
 
-      posts.forEach((post) => {
+      feedPosts.forEach((post) => {
         const card = document.createElement("div");
         card.className = "post-card";
         card.innerHTML = `
@@ -1970,54 +1970,138 @@
                 <path d="M72 22 C86 33, 86 58, 66 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
                 <path d="M49 20 C39 13, 31 16, 28 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
                 <path d="M51 20 C61 13, 69 16, 72 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
-                <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#85f5ff" stroke="#85f5ff" stroke-linejoin="round"/>
+                <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#87f3ff" stroke="#87f3ff" stroke-linejoin="round"/>
               </svg>
             </div>
             <div class="post-user">
               <h4>${escapeHtml(post.userName || "User")}</h4>
-              <p>${escapeHtml(post.title || "Text Post")}</p>
+              <p>${escapeHtml(post.title || "Feed Post")}</p>
             </div>
           </div>
           <div class="post-body">
             <div class="post-caption">${escapeHtml(post.caption)}</div>
             <div class="post-actions">
-              <button class="post-action">💖 ${post.likes || 0}</button>
-              <button class="post-action">💬 0</button>
-              <button class="post-action">↗ Share</button>
+              <button class="post-btn">💖 ${post.likes || 0}</button>
+              <button class="post-btn">💬 0</button>
+              <button class="post-btn">↗ Share</button>
             </div>
           </div>
         `;
-        feedList.appendChild(card);
+        homeFeedList.appendChild(card);
       });
     }
 
-    async function saveProfileName() {
-      if (!currentUser) return;
-      showError(profileError, "");
+    function renderReels() {
+      const reelPosts = posts.filter((p) => p.kind === "reel");
+      reelsList.innerHTML = "";
 
-      const value = profileNameInput.value.trim() || "FluxLove User";
-      currentProfileName = value;
-
-      try {
-        await setDoc(
-          doc(db, "users", currentUser.uid),
-          {
-            uid: currentUser.uid,
-            name: currentProfileName,
-            email: currentUser.email || "",
-            updatedAt: serverTimestamp()
-          },
-          { merge: true }
-        );
-
-        updateProfileUI();
-        addNotification("📝", "Profile updated", "Your profile name was saved.");
-      } catch (err) {
-        showError(profileError, err.message);
+      if (!reelPosts.length) {
+        reelsList.innerHTML = '<div class="empty">No reels yet.</div>';
+        return;
       }
+
+      reelPosts.forEach((post) => {
+        const card = document.createElement("div");
+        card.className = "reel-card";
+        card.innerHTML = `
+          <div class="reel-top">
+            <div class="avatar">
+              <svg class="flux-logo" viewBox="0 0 100 100" aria-hidden="true">
+                <path d="M28 22 C14 33, 14 58, 34 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+                <path d="M72 22 C86 33, 86 58, 66 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+                <path d="M49 20 C39 13, 31 16, 28 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+                <path d="M51 20 C61 13, 69 16, 72 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+                <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#87f3ff" stroke="#87f3ff" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="reel-user">
+              <h4>${escapeHtml(post.userName || "User")}</h4>
+              <p>Reel</p>
+            </div>
+          </div>
+          <div class="reel-body">
+            <div class="reel-poster">
+              <div class="reel-title">${escapeHtml(post.title || "Untitled Reel")}</div>
+              <div class="reel-meta">${escapeHtml(post.userName || "User")} • Short-form vibe</div>
+              <div class="reel-line"></div>
+            </div>
+            <div class="reel-caption">${escapeHtml(post.caption)}</div>
+            <div class="post-actions">
+              <button class="post-btn">▶ Watch</button>
+              <button class="post-btn">💖 ${post.likes || 0}</button>
+              <button class="post-btn">↗ Share</button>
+            </div>
+          </div>
+        `;
+        reelsList.appendChild(card);
+      });
     }
 
-    saveProfileBtn.addEventListener("click", saveProfileName);
+    function renderChannels() {
+      const channelPosts = posts.filter((p) => p.kind === "channel");
+      channelsList.innerHTML = "";
+
+      if (!channelPosts.length) {
+        channelsList.innerHTML = '<div class="empty">No channel updates yet.</div>';
+        return;
+      }
+
+      channelPosts.forEach((post) => {
+        const card = document.createElement("div");
+        card.className = "channel-card";
+        card.innerHTML = `
+          <div class="channel-top">
+            <div class="avatar">
+              <svg class="flux-logo" viewBox="0 0 100 100" aria-hidden="true">
+                <path d="M28 22 C14 33, 14 58, 34 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+                <path d="M72 22 C86 33, 86 58, 66 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+                <path d="M49 20 C39 13, 31 16, 28 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+                <path d="M51 20 C61 13, 69 16, 72 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+                <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#87f3ff" stroke="#87f3ff" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="channel-user">
+              <h4>${escapeHtml(post.userName || "User")}</h4>
+              <p>${escapeHtml(post.title || "Channel Update")}</p>
+            </div>
+          </div>
+          <div class="channel-body">
+            <div class="channel-name">📣 ${escapeHtml(post.channelName || "FluxLove Channel")}</div>
+            <div class="channel-caption">${escapeHtml(post.caption)}</div>
+            <div class="channel-actions">
+              <button class="post-btn">Join</button>
+              <button class="post-btn">Mute</button>
+              <button class="post-btn">Share</button>
+            </div>
+          </div>
+        `;
+        channelsList.appendChild(card);
+      });
+    }
+
+    function renderAllPosts() {
+      renderStats();
+      renderHomeFeed();
+      renderReels();
+      renderChannels();
+    }
+
+    function authFriendlyMessage(code, mode) {
+      if (code === "auth/invalid-credential") {
+        return mode === "login"
+          ? "Wrong email/password, or this account does not exist yet. Use Sign Up first."
+          : "Could not use those details. Try again.";
+      }
+
+      const lookup = {
+        "auth/email-already-in-use": "This email already has an account. Use Login.",
+        "auth/invalid-email": "Use a valid email address.",
+        "auth/weak-password": "Password must be at least 6 characters.",
+        "auth/network-request-failed": "Network issue. Check your internet and try again."
+      };
+
+      return lookup[code] || "Something went wrong. Try again.";
+    }
 
     async function loadUserProfile(uid) {
       const snap = await getDoc(doc(db, "users", uid));
@@ -2030,30 +2114,59 @@
       updateProfileUI();
     }
 
+    async function saveProfileName() {
+      if (!currentUser) return;
+      showNotice(profileError, "");
+
+      const name = profileNameInput.value.trim() || "FluxLove User";
+      currentProfileName = name;
+
+      try {
+        await setDoc(
+          doc(db, "users", currentUser.uid),
+          {
+            uid: currentUser.uid,
+            name,
+            email: currentUser.email || "",
+            updatedAt: serverTimestamp()
+          },
+          { merge: true }
+        );
+
+        updateProfileUI();
+        addNotification("📝", "Profile updated", "Your profile name was saved.");
+      } catch {
+        showNotice(profileError, "Could not save your profile right now.");
+      }
+    }
+
+    saveProfileBtn.addEventListener("click", saveProfileName);
+
     loginBtn.addEventListener("click", async () => {
-      showError(loginError, "");
+      showNotice(loginError, "");
       const email = loginEmail.value.trim();
       const password = loginPassword.value.trim();
+
       if (!email || !password) {
-        showError(loginError, "Email আর password দাও।");
+        showNotice(loginError, "Enter both email and password.");
         return;
       }
 
       try {
         await signInWithEmailAndPassword(auth, email, password);
       } catch (err) {
-        showError(loginError, err.message);
+        showNotice(loginError, authFriendlyMessage(err.code, "login"));
       }
     });
 
     signupBtn.addEventListener("click", async () => {
-      showError(signupError, "");
+      showNotice(signupError, "");
       const name = signupName.value.trim();
       const email = signupEmail.value.trim();
       const password = signupPassword.value.trim();
 
       if (!name || !email || !password) {
-        showError(signupError, "সব field পূরণ করো।");
+        showNotice(signupError, "Fill in all fields first.");
         return;
       }
 
@@ -2066,7 +2179,7 @@
           createdAt: serverTimestamp()
         });
       } catch (err) {
-        showError(signupError, err.message);
+        showNotice(signupError, authFriendlyMessage(err.code, "signup"));
       }
     });
 
@@ -2074,21 +2187,37 @@
       await signOut(auth);
     });
 
-    clearCreateBtn.addEventListener("click", () => {
-      postCaptionInput.value = "";
+    function toggleChannelInput() {
+      channelNameWrap.classList.toggle("hidden", contentTypeInput.value !== "channel");
+    }
+
+    contentTypeInput.addEventListener("change", toggleChannelInput);
+
+    clearStudioBtn.addEventListener("click", () => {
       postTitleInput.value = "";
-      showError(postError, "");
+      postCaptionInput.value = "";
+      channelNameInput.value = "";
+      contentTypeInput.value = "post";
+      toggleChannelInput();
+      showNotice(studioError, "");
     });
 
     publishPostBtn.addEventListener("click", async () => {
       if (!currentUser) return;
+      showNotice(studioError, "");
 
-      showError(postError, "");
-      const caption = postCaptionInput.value.trim();
+      const kind = contentTypeInput.value;
       const title = postTitleInput.value.trim();
+      const caption = postCaptionInput.value.trim();
+      const channelName = channelNameInput.value.trim();
 
       if (!caption) {
-        showError(postError, "Caption না লিখে post publish হবে না।");
+        showNotice(studioError, "Write something before publishing.");
+        return;
+      }
+
+      if (kind === "channel" && !channelName) {
+        showNotice(studioError, "Channel updates need a channel name.");
         return;
       }
 
@@ -2096,18 +2225,23 @@
         await addDoc(collection(db, "posts"), {
           userId: currentUser.uid,
           userName: currentProfileName,
-          title: title || "Text Post",
+          kind,
+          title: title || (kind === "reel" ? "Untitled Reel" : kind === "channel" ? "Channel Update" : "Feed Post"),
+          channelName: kind === "channel" ? channelName : "",
           caption,
           likes: 0,
           createdAt: serverTimestamp()
         });
 
-        postCaptionInput.value = "";
         postTitleInput.value = "";
-        addNotification("📢", "Post published", "Your text post is now live.");
-        switchScreen("feedScreen");
-      } catch (err) {
-        showError(postError, err.message);
+        postCaptionInput.value = "";
+        channelNameInput.value = "";
+        contentTypeInput.value = "post";
+        toggleChannelInput();
+        addNotification("⚡", "Published", "Your content is now live.");
+        switchScreen(kind === "reel" ? "reelsScreen" : kind === "channel" ? "channelsScreen" : "homeScreen");
+      } catch {
+        showNotice(studioError, "Could not publish right now.");
       }
     });
 
@@ -2116,18 +2250,18 @@
 
       const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
       unsubscribePosts = onSnapshot(q, (snap) => {
-        posts = snap.docs.map((d) => ({
-          id: d.id,
-          ...d.data()
+        posts = snap.docs.map((docItem) => ({
+          id: docItem.id,
+          ...docItem.data()
         }));
-        renderFeed();
+        renderAllPosts();
       });
     }
 
     function renderChatList() {
       chatList.innerHTML = "";
 
-      chatUsers.forEach((name) => {
+      builtInChats.forEach((name) => {
         const item = document.createElement("div");
         item.className = "chat-item";
         item.innerHTML = `
@@ -2137,12 +2271,12 @@
               <path d="M72 22 C86 33, 86 58, 66 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
               <path d="M49 20 C39 13, 31 16, 28 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
               <path d="M51 20 C61 13, 69 16, 72 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
-              <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#85f5ff" stroke="#85f5ff" stroke-linejoin="round"/>
+              <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#87f3ff" stroke="#87f3ff" stroke-linejoin="round"/>
             </svg>
           </div>
           <div class="chat-main">
             <h4>${escapeHtml(name)}</h4>
-            <p>Tap to open chat</p>
+            <p>Open conversation</p>
           </div>
           <div class="chat-meta">
             <div class="time">live</div>
@@ -2152,8 +2286,6 @@
         item.addEventListener("click", () => openChat(name));
         chatList.appendChild(item);
       });
-
-      statChats.textContent = String(chatUsers.length);
     }
 
     function getChatId(a, b) {
@@ -2171,17 +2303,17 @@
 
     function listenMessages(otherUserName) {
       if (!currentUser) return;
+
       if (unsubscribeMessages) unsubscribeMessages();
 
       const chatId = getChatId(currentProfileName, otherUserName);
-      const q = query(
-        collection(db, "chats", chatId, "messages"),
-        orderBy("createdAt", "asc")
-      );
+      const q = query(collection(db, "chats", chatId, "messages"), orderBy("createdAt", "asc"));
 
       unsubscribeMessages = onSnapshot(q, (snap) => {
         messageArea.innerHTML = "";
-        let count = 0;
+        if (!snap.docs.length) {
+          messageArea.innerHTML = '<div class="empty">No messages yet.</div>';
+        }
 
         snap.docs.forEach((d) => {
           const msg = d.data();
@@ -2189,10 +2321,8 @@
           bubble.className = `msg ${msg.senderId === currentUser.uid ? "you" : "other"}`;
           bubble.textContent = msg.text;
           messageArea.appendChild(bubble);
-          count++;
         });
 
-        statMessages.textContent = String(count);
         messageArea.scrollTop = messageArea.scrollHeight;
       });
     }
@@ -2200,18 +2330,18 @@
     backToChatsBtn.addEventListener("click", () => {
       messagesPanel.classList.remove("active");
       chatListPanel.style.display = "block";
-      showError(messageError, "");
+      showNotice(messageError, "");
       if (unsubscribeMessages) {
         unsubscribeMessages();
         unsubscribeMessages = null;
       }
     });
 
-    async function sendMessage(customText = null) {
+    async function sendMessage(textOverride = null) {
       if (!currentUser) return;
-      showError(messageError, "");
+      showNotice(messageError, "");
 
-      const text = (customText ?? messageInput.value).trim();
+      const text = (textOverride ?? messageInput.value).trim();
       if (!text) return;
 
       const chatId = getChatId(currentProfileName, currentChat);
@@ -2225,23 +2355,25 @@
           createdAt: serverTimestamp()
         });
 
-        if (!customText) {
+        if (!textOverride) {
           messageInput.value = "";
         }
 
         if (autoReply) {
           setTimeout(async () => {
-            await addDoc(collection(db, "chats", chatId, "messages"), {
-              senderId: `bot_${currentChat}`,
-              senderName: currentChat,
-              receiverName: currentProfileName,
-              text: "Got it 💖",
-              createdAt: serverTimestamp()
-            });
+            try {
+              await addDoc(collection(db, "chats", chatId, "messages"), {
+                senderId: `bot_${currentChat}`,
+                senderName: currentChat,
+                receiverName: currentProfileName,
+                text: "Got it ⚡",
+                createdAt: serverTimestamp()
+              });
+            } catch {}
           }, 700);
         }
-      } catch (err) {
-        showError(messageError, err.message);
+      } catch {
+        showNotice(messageError, "Could not send the message.");
       }
     }
 
@@ -2250,9 +2382,9 @@
       if (e.key === "Enter") sendMessage();
     });
 
-    addDemoReplyBtn.addEventListener("click", () => sendMessage("Hey! This is a quick reply ✨"));
+    quickReplyBtn.addEventListener("click", () => sendMessage("Quick drop from FluxLove ⚡"));
     clearChatBtn.addEventListener("click", () => {
-      alert("Chat clear পরে add করা যাবে.");
+      showNotice(messageError, "Chat clearing is coming later.");
     });
 
     async function startCall() {
@@ -2266,7 +2398,7 @@
         localVideo.style.display = "block";
         callPlaceholder.style.display = "none";
         callStatusText.textContent = "Connected";
-      } catch (error) {
+      } catch {
         localVideo.style.display = "none";
         callPlaceholder.style.display = "flex";
         callStatusText.textContent = "Permission blocked";
@@ -2275,10 +2407,12 @@
 
     function stopCall() {
       callModal.classList.remove("active");
+
       if (localStream) {
         localStream.getTracks().forEach((track) => track.stop());
         localStream = null;
       }
+
       localVideo.srcObject = null;
       localVideo.style.display = "none";
       callPlaceholder.style.display = "flex";
@@ -2308,14 +2442,24 @@
       isMuted = !isMuted;
       muteBtn.classList.toggle("active", !isMuted);
       muteBtn.textContent = isMuted ? "🔇" : "🎤";
-      if (localStream) localStream.getAudioTracks().forEach((t) => (t.enabled = !isMuted));
+
+      if (localStream) {
+        localStream.getAudioTracks().forEach((track) => {
+          track.enabled = !isMuted;
+        });
+      }
     });
 
     cameraBtn.addEventListener("click", () => {
       isCameraOn = !isCameraOn;
       cameraBtn.classList.toggle("active", isCameraOn);
       cameraBtn.textContent = isCameraOn ? "📷" : "🚫";
-      if (localStream) localStream.getVideoTracks().forEach((t) => (t.enabled = isCameraOn));
+
+      if (localStream) {
+        localStream.getVideoTracks().forEach((track) => {
+          track.enabled = isCameraOn;
+        });
+      }
     });
 
     speakerBtn.addEventListener("click", () => {
@@ -2329,24 +2473,32 @@
         currentUser = user;
         await loadUserProfile(user.uid);
         openApp();
-        renderMediaStatus();
         renderNotifications();
         renderChatList();
+        renderAllPosts();
         listenPosts();
       } else {
         currentUser = null;
-        closeAppToAuth();
+        closeApp();
         switchAuthTab("login");
+        if (unsubscribePosts) {
+          unsubscribePosts();
+          unsubscribePosts = null;
+        }
+        if (unsubscribeMessages) {
+          unsubscribeMessages();
+          unsubscribeMessages = null;
+        }
       }
     });
 
     updateProfileUI();
     applyTheme();
     applyAutoReplyUI();
-    renderMediaStatus();
-    renderFeed();
+    toggleChannelInput();
     renderNotifications();
     renderChatList();
+    renderAllPosts();
   </script>
 </body>
 </html>
