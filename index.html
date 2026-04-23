@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
   />
-  <title>FluxLove v4</title>
+  <title>FluxLove</title>
   <style>
     *{
       margin:0;
@@ -16,36 +16,35 @@
     }
 
     :root{
-      --bg-1:#0a0713;
-      --bg-2:#130a22;
-      --bg-3:#1b1030;
-      --card:rgba(255,255,255,0.08);
-      --card-2:rgba(255,255,255,0.05);
+      --bg-1:#05070d;
+      --bg-2:#0a1020;
+      --bg-3:#0b0d16;
+      --card:rgba(255,255,255,0.07);
+      --card-2:rgba(255,255,255,0.045);
       --line:rgba(255,255,255,0.10);
       --text:#ffffff;
-      --muted:#cec6dd;
-      --muted-2:#a79dbd;
-      --pink:#ff4fc3;
-      --pink-2:#ff83dd;
-      --violet:#7b5cff;
-      --cyan:#2fe6ff;
-      --green:#58efab;
-      --danger:#ff406f;
-      --warn:#ffb84d;
-      --shadow:0 16px 40px rgba(0,0,0,0.28);
+      --muted:#c9c4d8;
+      --muted-2:#9c97ad;
+      --pink:#ff2f74;
+      --pink-2:#ff4f90;
+      --cyan:#85f5ff;
+      --cyan-2:#65dff1;
+      --danger:#ff4d70;
+      --success:#52efb2;
+      --shadow:0 20px 45px rgba(0,0,0,0.32);
     }
 
     body.light{
-      --bg-1:#f4efff;
-      --bg-2:#ede4ff;
-      --bg-3:#fbf9ff;
+      --bg-1:#eef7fb;
+      --bg-2:#f6f2ff;
+      --bg-3:#ffffff;
       --card:rgba(255,255,255,0.78);
-      --card-2:rgba(255,255,255,0.60);
-      --line:rgba(88,64,140,0.12);
-      --text:#1a1130;
-      --muted:#6c6186;
-      --muted-2:#8b7fa2;
-      --shadow:0 16px 40px rgba(99,72,145,0.12);
+      --card-2:rgba(255,255,255,0.62);
+      --line:rgba(55,72,110,0.10);
+      --text:#101623;
+      --muted:#647089;
+      --muted-2:#8692aa;
+      --shadow:0 18px 40px rgba(62,84,128,0.12);
     }
 
     html,body{
@@ -55,9 +54,9 @@
       font-family:Arial, Helvetica, sans-serif;
       color:var(--text);
       background:
-        radial-gradient(circle at top center, rgba(123,92,255,0.22), transparent 26%),
-        radial-gradient(circle at 82% 14%, rgba(255,79,195,0.16), transparent 22%),
-        linear-gradient(180deg,var(--bg-3),var(--bg-2) 40%,var(--bg-1));
+        radial-gradient(circle at 50% 0%, rgba(95,240,255,.12), transparent 22%),
+        radial-gradient(circle at 30% 18%, rgba(255,47,116,.13), transparent 26%),
+        linear-gradient(180deg,var(--bg-2),var(--bg-3) 45%,var(--bg-1));
     }
 
     body::before{
@@ -66,10 +65,10 @@
       inset:0;
       pointer-events:none;
       background-image:
-        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
       background-size:24px 24px;
-      opacity:.30;
+      opacity:.35;
     }
 
     button,input,textarea{
@@ -88,20 +87,21 @@
     .auth-screen{
       position:absolute;
       inset:0;
-      z-index:200;
+      z-index:500;
       display:flex;
       align-items:center;
       justify-content:center;
       padding:18px;
       background:
-        radial-gradient(circle at top center, rgba(123,92,255,0.18), transparent 26%),
-        linear-gradient(180deg, rgba(10,7,19,0.96), rgba(18,11,30,0.98));
-      backdrop-filter:blur(8px);
+        radial-gradient(circle at 50% 0%, rgba(95,240,255,.10), transparent 20%),
+        radial-gradient(circle at 50% 30%, rgba(255,47,116,.12), transparent 28%),
+        linear-gradient(180deg, rgba(5,7,13,.96), rgba(10,12,20,.98));
+      backdrop-filter:blur(10px);
     }
 
     .auth-card{
       width:100%;
-      max-width:420px;
+      max-width:430px;
       background:var(--card);
       border:1px solid var(--line);
       border-radius:30px;
@@ -115,23 +115,34 @@
       margin-bottom:18px;
     }
 
-    .auth-logo{
-      width:74px;
-      height:74px;
+    .logo-box{
+      width:82px;
+      height:82px;
       margin:0 auto 12px;
       border-radius:24px;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(74,239,255,.10), transparent 55%),
+        linear-gradient(180deg,#05070d,#090d18);
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:34px;
-      color:#fff;
-      background:linear-gradient(135deg,var(--pink),var(--violet));
-      box-shadow:0 16px 28px rgba(255,79,195,0.28);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.06),
+        0 15px 35px rgba(0,0,0,.30);
+      overflow:hidden;
+    }
+
+    .flux-logo{
+      width:64px;
+      height:64px;
+      display:block;
+      filter: drop-shadow(0 0 10px rgba(255,47,116,.28)) drop-shadow(0 0 10px rgba(133,245,255,.20));
     }
 
     .auth-brand h1{
       font-size:30px;
       font-weight:900;
+      letter-spacing:.2px;
       margin-bottom:6px;
     }
 
@@ -160,9 +171,10 @@
     }
 
     .auth-tab.active{
-      background:linear-gradient(135deg,var(--pink),var(--violet));
+      background:linear-gradient(135deg,var(--pink),#ff5b96);
       color:#fff;
       border:none;
+      box-shadow:0 12px 22px rgba(255,47,116,.22);
     }
 
     .form-group{
@@ -183,20 +195,20 @@
       background:rgba(255,255,255,0.06);
       color:var(--text);
       outline:none;
-      padding:0 14px;
     }
 
     .text-input{
       min-height:48px;
+      padding:0 14px;
     }
 
     .text-area{
-      min-height:96px;
+      min-height:110px;
       resize:none;
       padding:12px 14px;
     }
 
-    .primary-btn,.secondary-btn,.danger-btn,.mini-btn{
+    .primary-btn,.secondary-btn,.danger-btn,.tool-btn,.send-btn,.mini-btn{
       border:none;
       cursor:pointer;
       font-weight:800;
@@ -206,9 +218,9 @@
       width:100%;
       min-height:48px;
       border-radius:16px;
-      background:linear-gradient(135deg,var(--pink),var(--violet));
+      background:linear-gradient(135deg,var(--pink),#ff5d96);
       color:#fff;
-      box-shadow:0 12px 24px rgba(255,79,195,0.24);
+      box-shadow:0 12px 24px rgba(255,47,116,.24);
     }
 
     .secondary-btn{
@@ -257,26 +269,38 @@
       width:46px;
       height:46px;
       border-radius:16px;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(74,239,255,.10), transparent 55%),
+        linear-gradient(180deg,#05070d,#090d18);
       display:flex;
       align-items:center;
       justify-content:center;
-      background:linear-gradient(135deg,var(--pink),var(--violet));
-      color:#fff;
-      font-size:22px;
-      box-shadow:0 12px 28px rgba(255,79,195,0.30);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.05),
+        0 12px 28px rgba(0,0,0,.24);
       flex-shrink:0;
+      overflow:hidden;
+    }
+
+    .brand-logo .flux-logo{
+      width:34px;
+      height:34px;
     }
 
     .brand-text h1{
       font-size:22px;
       font-weight:900;
       line-height:1;
+      letter-spacing:.2px;
     }
 
     .brand-text p{
       margin-top:4px;
       font-size:12px;
       color:var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
 
     .top-actions{
@@ -297,6 +321,7 @@
       font-size:18px;
       box-shadow:var(--shadow);
       cursor:pointer;
+      backdrop-filter:blur(8px);
     }
 
     .main{
@@ -364,8 +389,9 @@
       padding:20px;
       margin-bottom:14px;
       background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.09), transparent 20%),
-        linear-gradient(135deg, rgba(255,79,195,0.20), rgba(47,230,255,0.08), rgba(123,92,255,0.18));
+        radial-gradient(circle at 70% 20%, rgba(133,245,255,.18), transparent 25%),
+        radial-gradient(circle at 18% 26%, rgba(255,47,116,.18), transparent 24%),
+        linear-gradient(135deg, rgba(255,47,116,.17), rgba(133,245,255,.06), rgba(12,14,26,.18));
       border:1px solid var(--line);
       box-shadow:var(--shadow);
     }
@@ -375,6 +401,7 @@
       font-weight:900;
       line-height:.96;
       margin-bottom:10px;
+      letter-spacing:-.4px;
     }
 
     .hero p{
@@ -423,9 +450,10 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      background:linear-gradient(135deg, rgba(255,79,195,0.20), rgba(123,92,255,0.20));
+      background:linear-gradient(135deg, rgba(255,47,116,.22), rgba(133,245,255,.18));
       color:#fff;
       font-size:20px;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
     }
 
     .quick-item h4{
@@ -457,14 +485,14 @@
       margin:0 auto 8px;
       padding:2px;
       border-radius:50%;
-      background:linear-gradient(135deg,var(--pink),var(--cyan),var(--violet));
+      background:linear-gradient(135deg,var(--pink),var(--cyan),var(--pink-2));
     }
 
     .story-inner{
       width:100%;
       height:100%;
       border-radius:50%;
-      background:#151022;
+      background:#0b0f18;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -473,8 +501,8 @@
     }
 
     body.light .story-inner{
-      background:#f4edff;
-      color:#6c3fe6;
+      background:#f4f8ff;
+      color:#0f1930;
     }
 
     .story span{
@@ -483,7 +511,7 @@
       white-space:nowrap;
     }
 
-    .upload-area{
+    .disabled-upload{
       border:1.5px dashed rgba(255,255,255,0.18);
       border-radius:22px;
       padding:16px;
@@ -491,22 +519,17 @@
       text-align:center;
     }
 
-    .upload-area input{
-      display:none;
-    }
-
     .upload-cta{
       display:block;
       width:100%;
       min-height:48px;
       border-radius:16px;
-      background:linear-gradient(135deg,var(--pink),var(--violet));
+      background:linear-gradient(135deg,var(--pink),#ff5d96);
       color:#fff;
       font-weight:900;
       border:none;
-      cursor:pointer;
       padding:14px 12px;
-      box-shadow:0 12px 24px rgba(255,79,195,0.24);
+      box-shadow:0 12px 24px rgba(255,47,116,.24);
     }
 
     .upload-help{
@@ -514,74 +537,6 @@
       color:var(--muted);
       font-size:12px;
       line-height:1.45;
-    }
-
-    .preview-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-
-    .media-card{
-      background:rgba(255,255,255,0.05);
-      border:1px solid var(--line);
-      border-radius:20px;
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-    }
-
-    .media-card video,.media-card img{
-      width:100%;
-      height:170px;
-      object-fit:cover;
-      background:#000;
-      display:block;
-    }
-
-    .media-meta{
-      padding:10px;
-    }
-
-    .media-title-input{
-      width:100%;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,0.06);
-      color:var(--text);
-      border-radius:12px;
-      padding:10px 12px;
-      outline:none;
-      margin-bottom:8px;
-    }
-
-    .media-meta p{
-      font-size:12px;
-      color:var(--muted);
-      margin-bottom:10px;
-    }
-
-    .media-actions{
-      display:flex;
-      gap:8px;
-    }
-
-    .mini-btn{
-      flex:1;
-      min-height:38px;
-      border-radius:12px;
-      font-size:12px;
-    }
-
-    .mini-save{
-      background:rgba(88,239,171,0.14);
-      color:var(--green);
-      border:1px solid rgba(88,239,171,0.24);
-    }
-
-    .mini-delete{
-      background:rgba(255,64,111,0.12);
-      color:#ff7a9d;
-      border:1px solid rgba(255,64,111,0.24);
     }
 
     .empty{
@@ -635,11 +590,20 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      background:linear-gradient(135deg,var(--pink),var(--violet));
+      background:
+        radial-gradient(circle at 50% 40%, rgba(74,239,255,.10), transparent 55%),
+        linear-gradient(180deg,#05070d,#090d18);
       color:#fff;
       flex-shrink:0;
-      font-size:22px;
-      box-shadow:0 8px 20px rgba(255,79,195,0.20);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.05),
+        0 10px 20px rgba(0,0,0,.24);
+      overflow:hidden;
+    }
+
+    .avatar .flux-logo{
+      width:26px;
+      height:26px;
     }
 
     .post-user{
@@ -666,21 +630,6 @@
       line-height:1.5;
       margin-bottom:12px;
       white-space:pre-wrap;
-    }
-
-    .post-media{
-      width:100%;
-      border-radius:18px;
-      overflow:hidden;
-      background:#000;
-      margin-bottom:12px;
-    }
-
-    .post-media img,.post-media video{
-      width:100%;
-      max-height:420px;
-      object-fit:cover;
-      display:block;
     }
 
     .post-actions{
@@ -755,7 +704,7 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      background:linear-gradient(135deg,var(--pink),var(--violet));
+      background:linear-gradient(135deg,var(--pink),#ff5d96);
       color:#fff;
       font-size:11px;
       font-weight:800;
@@ -824,9 +773,7 @@
       border:1px solid var(--line);
       background:rgba(255,255,255,0.05);
       color:var(--text);
-      cursor:pointer;
       font-size:12px;
-      font-weight:800;
     }
 
     .message-area{
@@ -849,7 +796,7 @@
 
     .msg.you{
       align-self:flex-end;
-      background:linear-gradient(135deg,var(--pink),var(--violet));
+      background:linear-gradient(135deg,var(--pink),#ff5d96);
       color:#fff;
       border-bottom-right-radius:6px;
     }
@@ -880,12 +827,9 @@
 
     .send-btn{
       min-width:58px;
-      border:none;
       border-radius:16px;
-      background:linear-gradient(135deg,var(--pink),var(--violet));
+      background:linear-gradient(135deg,var(--pink),#ff5d96);
       color:#fff;
-      font-weight:800;
-      cursor:pointer;
     }
 
     .notif-list{
@@ -911,7 +855,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      background:linear-gradient(135deg, rgba(255,79,195,0.20), rgba(123,92,255,0.20));
+      background:linear-gradient(135deg, rgba(255,47,116,.20), rgba(133,245,255,.18));
       color:#fff;
       font-size:18px;
       flex-shrink:0;
@@ -941,10 +885,18 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      background:linear-gradient(135deg,var(--pink),var(--violet));
-      color:#fff;
-      font-size:40px;
-      box-shadow:0 14px 28px rgba(255,79,195,0.24);
+      background:
+        radial-gradient(circle at 50% 40%, rgba(74,239,255,.10), transparent 55%),
+        linear-gradient(180deg,#05070d,#090d18);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.05),
+        0 18px 32px rgba(0,0,0,.24);
+      overflow:hidden;
+    }
+
+    .profile-logo .flux-logo{
+      width:54px;
+      height:54px;
     }
 
     .profile-card h2{
@@ -1030,7 +982,7 @@
     }
 
     .switch.active{
-      background:linear-gradient(135deg,var(--pink),var(--violet));
+      background:linear-gradient(135deg,var(--pink),#ff5d96);
     }
 
     .switch.active::after{
@@ -1063,6 +1015,11 @@
       background:rgba(255,255,255,0.06);
       font-size:18px;
       flex-shrink:0;
+      color:#fff;
+    }
+
+    body.light .menu-ico{
+      color:var(--text);
     }
 
     .menu-text h4{
@@ -1084,8 +1041,9 @@
       flex-direction:column;
       padding:18px;
       background:
-        radial-gradient(circle at top center, rgba(123,92,255,0.14), transparent 30%),
-        linear-gradient(180deg, rgba(10,7,18,0.98), rgba(20,12,31,0.98));
+        radial-gradient(circle at 50% 0%, rgba(95,240,255,.10), transparent 20%),
+        radial-gradient(circle at 50% 30%, rgba(255,47,116,.12), transparent 28%),
+        linear-gradient(180deg, rgba(5,7,13,.98), rgba(10,12,20,.98));
     }
 
     .call-modal.active{
@@ -1118,10 +1076,18 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      background:linear-gradient(135deg,var(--pink),var(--violet));
-      color:#fff;
-      font-size:40px;
-      box-shadow:0 16px 30px rgba(255,79,195,0.24);
+      background:
+        radial-gradient(circle at 50% 40%, rgba(74,239,255,.10), transparent 55%),
+        linear-gradient(180deg,#05070d,#090d18);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.05),
+        0 18px 32px rgba(0,0,0,.24);
+      overflow:hidden;
+    }
+
+    .call-avatar .flux-logo{
+      width:54px;
+      height:54px;
     }
 
     .call-user h3{
@@ -1197,7 +1163,7 @@
     }
 
     .call-action.active{
-      background:linear-gradient(135deg,var(--pink),var(--violet));
+      background:linear-gradient(135deg,var(--pink),#ff5d96);
       border:none;
     }
 
@@ -1212,7 +1178,7 @@
       right:0;
       bottom:0;
       height:74px;
-      background:rgba(9,7,15,0.94);
+      background:rgba(9,10,18,0.94);
       border-top:1px solid rgba(255,255,255,0.08);
       display:flex;
       align-items:center;
@@ -1264,9 +1230,19 @@
       flex-shrink:0;
     }
 
+    .error-note{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(255,77,112,.10);
+      border:1px solid rgba(255,77,112,.22);
+      color:#ff8ba4;
+      font-size:12px;
+      line-height:1.45;
+    }
+
     @media (max-width:390px){
       .quick-grid{grid-template-columns:repeat(2,1fr);}
-      .preview-grid{grid-template-columns:1fr;}
       .stats{grid-template-columns:repeat(2,1fr);}
       .hero h2{font-size:28px;}
     }
@@ -1277,9 +1253,17 @@
     <div class="auth-screen" id="authScreen">
       <div class="auth-card">
         <div class="auth-brand">
-          <div class="auth-logo">💖</div>
+          <div class="logo-box">
+            <svg class="flux-logo" viewBox="0 0 100 100" aria-hidden="true">
+              <path d="M28 22 C14 33, 14 58, 34 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+              <path d="M72 22 C86 33, 86 58, 66 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+              <path d="M49 20 C39 13, 31 16, 28 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+              <path d="M51 20 C61 13, 69 16, 72 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+              <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#85f5ff" stroke="#85f5ff" stroke-linejoin="round"/>
+            </svg>
+          </div>
           <h1>FluxLove</h1>
-          <p>Login / signup UI সহ full branded demo</p>
+          <p>Neon heart + lightning branded app</p>
         </div>
 
         <div class="auth-tabs">
@@ -1297,6 +1281,7 @@
             <input class="text-input" id="loginPassword" type="password" placeholder="Enter password" />
           </div>
           <button class="primary-btn" id="loginBtn">Enter FluxLove</button>
+          <div class="error-note hidden" id="loginError"></div>
         </div>
 
         <div id="signupForm" class="hidden">
@@ -1312,21 +1297,31 @@
             <label class="form-label">Password</label>
             <input class="text-input" id="signupPassword" type="password" placeholder="Create password" />
           </div>
-          <button class="primary-btn" id="signupBtn">Create Demo Account</button>
+          <button class="primary-btn" id="signupBtn">Create Account</button>
+          <div class="error-note hidden" id="signupError"></div>
         </div>
 
         <div class="auth-note">
-          এটা front-end demo login। পরে Firebase Auth add করলে real auth হবে।
+          Auth + Posts + Messages are live with Firebase.<br>
+          Media upload পরে Storage add করলে চালু হবে।
         </div>
       </div>
     </div>
 
     <div class="topbar">
       <div class="brand">
-        <div class="brand-logo">💖</div>
+        <div class="brand-logo">
+          <svg class="flux-logo" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M28 22 C14 33, 14 58, 34 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+            <path d="M72 22 C86 33, 86 58, 66 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+            <path d="M49 20 C39 13, 31 16, 28 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+            <path d="M51 20 C61 13, 69 16, 72 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+            <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#85f5ff" stroke="#85f5ff" stroke-linejoin="round"/>
+          </svg>
+        </div>
         <div class="brand-text">
           <h1 id="brandNameTop">FluxLove</h1>
-          <p id="brandSubText">Upload • Feed • Message • Call</p>
+          <p>Neon Social • Auth • Feed • Chat</p>
         </div>
       </div>
 
@@ -1340,11 +1335,11 @@
       <section class="screen active" id="homeScreen">
         <div class="hero">
           <h2 id="heroTitle">FluxLove<br>Studio</h2>
-          <p>এখন login UI, post create, image/video upload, reels-style feed, notifications, settings — সব added আছে।</p>
+          <p>তোমার logo style অনুযায়ী neon heart + cyan lightning vibe-এ full app UI বানানো হয়েছে। এখন text posts, auth, messages live.</p>
           <div class="hero-tags">
-            <div class="tag">Login UI</div>
-            <div class="tag">Feed</div>
-            <div class="tag">Notifications</div>
+            <div class="tag">Neon Branding</div>
+            <div class="tag">Firebase Auth</div>
+            <div class="tag">Firestore Live</div>
           </div>
         </div>
 
@@ -1361,22 +1356,22 @@
             <div class="quick-item">
               <div class="quick-icon">➕</div>
               <h4>Create</h4>
-              <p>নতুন post</p>
+              <p>new text post</p>
             </div>
             <div class="quick-item">
-              <div class="quick-icon">🎞</div>
+              <div class="quick-icon">⚡</div>
               <h4>Feed</h4>
-              <p>reels vibe</p>
+              <p>live stream</p>
             </div>
             <div class="quick-item">
               <div class="quick-icon">💬</div>
               <h4>Chat</h4>
-              <p>message demo</p>
+              <p>firebase chat</p>
             </div>
             <div class="quick-item">
               <div class="quick-icon">🔔</div>
               <h4>Alerts</h4>
-              <p>notification</p>
+              <p>activity log</p>
             </div>
           </div>
         </div>
@@ -1385,30 +1380,30 @@
           <div class="panel-header">
             <div class="panel-title">
               <h3>Stories</h3>
-              <p>brand vibe preview</p>
+              <p>FluxLove vibe preview</p>
             </div>
             <div class="badge">Live</div>
           </div>
 
           <div class="story-row">
             <div class="story"><div class="story-ring"><div class="story-inner">💖</div></div><span>You</span></div>
-            <div class="story"><div class="story-ring"><div class="story-inner">✨</div></div><span>Nova</span></div>
-            <div class="story"><div class="story-ring"><div class="story-inner">🌸</div></div><span>Luna</span></div>
-            <div class="story"><div class="story-ring"><div class="story-inner">⚡</div></div><span>Flux</span></div>
-            <div class="story"><div class="story-ring"><div class="story-inner">🎥</div></div><span>Studio</span></div>
+            <div class="story"><div class="story-ring"><div class="story-inner">⚡</div></div><span>Nova</span></div>
+            <div class="story"><div class="story-ring"><div class="story-inner">💬</div></div><span>Luna</span></div>
+            <div class="story"><div class="story-ring"><div class="story-inner">✨</div></div><span>Flux</span></div>
+            <div class="story"><div class="story-ring"><div class="story-inner">🔔</div></div><span>Alerts</span></div>
           </div>
         </div>
 
         <div class="panel">
           <div class="panel-header">
             <div class="panel-title">
-              <h3>Recent Media</h3>
-              <p>uploaded image/video preview</p>
+              <h3>Media Status</h3>
+              <p>text-post mode right now</p>
             </div>
             <div class="badge" id="homeMediaCount">0 items</div>
           </div>
-          <div class="preview-grid" id="homeMediaGrid">
-            <div class="empty" style="grid-column:1 / -1;">এখনও কোনো media add করা হয়নি</div>
+          <div class="empty" id="homeMediaGrid">
+            Storage এখন off, তাই media upload disabled.
           </div>
         </div>
       </section>
@@ -1418,36 +1413,27 @@
           <div class="panel-header">
             <div class="panel-title">
               <h3>Create Post</h3>
-              <p>caption + image/video upload</p>
+              <p>caption-based post publishing</p>
             </div>
             <div class="badge">Studio</div>
           </div>
 
           <div class="form-group">
-            <label class="form-label">Caption</label>
-            <textarea class="text-area" id="postCaptionInput" placeholder="Write a post caption..."></textarea>
+            <label class="form-label">Post Title</label>
+            <input class="text-input" id="postTitleInput" type="text" placeholder="Enter post title" />
           </div>
 
           <div class="form-group">
-            <label class="form-label">Media Title</label>
-            <input class="text-input" id="postTitleInput" type="text" placeholder="Enter media title" />
+            <label class="form-label">Caption</label>
+            <textarea class="text-area" id="postCaptionInput" placeholder="Write your post..."></textarea>
           </div>
 
-          <div class="panel" style="padding:12px; margin-bottom:12px;">
-            <label class="upload-cta" for="mediaInput">🖼 / 🎬 Choose image or video</label>
-            <input id="mediaInput" type="file" accept="image/*,video/*" />
-            <div class="upload-help">একবারে একটা media select করো। তারপর post create করো।</div>
-          </div>
-
-          <div id="selectedPreviewWrap" class="hidden">
-            <div class="panel" style="padding:12px;">
-              <div class="panel-header" style="margin-bottom:10px;">
-                <div class="panel-title">
-                  <h3>Selected Preview</h3>
-                  <p>ready to post</p>
-                </div>
-              </div>
-              <div id="selectedPreviewBox"></div>
+          <div class="disabled-upload" style="margin-bottom:12px;">
+            <div class="upload-cta" style="opacity:.72; pointer-events:none;">
+              Text posts only for now
+            </div>
+            <div class="upload-help">
+              Firebase Storage পরে add করলে image/video upload চালু হবে।
             </div>
           </div>
 
@@ -1455,18 +1441,20 @@
             <button class="secondary-btn" id="clearCreateBtn">Clear</button>
             <button class="primary-btn" id="publishPostBtn">Publish Post</button>
           </div>
+
+          <div class="error-note hidden" id="postError"></div>
         </div>
 
         <div class="panel">
           <div class="panel-header">
             <div class="panel-title">
-              <h3>Uploaded Media</h3>
-              <p>title edit + delete supported</p>
+              <h3>Media Upload</h3>
+              <p>disabled right now</p>
             </div>
             <div class="badge" id="createMediaCount">0 items</div>
           </div>
-          <div class="preview-grid" id="createMediaGrid">
-            <div class="empty" style="grid-column:1 / -1;">কোনো media নেই</div>
+          <div class="empty" id="createMediaGrid">
+            কোনো media নেই। Storage add করলে এই section active হবে।
           </div>
         </div>
       </section>
@@ -1476,7 +1464,7 @@
           <div class="panel-header">
             <div class="panel-title">
               <h3>Flux Feed</h3>
-              <p>reels-style branded feed</p>
+              <p>neon branded live posts</p>
             </div>
             <div class="badge" id="feedPostCount">0 posts</div>
           </div>
@@ -1494,7 +1482,7 @@
               <h3>Messages</h3>
               <p>tap a chat to open</p>
             </div>
-            <div class="badge">Local</div>
+            <div class="badge">Live</div>
           </div>
           <div class="chat-list" id="chatList"></div>
         </div>
@@ -1520,6 +1508,8 @@
             <input id="messageInput" type="text" placeholder="Type a message..." />
             <button class="send-btn" id="sendMessageBtn">Send</button>
           </div>
+
+          <div class="error-note hidden" id="messageError"></div>
         </div>
       </section>
 
@@ -1538,14 +1528,22 @@
 
       <section class="screen" id="profileScreen">
         <div class="panel profile-card">
-          <div class="profile-logo">💖</div>
+          <div class="profile-logo">
+            <svg class="flux-logo" viewBox="0 0 100 100" aria-hidden="true">
+              <path d="M28 22 C14 33, 14 58, 34 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+              <path d="M72 22 C86 33, 86 58, 66 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+              <path d="M49 20 C39 13, 31 16, 28 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+              <path d="M51 20 C61 13, 69 16, 72 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+              <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#85f5ff" stroke="#85f5ff" stroke-linejoin="round"/>
+            </svg>
+          </div>
           <h2 id="profileNameHeading">FluxLove User</h2>
-          <p>নিজের brand identity দিয়ে polished demo. profile, theme, feed, media, notifications — সব local state-এ চলছে.</p>
+          <p>তোমার logo mood maintain করে app polish করা হয়েছে। profile, theme, posts, messages সব sync-ready.</p>
 
           <div class="stats">
             <div class="stat"><h5 id="statPosts">0</h5><p>Posts</p></div>
             <div class="stat"><h5 id="statMedia">0</h5><p>Media</p></div>
-            <div class="stat"><h5 id="statMessages">0</h5><p>Messages</p></div>
+            <div class="stat"><h5 id="statMessages">0</h5><p>Msgs</p></div>
             <div class="stat"><h5 id="statChats">0</h5><p>Chats</p></div>
           </div>
         </div>
@@ -1554,9 +1552,9 @@
           <div class="panel-header">
             <div class="panel-title">
               <h3>Profile Settings</h3>
-              <p>saved automatically</p>
+              <p>saved to Firestore</p>
             </div>
-            <div class="badge">v4</div>
+            <div class="badge">Live</div>
           </div>
 
           <div class="form-group">
@@ -1565,6 +1563,7 @@
           </div>
 
           <button class="primary-btn" id="saveProfileBtn">Save Profile Name</button>
+          <div class="error-note hidden" id="profileError"></div>
         </div>
       </section>
 
@@ -1581,7 +1580,7 @@
           <div class="switch-row">
             <div class="switch-text">
               <h4>Light Theme</h4>
-              <p>app-এর full light mode on/off</p>
+              <p>full light mode on/off</p>
             </div>
             <div class="switch" id="themeSwitch"></div>
           </div>
@@ -1599,7 +1598,7 @@
           <div class="panel-header">
             <div class="panel-title">
               <h3>Session</h3>
-              <p>demo controls</p>
+              <p>auth controls</p>
             </div>
             <div class="badge">Auth</div>
           </div>
@@ -1623,22 +1622,22 @@
             <div class="menu-item">
               <div class="menu-ico">☁</div>
               <div class="menu-text">
-                <h4>Cloud Sync</h4>
-                <p>Firebase add করলে auth, posts, chat সব sync হবে</p>
+                <h4>Storage Upgrade</h4>
+                <p>Blaze plan নিলে media upload live করা যাবে</p>
               </div>
             </div>
             <div class="menu-item">
               <div class="menu-ico">🔒</div>
               <div class="menu-text">
-                <h4>Privacy</h4>
-                <p>feed visibility, call rules, media access পরে add করা যাবে</p>
+                <h4>Privacy Rules</h4>
+                <p>পরে আরো strict rules add করা যাবে</p>
               </div>
             </div>
             <div class="menu-item">
-              <div class="menu-ico">🧠</div>
+              <div class="menu-ico">⚡</div>
               <div class="menu-text">
-                <h4>Smart Suggestions</h4>
-                <p>AI caption, smart reply, auto tags পরে add করা যাবে</p>
+                <h4>Realtime Features</h4>
+                <p>likes, comments, typing indicator পরে add হবে</p>
               </div>
             </div>
           </div>
@@ -1649,7 +1648,7 @@
     <nav class="bottom-nav">
       <button class="nav-btn active" data-screen="homeScreen"><span class="ico">⌂</span><span>Home</span></button>
       <button class="nav-btn" data-screen="createScreen"><span class="ico">➕</span><span>Create</span></button>
-      <button class="center-btn" id="centerFeedBtn">▶</button>
+      <button class="center-btn" id="centerFeedBtn">⚡</button>
       <button class="nav-btn" data-screen="messagesScreen"><span class="ico">💬</span><span>Messages</span></button>
       <button class="nav-btn" data-screen="notificationsScreen"><span class="ico">🔔</span><span>Alerts</span></button>
       <button class="nav-btn" data-screen="profileScreen"><span class="ico">👤</span><span>Profile</span></button>
@@ -1664,7 +1663,15 @@
     </div>
 
     <div class="call-user">
-      <div class="call-avatar">📹</div>
+      <div class="call-avatar">
+        <svg class="flux-logo" viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M28 22 C14 33, 14 58, 34 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+          <path d="M72 22 C86 33, 86 58, 66 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+          <path d="M49 20 C39 13, 31 16, 28 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+          <path d="M51 20 C61 13, 69 16, 72 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+          <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#85f5ff" stroke="#85f5ff" stroke-linejoin="round"/>
+        </svg>
+      </div>
       <h3 id="callUserName">Nova</h3>
       <p id="callStatusText">Connecting...</p>
     </div>
@@ -1674,7 +1681,7 @@
       <video id="localVideo" autoplay playsinline muted></video>
       <div class="call-placeholder" id="callPlaceholder">
         Camera permission দিলে এখানে live preview show করবে.<br />
-        Permission না দিলে এটা demo screen হিসেবেই থাকবে।
+        এটা এখন call demo screen।
       </div>
     </div>
 
@@ -1686,35 +1693,44 @@
     </div>
   </div>
 
-  <script>
-    const STORAGE_KEYS = {
-      AUTH: "fluxlove_auth_v4",
-      PROFILE_NAME: "fluxlove_profile_name_v4",
-      THEME: "fluxlove_theme_v4",
-      AUTO_REPLY: "fluxlove_auto_reply_v4",
-      CHATS: "fluxlove_chats_v4",
-      POSTS: "fluxlove_posts_v4",
-      NOTIFS: "fluxlove_notifs_v4",
-      MEDIA_TITLES: "fluxlove_media_titles_v4"
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      addDoc,
+      collection,
+      query,
+      orderBy,
+      onSnapshot,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXRjJ7K3g2MqOK6C2j5GLXXzkndxmCrYw",
+      authDomain: "fluxlove.firebaseapp.com",
+      projectId: "fluxlove",
+      storageBucket: "fluxlove.firebasestorage.app",
+      messagingSenderId: "1030808896851",
+      appId: "1:1030808896851:web:6300707ffbf1b34de38da6"
     };
 
-    const defaultChats = {
-      Nova: [
-        { from: "other", text: "Hey, FluxLove UI looks cool ✨" },
-        { from: "you", text: "Thanks 💖" }
-      ],
-      Luna: [
-        { from: "other", text: "Feed ready?" },
-        { from: "you", text: "Yep, demo working." }
-      ],
-      FluxBot: [
-        { from: "other", text: "Welcome to FluxLove 💖" }
-      ]
-    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
     const defaultNotifs = [
-      { icon: "💖", title: "Welcome", text: "FluxLove v4 demo ready." },
-      { icon: "✨", title: "New UI", text: "Create, feed, notifications, settings added." }
+      { icon: "💖", title: "Welcome", text: "FluxLove is connected." },
+      { icon: "⚡", title: "Neon Theme", text: "Logo-based FluxLove design is live." }
     ];
 
     const authScreen = document.getElementById("authScreen");
@@ -1730,6 +1746,8 @@
     const signupName = document.getElementById("signupName");
     const signupEmail = document.getElementById("signupEmail");
     const signupPassword = document.getElementById("signupPassword");
+    const loginError = document.getElementById("loginError");
+    const signupError = document.getElementById("signupError");
 
     const navButtons = document.querySelectorAll(".nav-btn");
     const screens = document.querySelectorAll(".screen");
@@ -1747,17 +1765,14 @@
     const profileNameHeading = document.getElementById("profileNameHeading");
     const profileNameInput = document.getElementById("profileNameInput");
     const saveProfileBtn = document.getElementById("saveProfileBtn");
+    const profileError = document.getElementById("profileError");
 
-    const mediaInput = document.getElementById("mediaInput");
     const postCaptionInput = document.getElementById("postCaptionInput");
     const postTitleInput = document.getElementById("postTitleInput");
-    const selectedPreviewWrap = document.getElementById("selectedPreviewWrap");
-    const selectedPreviewBox = document.getElementById("selectedPreviewBox");
     const publishPostBtn = document.getElementById("publishPostBtn");
     const clearCreateBtn = document.getElementById("clearCreateBtn");
+    const postError = document.getElementById("postError");
 
-    const homeMediaGrid = document.getElementById("homeMediaGrid");
-    const createMediaGrid = document.getElementById("createMediaGrid");
     const homeMediaCount = document.getElementById("homeMediaCount");
     const createMediaCount = document.getElementById("createMediaCount");
     const feedList = document.getElementById("feedList");
@@ -1775,6 +1790,7 @@
     const openCallBtn = document.getElementById("openCallBtn");
     const addDemoReplyBtn = document.getElementById("addDemoReplyBtn");
     const clearChatBtn = document.getElementById("clearChatBtn");
+    const messageError = document.getElementById("messageError");
 
     const notifList = document.getElementById("notifList");
     const notifCount = document.getElementById("notifCount");
@@ -1794,24 +1810,23 @@
     const cameraBtn = document.getElementById("cameraBtn");
     const speakerBtn = document.getElementById("speakerBtn");
 
-    let isAuthenticated = localStorage.getItem(STORAGE_KEYS.AUTH) === "true";
-    let profileName = localStorage.getItem(STORAGE_KEYS.PROFILE_NAME) || "FluxLove User";
-    let theme = localStorage.getItem(STORAGE_KEYS.THEME) || "dark";
-    let autoReply = localStorage.getItem(STORAGE_KEYS.AUTO_REPLY);
+    let theme = localStorage.getItem("fluxlove_theme") || "dark";
+    let autoReply = localStorage.getItem("fluxlove_auto_reply");
     autoReply = autoReply === null ? true : autoReply === "true";
 
-    let chats = JSON.parse(localStorage.getItem(STORAGE_KEYS.CHATS) || "null") || defaultChats;
-    let posts = JSON.parse(localStorage.getItem(STORAGE_KEYS.POSTS) || "[]");
-    let notifications = JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTIFS) || "null") || defaultNotifs;
-    let savedMediaTitles = JSON.parse(localStorage.getItem(STORAGE_KEYS.MEDIA_TITLES) || "{}");
-
-    let uploadedMedia = [];
-    let selectedMedia = null;
+    let notifications = [...defaultNotifs];
+    let posts = [];
+    let currentUser = null;
+    let currentProfileName = "FluxLove User";
     let currentChat = "Nova";
     let localStream = null;
     let isMuted = false;
     let isCameraOn = true;
     let isSpeakerOn = false;
+    let unsubscribePosts = null;
+    let unsubscribeMessages = null;
+
+    const chatUsers = ["Nova", "Luna", "FluxBot"];
 
     function escapeHtml(text) {
       return String(text)
@@ -1822,14 +1837,14 @@
         .replaceAll("'", "&#039;");
     }
 
-    function saveState() {
-      localStorage.setItem(STORAGE_KEYS.PROFILE_NAME, profileName);
-      localStorage.setItem(STORAGE_KEYS.THEME, theme);
-      localStorage.setItem(STORAGE_KEYS.AUTO_REPLY, String(autoReply));
-      localStorage.setItem(STORAGE_KEYS.CHATS, JSON.stringify(chats));
-      localStorage.setItem(STORAGE_KEYS.POSTS, JSON.stringify(posts));
-      localStorage.setItem(STORAGE_KEYS.NOTIFS, JSON.stringify(notifications));
-      localStorage.setItem(STORAGE_KEYS.MEDIA_TITLES, JSON.stringify(savedMediaTitles));
+    function showError(el, text) {
+      if (!text) {
+        el.classList.add("hidden");
+        el.textContent = "";
+        return;
+      }
+      el.textContent = text;
+      el.classList.remove("hidden");
     }
 
     function switchAuthTab(type) {
@@ -1838,6 +1853,8 @@
       signupTab.classList.toggle("active", !login);
       loginForm.classList.toggle("hidden", !login);
       signupForm.classList.toggle("hidden", login);
+      showError(loginError, "");
+      showError(signupError, "");
     }
 
     loginTab.addEventListener("click", () => switchAuthTab("login"));
@@ -1850,23 +1867,6 @@
     function closeAppToAuth() {
       authScreen.classList.remove("hidden");
     }
-
-    loginBtn.addEventListener("click", () => {
-      if (!loginEmail.value.trim() || !loginPassword.value.trim()) return;
-      isAuthenticated = true;
-      localStorage.setItem(STORAGE_KEYS.AUTH, "true");
-      openApp();
-    });
-
-    signupBtn.addEventListener("click", () => {
-      if (!signupName.value.trim() || !signupEmail.value.trim() || !signupPassword.value.trim()) return;
-      profileName = signupName.value.trim();
-      localStorage.setItem(STORAGE_KEYS.AUTH, "true");
-      localStorage.setItem(STORAGE_KEYS.PROFILE_NAME, profileName);
-      updateProfileUI();
-      isAuthenticated = true;
-      openApp();
-    });
 
     function switchScreen(screenId) {
       screens.forEach((screen) => {
@@ -1886,32 +1886,19 @@
     openSettingsBtn.addEventListener("click", () => switchScreen("settingsScreen"));
     goProfileBtn.addEventListener("click", () => switchScreen("profileScreen"));
 
-    logoutBtn.addEventListener("click", () => {
-      localStorage.setItem(STORAGE_KEYS.AUTH, "false");
-      isAuthenticated = false;
-      closeAppToAuth();
-    });
-
     function updateProfileUI() {
-      brandNameTop.textContent = profileName;
-      quickUserBadge.textContent = profileName;
-      profileNameHeading.textContent = profileName;
-      profileNameInput.value = profileName;
-      heroTitle.innerHTML = `${escapeHtml(profileName)}<br>Studio`;
+      brandNameTop.textContent = currentProfileName;
+      quickUserBadge.textContent = currentProfileName;
+      profileNameHeading.textContent = currentProfileName;
+      profileNameInput.value = currentProfileName;
+      heroTitle.innerHTML = `${escapeHtml(currentProfileName)}<br>Studio`;
     }
-
-    saveProfileBtn.addEventListener("click", () => {
-      const value = profileNameInput.value.trim();
-      profileName = value || "FluxLove User";
-      updateProfileUI();
-      saveState();
-    });
 
     function applyTheme() {
       document.body.classList.toggle("light", theme === "light");
       themeToggleBtn.textContent = theme === "light" ? "☀" : "🌙";
       themeSwitch.classList.toggle("active", theme === "light");
-      saveState();
+      localStorage.setItem("fluxlove_theme", theme);
     }
 
     function toggleTheme() {
@@ -1924,7 +1911,7 @@
 
     function applyAutoReplyUI() {
       autoReplySwitch.classList.toggle("active", autoReply);
-      saveState();
+      localStorage.setItem("fluxlove_auto_reply", String(autoReply));
     }
 
     autoReplySwitch.addEventListener("click", () => {
@@ -1932,243 +1919,10 @@
       applyAutoReplyUI();
     });
 
-    function renderSelectedPreview() {
-      if (!selectedMedia) {
-        selectedPreviewWrap.classList.add("hidden");
-        selectedPreviewBox.innerHTML = "";
-        return;
-      }
-
-      selectedPreviewWrap.classList.remove("hidden");
-      if (selectedMedia.type.startsWith("image/")) {
-        selectedPreviewBox.innerHTML = `<img src="${selectedMedia.src}" style="width:100%; border-radius:18px; display:block;" />`;
-      } else {
-        selectedPreviewBox.innerHTML = `<video src="${selectedMedia.src}" controls playsinline style="width:100%; border-radius:18px; display:block; background:#000;"></video>`;
-      }
-    }
-
-    mediaInput.addEventListener("change", (event) => {
-      const file = event.target.files?.[0];
-      if (!file) return;
-
-      selectedMedia = {
-        file,
-        src: URL.createObjectURL(file),
-        type: file.type,
-        title: postTitleInput.value.trim() || file.name,
-        originalName: file.name,
-        id: `${file.name}_${file.size}_${file.lastModified}`
-      };
-
-      postTitleInput.value = selectedMedia.title;
-      renderSelectedPreview();
-      mediaInput.value = "";
-    });
-
-    clearCreateBtn.addEventListener("click", () => {
-      selectedMedia = null;
-      postCaptionInput.value = "";
-      postTitleInput.value = "";
-      renderSelectedPreview();
-    });
-
-    function createMediaCard(media, index) {
-      const isImage = media.type.startsWith("image/");
-      const mediaEl = isImage
-        ? `<img src="${media.src}" alt="">`
-        : `<video src="${media.src}" controls playsinline preload="metadata"></video>`;
-
-      const card = document.createElement("div");
-      card.className = "media-card";
-      card.innerHTML = `
-        ${mediaEl}
-        <div class="media-meta">
-          <input class="media-title-input" type="text" value="${escapeHtml(media.title)}" data-index="${index}" />
-          <p>${isImage ? "Image preview" : "Video preview"}</p>
-          <div class="media-actions">
-            <button class="mini-btn mini-save" data-save-index="${index}">Save</button>
-            <button class="mini-btn mini-delete" data-delete-index="${index}">Delete</button>
-          </div>
-        </div>
-      `;
-      return card;
-    }
-
-    function attachMediaActions(container) {
-      container.querySelectorAll(".media-title-input").forEach((input) => {
-        input.addEventListener("input", (e) => {
-          const idx = Number(e.target.dataset.index);
-          if (uploadedMedia[idx]) uploadedMedia[idx].title = e.target.value;
-        });
-      });
-
-      container.querySelectorAll("[data-save-index]").forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          const idx = Number(e.target.dataset.saveIndex);
-          const media = uploadedMedia[idx];
-          if (!media) return;
-          savedMediaTitles[media.id] = media.title || media.originalName;
-          saveState();
-          renderMediaGrids();
-        });
-      });
-
-      container.querySelectorAll("[data-delete-index]").forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          const idx = Number(e.target.dataset.deleteIndex);
-          const media = uploadedMedia[idx];
-          if (!media) return;
-          delete savedMediaTitles[media.id];
-          uploadedMedia.splice(idx, 1);
-          posts = posts.filter((p) => p.mediaId !== media.id);
-          addNotification("🗑", "Media removed", "A media item was deleted.");
-          saveState();
-          renderAll();
-        });
-      });
-    }
-
-    function renderMediaGrids() {
-      homeMediaGrid.innerHTML = "";
-      createMediaGrid.innerHTML = "";
-
-      if (!uploadedMedia.length) {
-        homeMediaGrid.innerHTML = '<div class="empty" style="grid-column:1 / -1;">এখনও কোনো media add করা হয়নি</div>';
-        createMediaGrid.innerHTML = '<div class="empty" style="grid-column:1 / -1;">কোনো media নেই</div>';
-      } else {
-        uploadedMedia.forEach((media, index) => {
-          homeMediaGrid.appendChild(createMediaCard(media, index));
-          createMediaGrid.appendChild(createMediaCard(media, index));
-        });
-
-        attachMediaActions(homeMediaGrid);
-        attachMediaActions(createMediaGrid);
-      }
-
-      homeMediaCount.textContent = `${uploadedMedia.length} items`;
-      createMediaCount.textContent = `${uploadedMedia.length} items`;
-      statMedia.textContent = String(uploadedMedia.length);
-    }
-
     function addNotification(icon, title, text) {
       notifications.unshift({ icon, title, text });
       notifications = notifications.slice(0, 20);
-      saveState();
       renderNotifications();
-    }
-
-    publishPostBtn.addEventListener("click", () => {
-      const caption = postCaptionInput.value.trim();
-      const title = postTitleInput.value.trim();
-
-      if (!caption && !selectedMedia) return;
-
-      let mediaId = null;
-      let mediaRef = null;
-
-      if (selectedMedia) {
-        const existingIndex = uploadedMedia.findIndex((m) => m.id === selectedMedia.id);
-        if (existingIndex === -1) {
-          selectedMedia.title = title || selectedMedia.title || selectedMedia.originalName;
-          savedMediaTitles[selectedMedia.id] = selectedMedia.title;
-          uploadedMedia.unshift(selectedMedia);
-          mediaRef = selectedMedia;
-        } else {
-          uploadedMedia[existingIndex].title = title || uploadedMedia[existingIndex].title;
-          mediaRef = uploadedMedia[existingIndex];
-        }
-        mediaId = mediaRef.id;
-      }
-
-      posts.unshift({
-        id: `post_${Date.now()}`,
-        user: profileName,
-        caption: caption || "New post ✨",
-        mediaId,
-        mediaType: mediaRef ? mediaRef.type : "",
-        mediaSrc: mediaRef ? mediaRef.src : "",
-        mediaTitle: mediaRef ? mediaRef.title : "",
-        likes: Math.floor(Math.random() * 200) + 1,
-        comments: Math.floor(Math.random() * 40) + 1
-      });
-
-      addNotification("📢", "Post published", "Your new post is now visible in feed.");
-      postCaptionInput.value = "";
-      postTitleInput.value = "";
-      selectedMedia = null;
-      renderSelectedPreview();
-      saveState();
-      renderAll();
-      switchScreen("feedScreen");
-    });
-
-    function renderFeed() {
-      feedList.innerHTML = "";
-      feedPostCount.textContent = `${posts.length} posts`;
-      statPosts.textContent = String(posts.length);
-
-      if (!posts.length) {
-        feedList.innerHTML = '<div class="empty">এখনও কোনো post publish করা হয়নি</div>';
-        return;
-      }
-
-      posts.forEach((post, index) => {
-        const card = document.createElement("div");
-        card.className = "post-card";
-
-        let mediaHtml = "";
-        if (post.mediaSrc) {
-          mediaHtml = post.mediaType.startsWith("image/")
-            ? `<div class="post-media"><img src="${post.mediaSrc}" alt=""></div>`
-            : `<div class="post-media"><video src="${post.mediaSrc}" controls playsinline preload="metadata"></video></div>`;
-        }
-
-        card.innerHTML = `
-          <div class="post-top">
-            <div class="avatar">💖</div>
-            <div class="post-user">
-              <h4>${escapeHtml(post.user)}</h4>
-              <p>${escapeHtml(post.mediaTitle || "FluxLove Post")}</p>
-            </div>
-          </div>
-          <div class="post-body">
-            <div class="post-caption">${escapeHtml(post.caption)}</div>
-            ${mediaHtml}
-            <div class="post-actions">
-              <button class="post-action" data-like-index="${index}">💖 ${post.likes}</button>
-              <button class="post-action" data-comment-index="${index}">💬 ${post.comments}</button>
-              <button class="post-action" data-share-index="${index}">↗ Share</button>
-            </div>
-          </div>
-        `;
-        feedList.appendChild(card);
-      });
-
-      feedList.querySelectorAll("[data-like-index]").forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          const idx = Number(e.target.dataset.likeIndex);
-          posts[idx].likes += 1;
-          addNotification("💖", "Post liked", "A feed post got new love.");
-          saveState();
-          renderFeed();
-        });
-      });
-
-      feedList.querySelectorAll("[data-comment-index]").forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          const idx = Number(e.target.dataset.commentIndex);
-          posts[idx].comments += 1;
-          addNotification("💬", "New comment", "A feed post received a comment.");
-          saveState();
-          renderFeed();
-        });
-      });
-
-      feedList.querySelectorAll("[data-share-index]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          addNotification("↗", "Post shared", "A feed post was shared.");
-        });
-      });
     }
 
     function renderNotifications() {
@@ -2189,33 +1943,221 @@
       });
     }
 
+    function renderMediaStatus() {
+      homeMediaCount.textContent = "0 items";
+      createMediaCount.textContent = "0 items";
+      statMedia.textContent = "0";
+    }
+
+    function renderFeed() {
+      feedList.innerHTML = "";
+      feedPostCount.textContent = `${posts.length} posts`;
+      statPosts.textContent = String(posts.length);
+
+      if (!posts.length) {
+        feedList.innerHTML = '<div class="empty">এখনও কোনো post publish করা হয়নি</div>';
+        return;
+      }
+
+      posts.forEach((post) => {
+        const card = document.createElement("div");
+        card.className = "post-card";
+        card.innerHTML = `
+          <div class="post-top">
+            <div class="avatar">
+              <svg class="flux-logo" viewBox="0 0 100 100" aria-hidden="true">
+                <path d="M28 22 C14 33, 14 58, 34 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+                <path d="M72 22 C86 33, 86 58, 66 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+                <path d="M49 20 C39 13, 31 16, 28 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+                <path d="M51 20 C61 13, 69 16, 72 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+                <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#85f5ff" stroke="#85f5ff" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="post-user">
+              <h4>${escapeHtml(post.userName || "User")}</h4>
+              <p>${escapeHtml(post.title || "Text Post")}</p>
+            </div>
+          </div>
+          <div class="post-body">
+            <div class="post-caption">${escapeHtml(post.caption)}</div>
+            <div class="post-actions">
+              <button class="post-action">💖 ${post.likes || 0}</button>
+              <button class="post-action">💬 0</button>
+              <button class="post-action">↗ Share</button>
+            </div>
+          </div>
+        `;
+        feedList.appendChild(card);
+      });
+    }
+
+    async function saveProfileName() {
+      if (!currentUser) return;
+      showError(profileError, "");
+
+      const value = profileNameInput.value.trim() || "FluxLove User";
+      currentProfileName = value;
+
+      try {
+        await setDoc(
+          doc(db, "users", currentUser.uid),
+          {
+            uid: currentUser.uid,
+            name: currentProfileName,
+            email: currentUser.email || "",
+            updatedAt: serverTimestamp()
+          },
+          { merge: true }
+        );
+
+        updateProfileUI();
+        addNotification("📝", "Profile updated", "Your profile name was saved.");
+      } catch (err) {
+        showError(profileError, err.message);
+      }
+    }
+
+    saveProfileBtn.addEventListener("click", saveProfileName);
+
+    async function loadUserProfile(uid) {
+      const snap = await getDoc(doc(db, "users", uid));
+      if (snap.exists()) {
+        const data = snap.data();
+        currentProfileName = data.name || "FluxLove User";
+      } else {
+        currentProfileName = "FluxLove User";
+      }
+      updateProfileUI();
+    }
+
+    loginBtn.addEventListener("click", async () => {
+      showError(loginError, "");
+      const email = loginEmail.value.trim();
+      const password = loginPassword.value.trim();
+      if (!email || !password) {
+        showError(loginError, "Email আর password দাও।");
+        return;
+      }
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch (err) {
+        showError(loginError, err.message);
+      }
+    });
+
+    signupBtn.addEventListener("click", async () => {
+      showError(signupError, "");
+      const name = signupName.value.trim();
+      const email = signupEmail.value.trim();
+      const password = signupPassword.value.trim();
+
+      if (!name || !email || !password) {
+        showError(signupError, "সব field পূরণ করো।");
+        return;
+      }
+
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        await setDoc(doc(db, "users", cred.user.uid), {
+          uid: cred.user.uid,
+          name,
+          email,
+          createdAt: serverTimestamp()
+        });
+      } catch (err) {
+        showError(signupError, err.message);
+      }
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      await signOut(auth);
+    });
+
+    clearCreateBtn.addEventListener("click", () => {
+      postCaptionInput.value = "";
+      postTitleInput.value = "";
+      showError(postError, "");
+    });
+
+    publishPostBtn.addEventListener("click", async () => {
+      if (!currentUser) return;
+
+      showError(postError, "");
+      const caption = postCaptionInput.value.trim();
+      const title = postTitleInput.value.trim();
+
+      if (!caption) {
+        showError(postError, "Caption না লিখে post publish হবে না।");
+        return;
+      }
+
+      try {
+        await addDoc(collection(db, "posts"), {
+          userId: currentUser.uid,
+          userName: currentProfileName,
+          title: title || "Text Post",
+          caption,
+          likes: 0,
+          createdAt: serverTimestamp()
+        });
+
+        postCaptionInput.value = "";
+        postTitleInput.value = "";
+        addNotification("📢", "Post published", "Your text post is now live.");
+        switchScreen("feedScreen");
+      } catch (err) {
+        showError(postError, err.message);
+      }
+    });
+
+    function listenPosts() {
+      if (unsubscribePosts) unsubscribePosts();
+
+      const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+      unsubscribePosts = onSnapshot(q, (snap) => {
+        posts = snap.docs.map((d) => ({
+          id: d.id,
+          ...d.data()
+        }));
+        renderFeed();
+      });
+    }
+
     function renderChatList() {
       chatList.innerHTML = "";
 
-      Object.keys(chats).forEach((name) => {
-        const history = chats[name];
-        const last = history[history.length - 1]?.text || "No messages";
+      chatUsers.forEach((name) => {
         const item = document.createElement("div");
         item.className = "chat-item";
         item.innerHTML = `
-          <div class="avatar">💬</div>
+          <div class="avatar">
+            <svg class="flux-logo" viewBox="0 0 100 100" aria-hidden="true">
+              <path d="M28 22 C14 33, 14 58, 34 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+              <path d="M72 22 C86 33, 86 58, 66 74" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+              <path d="M49 20 C39 13, 31 16, 28 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+              <path d="M51 20 C61 13, 69 16, 72 22" fill="none" stroke="#ff2f74" stroke-width="8" stroke-linecap="round"/>
+              <path d="M54 8 L36 56 L49 56 L42 91 L68 43 L55 43 L63 8 Z" fill="#85f5ff" stroke="#85f5ff" stroke-linejoin="round"/>
+            </svg>
+          </div>
           <div class="chat-main">
             <h4>${escapeHtml(name)}</h4>
-            <p>${escapeHtml(last)}</p>
+            <p>Tap to open chat</p>
           </div>
           <div class="chat-meta">
-            <div class="time">now</div>
-            <div class="count">${history.length}</div>
+            <div class="time">live</div>
+            <div class="count">•</div>
           </div>
         `;
         item.addEventListener("click", () => openChat(name));
         chatList.appendChild(item);
       });
 
-      const totalMessages = Object.values(chats).reduce((sum, arr) => sum + arr.length, 0);
-      statMessages.textContent = String(totalMessages);
-      statChats.textContent = String(Object.keys(chats).length);
-      saveState();
+      statChats.textContent = String(chatUsers.length);
+    }
+
+    function getChatId(a, b) {
+      return [a, b].sort().join("_");
     }
 
     function openChat(name) {
@@ -2224,43 +2166,82 @@
       callUserName.textContent = name;
       chatListPanel.style.display = "none";
       messagesPanel.classList.add("active");
-      renderMessages();
+      listenMessages(name);
     }
 
-    function renderMessages() {
-      messageArea.innerHTML = "";
+    function listenMessages(otherUserName) {
+      if (!currentUser) return;
+      if (unsubscribeMessages) unsubscribeMessages();
 
-      (chats[currentChat] || []).forEach((message) => {
-        const bubble = document.createElement("div");
-        bubble.className = `msg ${message.from}`;
-        bubble.textContent = message.text;
-        messageArea.appendChild(bubble);
+      const chatId = getChatId(currentProfileName, otherUserName);
+      const q = query(
+        collection(db, "chats", chatId, "messages"),
+        orderBy("createdAt", "asc")
+      );
+
+      unsubscribeMessages = onSnapshot(q, (snap) => {
+        messageArea.innerHTML = "";
+        let count = 0;
+
+        snap.docs.forEach((d) => {
+          const msg = d.data();
+          const bubble = document.createElement("div");
+          bubble.className = `msg ${msg.senderId === currentUser.uid ? "you" : "other"}`;
+          bubble.textContent = msg.text;
+          messageArea.appendChild(bubble);
+          count++;
+        });
+
+        statMessages.textContent = String(count);
+        messageArea.scrollTop = messageArea.scrollHeight;
       });
-
-      messageArea.scrollTop = messageArea.scrollHeight;
-      renderChatList();
     }
 
     backToChatsBtn.addEventListener("click", () => {
       messagesPanel.classList.remove("active");
       chatListPanel.style.display = "block";
+      showError(messageError, "");
+      if (unsubscribeMessages) {
+        unsubscribeMessages();
+        unsubscribeMessages = null;
+      }
     });
 
-    function sendMessage(customText = null) {
+    async function sendMessage(customText = null) {
+      if (!currentUser) return;
+      showError(messageError, "");
+
       const text = (customText ?? messageInput.value).trim();
       if (!text) return;
 
-      if (!chats[currentChat]) chats[currentChat] = [];
-      chats[currentChat].push({ from: "you", text });
+      const chatId = getChatId(currentProfileName, currentChat);
 
-      if (!customText) messageInput.value = "";
-      renderMessages();
+      try {
+        await addDoc(collection(db, "chats", chatId, "messages"), {
+          senderId: currentUser.uid,
+          senderName: currentProfileName,
+          receiverName: currentChat,
+          text,
+          createdAt: serverTimestamp()
+        });
 
-      if (autoReply) {
-        setTimeout(() => {
-          chats[currentChat].push({ from: "other", text: "Got it 💖" });
-          renderMessages();
-        }, 700);
+        if (!customText) {
+          messageInput.value = "";
+        }
+
+        if (autoReply) {
+          setTimeout(async () => {
+            await addDoc(collection(db, "chats", chatId, "messages"), {
+              senderId: `bot_${currentChat}`,
+              senderName: currentChat,
+              receiverName: currentProfileName,
+              text: "Got it 💖",
+              createdAt: serverTimestamp()
+            });
+          }, 700);
+        }
+      } catch (err) {
+        showError(messageError, err.message);
       }
     }
 
@@ -2271,8 +2252,7 @@
 
     addDemoReplyBtn.addEventListener("click", () => sendMessage("Hey! This is a quick reply ✨"));
     clearChatBtn.addEventListener("click", () => {
-      chats[currentChat] = [];
-      renderMessages();
+      alert("Chat clear পরে add করা যাবে.");
     });
 
     async function startCall() {
@@ -2344,45 +2324,29 @@
       speakerBtn.textContent = isSpeakerOn ? "📢" : "🔊";
     });
 
-    function renderAll() {
-      renderSelectedPreview();
-      renderMediaGrids();
-      renderFeed();
-      renderNotifications();
-      renderChatList();
-      saveState();
-    }
-
-    function bootSavedMediaFromPosts() {
-      const mediaMap = new Map();
-
-      posts.forEach((post) => {
-        if (post.mediaId && post.mediaSrc && !mediaMap.has(post.mediaId)) {
-          mediaMap.set(post.mediaId, {
-            id: post.mediaId,
-            src: post.mediaSrc,
-            type: post.mediaType,
-            title: savedMediaTitles[post.mediaId] || post.mediaTitle || "Media",
-            originalName: post.mediaTitle || "Media"
-          });
-        }
-      });
-
-      uploadedMedia = Array.from(mediaMap.values());
-    }
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUser = user;
+        await loadUserProfile(user.uid);
+        openApp();
+        renderMediaStatus();
+        renderNotifications();
+        renderChatList();
+        listenPosts();
+      } else {
+        currentUser = null;
+        closeAppToAuth();
+        switchAuthTab("login");
+      }
+    });
 
     updateProfileUI();
     applyTheme();
     applyAutoReplyUI();
-    bootSavedMediaFromPosts();
-    renderAll();
-
-    if (isAuthenticated) {
-      openApp();
-    } else {
-      closeAppToAuth();
-      switchAuthTab("login");
-    }
+    renderMediaStatus();
+    renderFeed();
+    renderNotifications();
+    renderChatList();
   </script>
 </body>
 </html>
